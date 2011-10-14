@@ -2,6 +2,9 @@ package org.springframework.social.lastfm.connect;
 
 import org.springframework.social.connect.ConnectionData;
 
+/**
+ * @author Michael Lavelle
+ */
 public class LastFmConnectionData extends ConnectionData {
 
 	public String getToken() {
