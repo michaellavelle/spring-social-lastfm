@@ -1,3 +1,6 @@
 Please note that as LastFm's auth scheme is neither OAuth1 or OAuth2, this Spring Social module is incompatible with 
 Spring's current ProviderSignInController - instead please use the custom LastFmProviderSignInController provided with 
 this module which adds support for LastFm auth
+
+Also, please note that at the moment this module does not send identifiable UserAgent headers with requests - a requirement
+of the use of LastFm's api.  Please do not use this module without first resolving this issue
