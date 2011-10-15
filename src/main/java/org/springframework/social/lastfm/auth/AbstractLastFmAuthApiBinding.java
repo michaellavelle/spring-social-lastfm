@@ -27,6 +27,7 @@ public abstract class AbstractLastFmAuthApiBinding implements ApiBinding {
 
 	private final RestTemplate restTemplate;
 
+
 	/**
 	 * Constructs the API template without user authorization. This is useful
 	 * for accessing operations on a provider's API that do not require user
@@ -37,7 +38,9 @@ public abstract class AbstractLastFmAuthApiBinding implements ApiBinding {
 		sessionKey = null;
 		restTemplate = new RestTemplate(
 				ClientHttpRequestFactorySelector.getRequestFactory());
-		restTemplate.setMessageConverters(getMessageConverters());
+		restTemplate.setMessageConverters(getMessageConverters(true));
+		
+		
 		configureRestTemplate(restTemplate);
 	}
 
@@ -53,8 +56,12 @@ public abstract class AbstractLastFmAuthApiBinding implements ApiBinding {
 		this.sessionKey = sessionKey;
 		restTemplate = new RestTemplate(
 				ClientHttpRequestFactorySelector.getRequestFactory());
-		restTemplate.setMessageConverters(getMessageConverters());
+		restTemplate.setMessageConverters(getMessageConverters(true));
 		configureRestTemplate(restTemplate);
+		
+
+		
+		
 	}
 
 	/**
@@ -121,11 +128,14 @@ public abstract class AbstractLastFmAuthApiBinding implements ApiBinding {
 	 * additional message converters or to replace the default list of message
 	 * converters.
 	 */
-	protected List<HttpMessageConverter<?>> getMessageConverters() {
+	protected List<HttpMessageConverter<?>> getMessageConverters(boolean json) {
 		List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
 		messageConverters.add(new StringHttpMessageConverter());
 		messageConverters.add(getFormMessageConverter());
-		messageConverters.add(getJsonMessageConverter());
+		if (json)
+		{
+			messageConverters.add(getJsonMessageConverter());
+		}
 		messageConverters.add(getByteArrayMessageConverter());
 		return messageConverters;
 	}

@@ -3,6 +3,7 @@ package org.springframework.social.lastfm.connect;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,8 @@ public class LastFmAuthTemplate implements LastFmAuthOperations {
 	private final String authorizeUrl;
 
 	private final RestTemplate restTemplate;
+	protected final RestTemplate formRestTemplate;
+
 
 	public LastFmAuthTemplate(String clientId, String clientSecret) {
 		this(clientId, clientSecret, "http://www.last.fm/api/auth/",
@@ -57,7 +60,9 @@ public class LastFmAuthTemplate implements LastFmAuthOperations {
 		String clientInfo = "?api_key=" + formEncode(clientId);
 		this.authorizeUrl = authorizeUrl + clientInfo;
 		this.accessTokenUrl = accessTokenUrl;
-		this.restTemplate = createRestTemplate();
+		this.restTemplate = createRestTemplate(true);
+		this.formRestTemplate = createRestTemplate(false);
+
 	}
 
 	/**
@@ -98,13 +103,16 @@ public class LastFmAuthTemplate implements LastFmAuthOperations {
 	 * returns data in some format other than JSON for form-encoded, you might
 	 * override to register an appropriate message converter.
 	 */
-	protected RestTemplate createRestTemplate() {
+	protected RestTemplate createRestTemplate(boolean json) {
 		RestTemplate restTemplate = new RestTemplate(
 				ClientHttpRequestFactorySelector.getRequestFactory());
 		List<HttpMessageConverter<?>> converters = new ArrayList<HttpMessageConverter<?>>(
 				2);
 		converters.add(new FormHttpMessageConverter());
+		if (json)
+		{
 		converters.add(new MappingJacksonHttpMessageConverter());
+		}
 		restTemplate.setMessageConverters(converters);
 		return restTemplate;
 	}
@@ -137,9 +145,9 @@ public class LastFmAuthTemplate implements LastFmAuthOperations {
 
 		String apiKey = parameters.getFirst("api_key");
 		String token = parameters.getFirst("token");
-		String secret = parameters.getFirst("secret");
+		String secret = parameters.getFirst("secret"); 
 		MultiValueMap<String, String> authParams = new LastFmApiMethodParameters(
-				"auth.getSession", apiKey, token, secret);
+				"auth.getSession", apiKey, token, secret,new HashMap<String,String>());
 		return extractAccessGrant(token, restTemplate.postForObject(
 				accessTokenUrl, authParams, Map.class));
 	}

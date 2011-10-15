@@ -1,39 +1,92 @@
 package org.springframework.social.lastfm.connect;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * @author Michael Lavelle
  */
 public class LastFmSignature {
 
-	private String apiKey;
-	private String method;
-	private String token;
 	private String secret;
+	private SortedMap<String,List<String>> sortedMap = new TreeMap<String,List<String>>();
 
-
-	public LastFmSignature(String apiKey, String method, String token,
-			String secret) {
-		try {
-
-			this.apiKey = URLEncoder.encode(apiKey, "UTF-8");
-			this.method = URLEncoder.encode(method, "UTF-8");
-			this.token = URLEncoder.encode(token, "UTF-8");
-			this.secret = URLEncoder.encode(secret, "UTF-8");
-
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
+	private void addParameter(String name,String value)
+	{
+		List<String> values = sortedMap.get(name);
+		if (values == null)
+		{
+			values = new ArrayList<String>();
+			sortedMap.put(name, values);
 		}
+		values.add(value);
 	}
 
+	public LastFmSignature(String apiKey, String method, String token,
+			String secret,String sessionKey,Map<String,String> params) {
+		
+
+		this.secret = secret;
+		 
+			addParameter("api_key",apiKey);
+			addParameter("method",method);
+			addParameter("sk",sessionKey);
+			addParameter("token",token);
+
+			for (Map.Entry<String, String> entry : params.entrySet())
+			{
+				addParameter(entry.getKey(),entry.getValue());
+			}
+
+			
+
+	}
+	
+	public LastFmSignature(String apiKey, String method, String token,
+			String secret,Map<String,String> params) {
+		
+
+
+		this.secret = secret;
+		 
+			addParameter("api_key",apiKey);
+			addParameter("method",method);
+			addParameter("token",token);
+
+			for (Map.Entry<String, String> entry : params.entrySet())
+			{
+				addParameter(entry.getKey(),entry.getValue());
+			}
+
+			
+
+	}
+	
+	
+
 	public String toString() {
-		String s = "api_key" + apiKey + "method" + method + "token" + token
-				+ secret;
+		
+		String s = "";
+		for (Map.Entry<String,List<String>> entry : sortedMap.entrySet())
+		{
+			for (String value : entry.getValue())
+			{
+				s = s + entry.getKey() + value;
+			}
+		}
+		s = s + secret;
+		
+		
+		System.out.println("Method sig:" + s);
+		
+		//String s = "api_key" + apiKey + "method" + method + "token" + token
+			//	+ secret;
 
 		byte[] defaultBytes = s.getBytes();
 		try {
@@ -48,6 +101,8 @@ public class LastFmSignature {
 			while (hashtext.length() < 32) {
 				hashtext = "0" + hashtext;
 			}
+			System.out.println("Hashtext:" + hashtext);
+
 			return hashtext;
 
 		} catch (NoSuchAlgorithmException nsae) {

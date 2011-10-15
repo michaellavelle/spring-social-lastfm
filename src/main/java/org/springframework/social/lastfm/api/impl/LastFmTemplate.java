@@ -25,9 +25,9 @@ public class LastFmTemplate extends AbstractLastFmAuthApiBinding implements
 	private ObjectMapper objectMapper;
 
 	@Override
-	protected List<HttpMessageConverter<?>> getMessageConverters() {
+	protected List<HttpMessageConverter<?>> getMessageConverters(boolean json) {
 		List<HttpMessageConverter<?>> messageConverters = super
-				.getMessageConverters();
+				.getMessageConverters(json);
 		messageConverters.add(new ByteArrayHttpMessageConverter());
 		return messageConverters;
 	}

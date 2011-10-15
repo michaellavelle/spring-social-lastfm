@@ -3,28 +3,20 @@ package org.springframework.social.lastfm.api;
 /**
  * @author Michael Lavelle
  */
-public class Track implements TrackDescriptor {
-
-	private String url;
-	private String name;
-	private String musicBrainsId;
-	private Artist artist;
+public class Artist {
 
 	public String getMusicBrainsId() {
 		return musicBrainsId;
 	}
 
-	public Artist getArtist() {
-		return artist;
-	}
-
-	public void setArtist(Artist artist) {
-		this.artist = artist;
-	}
-
 	public void setMusicBrainsId(String musicBrainsId) {
 		this.musicBrainsId = musicBrainsId;
 	}
+
+	private String url;
+	private String name;
+	private String musicBrainsId;
+
 
 	public String getUrl() {
 		return url;
@@ -42,16 +34,10 @@ public class Track implements TrackDescriptor {
 		this.name = name;
 	}
 
-	public Track(String url, String name,String musicBrainsId,Artist artist) {
+	public Artist(String url, String name,String musicBrainsId) {
 		this.url = url;
 		this.name = name;
 		this.musicBrainsId = musicBrainsId;
-		this.artist = artist;
-	}
-
-	@Override
-	public String getArtistName() {
-		return artist.getName();
 	}
 
 }
