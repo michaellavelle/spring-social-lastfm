@@ -81,12 +81,6 @@ public class LastFmSignature {
 			}
 		}
 		s = s + secret;
-		
-		
-		System.out.println("Method sig:" + s);
-		
-		//String s = "api_key" + apiKey + "method" + method + "token" + token
-			//	+ secret;
 
 		byte[] defaultBytes = s.getBytes();
 		try {
@@ -101,7 +95,6 @@ public class LastFmSignature {
 			while (hashtext.length() < 32) {
 				hashtext = "0" + hashtext;
 			}
-			System.out.println("Hashtext:" + hashtext);
 
 			return hashtext;
 

@@ -49,7 +49,8 @@ public class LastFmTemplate extends AbstractLastFmAuthApiBinding implements
 	 * constructor will support those operations. Those operations requiring
 	 * authentication will throw {@link NotAuthorizedException}.
 	 */
-	public LastFmTemplate() {
+	public LastFmTemplate(String userAgent) {
+		super(userAgent);
 		initialize(null, null, null, null);
 	}
 
@@ -61,9 +62,9 @@ public class LastFmTemplate extends AbstractLastFmAuthApiBinding implements
 	 *            An access token given by LastFm after a successful
 	 *            authentication
 	 */
-	public LastFmTemplate(String token, String sessionKey, String apiKey,
+	public LastFmTemplate(String userAgent,String token, String sessionKey, String apiKey,
 			String secret) {
-		super(token, sessionKey);
+		super(userAgent,token, sessionKey);
 		initialize(token, sessionKey, apiKey, secret);
 
 	}

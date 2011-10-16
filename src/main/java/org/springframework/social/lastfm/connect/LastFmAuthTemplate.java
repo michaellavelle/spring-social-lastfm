@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -40,19 +41,22 @@ public class LastFmAuthTemplate implements LastFmAuthOperations {
 	private final String authorizeUrl;
 
 	private final RestTemplate restTemplate;
-	protected final RestTemplate formRestTemplate;
+	
+	private final String userAgent;
 
 
-	public LastFmAuthTemplate(String clientId, String clientSecret) {
+	public LastFmAuthTemplate(String clientId, String clientSecret,String userAgent) {
 		this(clientId, clientSecret, "http://www.last.fm/api/auth/",
-				"http://ws.audioscrobbler.com/2.0/");
+				"http://ws.audioscrobbler.com/2.0/",userAgent);
 	}
 
 	public LastFmAuthTemplate(String clientId, String clientSecret,
-			String authorizeUrl, String accessTokenUrl) {
+			String authorizeUrl, String accessTokenUrl,String userAgent) {
 		Assert.notNull(clientId, "The clientId property cannot be null");
 		Assert.notNull(clientSecret, "The clientSecret property cannot be null");
 		Assert.notNull(authorizeUrl, "The authorizeUrl property cannot be null");
+		Assert.notNull(userAgent, "The userAgent property cannot be null");
+
 		Assert.notNull(accessTokenUrl,
 				"The accessTokenUrl property cannot be null");
 		this.clientId = clientId;
@@ -60,8 +64,8 @@ public class LastFmAuthTemplate implements LastFmAuthOperations {
 		String clientInfo = "?api_key=" + formEncode(clientId);
 		this.authorizeUrl = authorizeUrl + clientInfo;
 		this.accessTokenUrl = accessTokenUrl;
+		this.userAgent = userAgent;
 		this.restTemplate = createRestTemplate(true);
-		this.formRestTemplate = createRestTemplate(false);
 
 	}
 
@@ -104,8 +108,10 @@ public class LastFmAuthTemplate implements LastFmAuthOperations {
 	 * override to register an appropriate message converter.
 	 */
 	protected RestTemplate createRestTemplate(boolean json) {
-		RestTemplate restTemplate = new RestTemplate(
-				ClientHttpRequestFactorySelector.getRequestFactory());
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.add("User-Agent", userAgent);
+		RestTemplate restTemplate = new RestTemplateWithHeaders(
+				ClientHttpRequestFactorySelector.getRequestFactory(),httpHeaders);
 		List<HttpMessageConverter<?>> converters = new ArrayList<HttpMessageConverter<?>>(
 				2);
 		converters.add(new FormHttpMessageConverter());

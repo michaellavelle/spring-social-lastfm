@@ -24,8 +24,8 @@ public class LastFmConnectionFactory extends ConnectionFactory<LastFm> {
 	 *            the LastFm APi clientId
 	 * @param clientSecret the LastFm Api clientSecret
 	 */
-	public LastFmConnectionFactory(String clientId, String clientSecret) {
-		super("lastfm", new LastFmServiceProvider(clientId, clientSecret),
+	public LastFmConnectionFactory(String clientId, String clientSecret,String userAgent) {
+		super("lastfm", new LastFmServiceProvider(clientId, clientSecret,userAgent),
 				new LastFmAdapter());
 	}
 
