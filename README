@@ -1,6 +1,23 @@
-Please note that as LastFm's auth scheme is neither OAuth1 or OAuth2, this Spring Social module is incompatible with 
-Spring's current ProviderSignInController - instead please use the custom LastFmProviderSignInController provided with 
-this module which adds support for LastFm auth
+This project is a work in progress with a few methods of the LastFm Api implemented so far. These include:
 
-Also, please note that at the moment this module does not send identifiable UserAgent headers with requests - a requirement
-of the use of LastFm's api.  Please do not use this module without first resolving this issue
+Retrieving a LastFm user's basic profile info
+Retrieving a LastFm user's Loved, Recent, or Top Tracks
+Performing a basic track search
+Updating a LastFm users' now listening status
+Simple scrobbling
+
+Method signatures are initial at this stage and support basic operations only (not implementing pagination for example) - these will be updated
+in the near future.
+
+Please note that as LastFm's auth scheme is *neither* OAuth1 or OAuth2, this Spring Social module is incompatible with 
+Spring's current ProviderSignInController - instead please use the custom LastFmSignInController or LastFmConnectController provided with 
+this module which adds support for LastFm auth.    
+
+This module has a dependency on SocialSignIn's spring-social-web-non-oauth-extension as a temporary measure until such time
+as Spring's own ProviderSignInController/ConnectController are cabable of supporting non-OAuth providers (ie. can be
+extended for custom auth).  The spring-social-web-non-oauth-extension project is available at
+
+https://github.com/socialsignin/spring-social-web-non-oauth-extension
+
+Please build the spring-social-web-non-oauth-extension and install into your local repo in order to use spring-social-lastfm,
+until I get the chance to deploy this project into a public mvn repo 
