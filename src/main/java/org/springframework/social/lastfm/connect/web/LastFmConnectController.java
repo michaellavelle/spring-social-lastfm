@@ -48,16 +48,22 @@ public class LastFmConnectController extends ExtensibleConnectController {
 			ConnectionRepository connectionRepository) {
 		super(connectionFactoryLocator, connectionRepository);
 	}
-	 
+
 	/**
-	* Configures the base secure URL for the application this controller is being used in e.g. <code>https://myapp.com</code>. Defaults to null.
-	* If specified, will be used to generate OAuth callback URLs.
-	* If not specified, OAuth callback URLs are generated from web request info.
-	* You may wish to set this property if requests into your application flow through a proxy to your application server.
-	* In this case, the request URI may contain a scheme, host, and/or port value that points to an internal server not appropriate for an external callback URL.
-	* If you have this problem, you can set this property to the base external URL for your application and it will be used to construct the callback URL instead.
-	* @param applicationUrl the application URL value
-	*/
+	 * Configures the base secure URL for the application this controller is
+	 * being used in e.g. <code>https://myapp.com</code>. Defaults to null. If
+	 * specified, will be used to generate OAuth callback URLs. If not
+	 * specified, OAuth callback URLs are generated from web request info. You
+	 * may wish to set this property if requests into your application flow
+	 * through a proxy to your application server. In this case, the request URI
+	 * may contain a scheme, host, and/or port value that points to an internal
+	 * server not appropriate for an external callback URL. If you have this
+	 * problem, you can set this property to the base external URL for your
+	 * application and it will be used to construct the callback URL instead.
+	 * 
+	 * @param applicationUrl
+	 *            the application URL value
+	 */
 	public void setApplicationUrl(String applicationUrl) {
 		try {
 			lastFmWebSupport.setApplicationUrl(new URL(applicationUrl));
@@ -65,45 +71,51 @@ public class LastFmConnectController extends ExtensibleConnectController {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	
+
 	/**
-	* Process the authorization callback from the LastFm service provider.
-	* Called after the user authorizes the connection, generally done by having he or she click "Allow" in their web browser at the provider's site.
-	* On authorization verification, connects the user's local account to the account they hold at the service provider.
-	*/
+	 * Process the authorization callback from the LastFm service provider.
+	 * Called after the user authorizes the connection, generally done by having
+	 * he or she click "Allow" in their web browser at the provider's site. On
+	 * authorization verification, connects the user's local account to the
+	 * account they hold at the service provider.
+	 */
 	@RequestMapping(value = "/{providerId}", method = RequestMethod.GET, params = {
 			"!code", "!oauth_token" })
-	public RedirectView lastFmCallback(@PathVariable String providerId,@RequestParam("token") String token, NativeWebRequest request) {
-	LastFmConnectionFactory connectionFactory = (LastFmConnectionFactory) connectionFactoryLocator.getConnectionFactory(providerId);
-	Connection<?> connection = lastFmWebSupport.completeConnection(connectionFactory, request);
-	addConnection(connection, connectionFactory, request);
-	return connectionStatusRedirect(providerId);
+	public RedirectView lastFmCallback(@PathVariable String providerId,
+			@RequestParam("token") String token, NativeWebRequest request) {
+		LastFmConnectionFactory connectionFactory = (LastFmConnectionFactory) connectionFactoryLocator
+				.getConnectionFactory(providerId);
+		Connection<?> connection = lastFmWebSupport.completeConnection(
+				connectionFactory, request);
+		addConnection(connection, connectionFactory, request);
+		return connectionStatusRedirect(providerId);
 	}
-	
-	
-	  
+
 	/**
-	* Process a connect form submission by commencing the process of establishing a connection to the provider on behalf of the member.
-	* For OAuth1, fetches a new request token from the provider, temporarily stores it in the session, then redirects the member to the provider's site for authorization.
-	* For OAuth2, redirects the user to the provider's site for authorization.
-	*/ 
+	 * Process a connect form submission by commencing the process of
+	 * establishing a connection to the provider on behalf of the member. For
+	 * OAuth1, fetches a new request token from the provider, temporarily stores
+	 * it in the session, then redirects the member to the provider's site for
+	 * authorization. For OAuth2, redirects the user to the provider's site for
+	 * authorization.
+	 */
 	@Override
-	@RequestMapping(value="/{providerId}", method=RequestMethod.POST)
-	public RedirectView connect(@PathVariable String providerId, NativeWebRequest request) {
-	
-		ConnectionFactory<?> connectionFactory = connectionFactoryLocator.getConnectionFactory(providerId);
+	@RequestMapping(value = "/{providerId}", method = RequestMethod.POST)
+	public RedirectView connect(@PathVariable String providerId,
+			NativeWebRequest request) {
+
+		ConnectionFactory<?> connectionFactory = connectionFactoryLocator
+				.getConnectionFactory(providerId);
 		MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>();
 		preConnect(connectionFactory, parameters, request);
 		if (connectionFactory instanceof LastFmConnectionFactory) {
 			return new RedirectView(lastFmWebSupport.buildAuthUrl(
-					(LastFmConnectionFactory) connectionFactory, request, parameters));
+					(LastFmConnectionFactory) connectionFactory, request,
+					parameters));
+		} else {
+			return super.connect(providerId, request);
 		}
-		else
-		{
-			return super.connect(providerId,request);
-		}
-		
+
 	}
 
 }

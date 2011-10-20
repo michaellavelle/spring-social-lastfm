@@ -28,54 +28,47 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 public class RestTemplateWithHeaders extends RestTemplate {
-	 
-	private HttpHeaders headers = new HttpHeaders();
-	 
+
+	private HttpHeaders headers;
+
 	public HttpHeaders getRequestHttpHeaders() {
-	     return headers;
-	}
-	
-	
-	public RestTemplateWithHeaders(ClientHttpRequestFactory requestFactory,HttpHeaders headers) {
-		super(requestFactory);
+		return headers;
 	}
 
+	public RestTemplateWithHeaders(ClientHttpRequestFactory requestFactory,
+			HttpHeaders headers) {
+		super(requestFactory);
+		this.headers = headers;
+	}
 
 	@Override
 	protected <T> T doExecute(URI url, HttpMethod method,
 			RequestCallback requestCallback,
 			ResponseExtractor<T> responseExtractor) throws RestClientException {
-	
 
-	      RequestCallbackDecorator requestCallbackDecorator =
-	                 new RequestCallbackDecorator(requestCallback);
-	 
-	     return super.doExecute(url, method,
-	              requestCallbackDecorator, responseExtractor);
-		
+		RequestCallbackDecorator requestCallbackDecorator = new RequestCallbackDecorator(
+				requestCallback);
+
+		return super.doExecute(url, method, requestCallbackDecorator,
+				responseExtractor);
+
 	}
 
+	private class RequestCallbackDecorator implements RequestCallback {
 
+		public RequestCallbackDecorator(RequestCallback targetRequestCallback) {
+			this.targetRequestCallback = targetRequestCallback;
+		}
 
-	private class RequestCallbackDecorator implements RequestCallback
-	{
-	 
-	   public RequestCallbackDecorator(
-	      RequestCallback targetRequestCallback) {
-	         this.targetRequestCallback = targetRequestCallback;
-	   }
-	 
-	   private RequestCallback targetRequestCallback;
-	 
-	   @Override
-	   public void doWithRequest(ClientHttpRequest request)
-	         throws IOException {
-	 
-	      request.getHeaders().putAll(headers);
-	       
-	      if (null != targetRequestCallback) {
-	          targetRequestCallback.doWithRequest(request);
-	      }
-	   }
+		private RequestCallback targetRequestCallback;
+
+		@Override
+		public void doWithRequest(ClientHttpRequest request) throws IOException {
+			request.getHeaders().putAll(headers);
+
+			if (null != targetRequestCallback) {
+				targetRequestCallback.doWithRequest(request);
+			}
+		}
 	}
-	}
+}

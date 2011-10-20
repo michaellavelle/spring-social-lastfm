@@ -16,27 +16,28 @@
 package org.springframework.social.lastfm.connect;
 
 import org.springframework.social.connect.ConnectionData;
+import org.springframework.social.lastfm.auth.LastFmAccessGrant;
 
 /**
  * @author Michael Lavelle
  */
 public class LastFmConnectionData extends ConnectionData {
 
-	public String getToken() {
-		return getAccessToken();
-	}
+	private LastFmAccessGrant lastFmAccessGrant;
 
-	public String getSessionKey() {
-		return getRefreshToken();
+	public LastFmAccessGrant getLastFmAccessGrant() {
+		return lastFmAccessGrant;
 	}
 
 	private static final long serialVersionUID = 1L;
 
 	public LastFmConnectionData(String providerId, String providerUserId,
 			String displayName, String profileUrl, String imageUrl,
-			String token, String sessionKey) {
+			LastFmAccessGrant lastFmAccessGrant) {
 		super(providerId, providerUserId, displayName, profileUrl, imageUrl,
-				token, null, sessionKey, null);
+				lastFmAccessGrant.getToken(), null, lastFmAccessGrant
+						.getSessionKey(), null);
+		this.lastFmAccessGrant = lastFmAccessGrant;
 	}
 
 	public LastFmConnectionData(ConnectionData connectionData) {
@@ -44,8 +45,9 @@ public class LastFmConnectionData extends ConnectionData {
 		this(connectionData.getProviderId(),
 				connectionData.getProviderUserId(), connectionData
 						.getDisplayName(), connectionData.getProfileUrl(),
-				connectionData.getImageUrl(), connectionData.getAccessToken(),
-				connectionData.getRefreshToken());
+				connectionData.getImageUrl(), new LastFmAccessGrant(
+						connectionData.getAccessToken(),
+						connectionData.getRefreshToken()));
 
 	}
 

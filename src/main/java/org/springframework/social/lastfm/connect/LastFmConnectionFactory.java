@@ -19,7 +19,7 @@ import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionData;
 import org.springframework.social.connect.ConnectionFactory;
 import org.springframework.social.lastfm.api.LastFm;
-import org.springframework.social.lastfm.auth.AccessGrant;
+import org.springframework.social.lastfm.auth.LastFmAccessGrant;
 import org.springframework.social.lastfm.auth.LastFmAuthOperations;
 import org.springframework.social.lastfm.auth.LastFmAuthServiceProvider;
 import org.springframework.social.lastfm.connect.support.LastFmAuthConnection;
@@ -34,14 +34,15 @@ public class LastFmConnectionFactory extends ConnectionFactory<LastFm> {
 	/**
 	 * Create a {@link LastFmConnectionFactory}.
 	 * 
-
+	 * 
 	 * @param clientId
 	 *            the LastFm APi clientId
-	 * @param clientSecret the LastFm Api clientSecret
+	 * @param clientSecret
+	 *            the LastFm Api clientSecret
 	 */
 	public LastFmConnectionFactory(String clientId, String clientSecret) {
-		super("lastfm", new LastFmServiceProvider(clientId, clientSecret,"spring-social-lastfm/1.0.0-SNAPSHOT"),
-				new LastFmAdapter());
+		super("lastfm", new LastFmServiceProvider(clientId, clientSecret,
+				"spring-social-lastfm/1.0.0-SNAPSHOT"), new LastFmAdapter());
 	}
 
 	/**
@@ -53,8 +54,9 @@ public class LastFmConnectionFactory extends ConnectionFactory<LastFm> {
 	}
 
 	/**
-	 * Create a LastFm-Auth based {@link Connection} from the {@link AccessGrant}
-	 * returned after {@link #getLastFmAuthOperations() completing the Auth flow}.
+	 * Create a LastFm-Auth based {@link Connection} from the
+	 * {@link LastFmAccessGrant} returned after
+	 * {@link #getLastFmAuthOperations() completing the Auth flow}.
 	 * 
 	 * @param accessGrant
 	 *            the LastFm access grant
@@ -62,11 +64,10 @@ public class LastFmConnectionFactory extends ConnectionFactory<LastFm> {
 	 * @see LastFmAuthOperations#exchangeForAccess(String, String,
 	 *      org.springframework.util.MultiValueMap)
 	 */
-	public Connection<LastFm> createConnection(AccessGrant accessGrant) {
+	public Connection<LastFm> createConnection(LastFmAccessGrant accessGrant) {
 		return new LastFmAuthConnection(getProviderId(),
-				extractProviderUserId(accessGrant), accessGrant.getToken(),
-				accessGrant.getSessionKey(), getLastFmAuthServiceProvider(),
-				getApiAdapter());
+				extractProviderUserId(accessGrant), accessGrant,
+				getLastFmAuthServiceProvider(), getApiAdapter());
 	}
 
 	/**
@@ -81,11 +82,11 @@ public class LastFmConnectionFactory extends ConnectionFactory<LastFm> {
 
 	/**
 	 * Hook for extracting the providerUserId from the returned
-	 * {@link AccessGrant}, if it is available. Default implementation returns
-	 * null, indicating it is not exposed and another remote API call will be
-	 * required to obtain it. Subclasses may override.
+	 * {@link LastFmAccessGrant}, if it is available. Default implementation
+	 * returns null, indicating it is not exposed and another remote API call
+	 * will be required to obtain it. Subclasses may override.
 	 */
-	protected String extractProviderUserId(AccessGrant accessGrant) {
+	protected String extractProviderUserId(LastFmAccessGrant accessGrant) {
 		return null;
 	}
 

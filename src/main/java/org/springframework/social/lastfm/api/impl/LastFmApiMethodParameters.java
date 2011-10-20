@@ -27,58 +27,55 @@ import org.springframework.util.LinkedMultiValueMap;
 public class LastFmApiMethodParameters extends
 		LinkedMultiValueMap<String, String> {
 
-	
 	private static final long serialVersionUID = 1L;
 
-	
-	public LastFmApiMethodParameters(String methodName, String apiKey,String secret,Map<String,String> params) {
-		this(methodName,apiKey,null,secret,null,params);
-	}
-	
 	public LastFmApiMethodParameters(String methodName, String apiKey,
-			String token, String secret,Map<String,String> params) {
-		this(methodName,apiKey,token,secret,null,params);
+			String secret, Map<String, String> params) {
+		this(methodName, apiKey, null, secret, null, params);
 	}
-	
+
 	public LastFmApiMethodParameters(String methodName, String apiKey,
-			String token, String secret,String sessionKey,Map<String,String> params) {
-		LastFmSignature lastFmSignature = sessionKey != null ? 
-				new LastFmSignature(apiKey,
-				methodName, token, secret,sessionKey,params) 
-				: new LastFmSignature(apiKey,
-						methodName, token, secret,params);
-		String apiSignature = lastFmSignature.toString();
+			String token, String secret, Map<String, String> params) {
+		this(methodName, apiKey, token, secret, null, params);
+	}
+
+	public LastFmApiMethodParameters(String methodName, String apiKey,
+			String token, String secret, String sessionKey,
+			Map<String, String> params) {
 		add("format", "json");
-		add("api_sig", apiSignature);
+		if (token != null) {
+
+			LastFmSignature lastFmSignature = sessionKey != null ? new LastFmSignature(
+					apiKey, methodName, token, secret, sessionKey, params)
+					: new LastFmSignature(apiKey, methodName, token, secret,
+							params);
+			String apiSignature = lastFmSignature.toString();
+			add("api_sig", apiSignature);
+		}
 		add("api_key", apiKey);
-		if (sessionKey != null)
-		{
+		if (sessionKey != null) {
 			add("sk", sessionKey);
 		}
 		add("method", methodName);
-		if (token != null)
-		{
+		if (token != null) {
 			add("token", token);
 		}
-		for (Map.Entry<String,String> entry : params.entrySet())
-		{
-			add(entry.getKey(),entry.getValue());
+		for (Map.Entry<String, String> entry : params.entrySet()) {
+			add(entry.getKey(), entry.getValue());
 		}
 	}
-	
+
 	public LastFmApiMethodParameters(String methodName, String apiKey,
 			String token, String secret) {
-		this(methodName, apiKey, token, secret, new HashMap<String,String>());
-		
+		this(methodName, apiKey, token, secret, new HashMap<String, String>());
+
 	}
-	
+
 	public LastFmApiMethodParameters(String methodName, String apiKey,
-			String token, String secret,String sessionKey) {
-		this(methodName,apiKey,token,secret,sessionKey,new HashMap<String,String>());
-		
+			String token, String secret, String sessionKey) {
+		this(methodName, apiKey, token, secret, sessionKey,
+				new HashMap<String, String>());
+
 	}
-	
-	
-	
 
 }

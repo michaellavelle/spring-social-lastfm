@@ -28,8 +28,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
 abstract class SimpleArtistMixin {
 
 	@JsonCreator
-	SimpleArtistMixin(
-			@JsonProperty("#text") String name,@JsonProperty("mbid") String musicBrainsId) {
+	SimpleArtistMixin(@JsonProperty("#text") String name,
+			@JsonProperty("mbid") String musicBrainsId) {
 	}
 
 }

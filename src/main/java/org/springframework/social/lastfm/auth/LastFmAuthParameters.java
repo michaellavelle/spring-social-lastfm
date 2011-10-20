@@ -20,11 +20,13 @@ import java.util.Map;
 
 import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.social.support.ParameterMap;
+
 /**
-* Parameters for building an LastFm authorize URL.
-* @author Michael Lavelle
-* @see LastFmAuthOperations#buildAuthorizeUrl(OAuth2Parameters)
-*/
+ * Parameters for building an LastFm authorize URL.
+ * 
+ * @author Michael Lavelle
+ * @see LastFmAuthOperations#buildAuthorizeUrl(OAuth2Parameters)
+ */
 public final class LastFmAuthParameters extends ParameterMap {
 
 	private static final String REDIRECT_URI = "cb";
@@ -58,7 +60,7 @@ public final class LastFmAuthParameters extends ParameterMap {
 
 	/**
 	 * The authorization callback url. This value must match the redirectUri
-	 * registered with the LastFm. 
+	 * registered with the LastFm.
 	 */
 	public String getRedirectUri() {
 		return getFirst(REDIRECT_URI);
@@ -66,7 +68,7 @@ public final class LastFmAuthParameters extends ParameterMap {
 
 	/**
 	 * Sets the authorization callback url. This value must match the
-	 * redirectUri registered with LastFm. 
+	 * redirectUri registered with LastFm.
 	 */
 	public void setRedirectUri(String redirectUri) {
 		set(REDIRECT_URI, redirectUri);

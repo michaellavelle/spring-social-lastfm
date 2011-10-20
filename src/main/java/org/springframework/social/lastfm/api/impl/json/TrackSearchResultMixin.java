@@ -18,7 +18,6 @@ package org.springframework.social.lastfm.api.impl.json;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.springframework.social.lastfm.api.SimpleArtist;
 
 /**
  * Annotated mixin to add Jackson annotations to SimpleTrack.
@@ -29,9 +28,9 @@ import org.springframework.social.lastfm.api.SimpleArtist;
 abstract class TrackSearchResultMixin {
 
 	@JsonCreator
-	TrackSearchResultMixin(@JsonProperty("name") String name,@JsonProperty("artist") String artistName,
+	TrackSearchResultMixin(@JsonProperty("name") String name,
+			@JsonProperty("artist") String artistName,
 			@JsonProperty("url") String url) {
 	}
-	
-	
+
 }

@@ -30,9 +30,9 @@ abstract class SimpleTrackMixin {
 
 	@JsonCreator
 	SimpleTrackMixin(@JsonProperty("url") String url,
-			@JsonProperty("name") String name,@JsonProperty("mbid") String musicBrainsId,@JsonProperty("artist") SimpleArtist artist) {
+			@JsonProperty("name") String name,
+			@JsonProperty("mbid") String musicBrainsId,
+			@JsonProperty("artist") SimpleArtist artist) {
 	}
-	
-	
-	
+
 }

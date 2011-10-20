@@ -30,13 +30,11 @@ import java.util.TreeMap;
 public class LastFmSignature {
 
 	private String secret;
-	private SortedMap<String,List<String>> sortedMap = new TreeMap<String,List<String>>();
+	private SortedMap<String, List<String>> sortedMap = new TreeMap<String, List<String>>();
 
-	private void addParameter(String name,String value)
-	{
+	private void addParameter(String name, String value) {
 		List<String> values = sortedMap.get(name);
-		if (values == null)
-		{
+		if (values == null) {
 			values = new ArrayList<String>();
 			sortedMap.put(name, values);
 		}
@@ -44,54 +42,41 @@ public class LastFmSignature {
 	}
 
 	public LastFmSignature(String apiKey, String method, String token,
-			String secret,String sessionKey,Map<String,String> params) {
-		
+			String secret, String sessionKey, Map<String, String> params) {
 
 		this.secret = secret;
-		 
-			addParameter("api_key",apiKey);
-			addParameter("method",method);
-			addParameter("sk",sessionKey);
-			addParameter("token",token);
 
-			for (Map.Entry<String, String> entry : params.entrySet())
-			{
-				addParameter(entry.getKey(),entry.getValue());
-			}
+		addParameter("api_key", apiKey);
+		addParameter("method", method);
+		addParameter("sk", sessionKey);
+		addParameter("token", token);
 
-			
+		for (Map.Entry<String, String> entry : params.entrySet()) {
+			addParameter(entry.getKey(), entry.getValue());
+		}
 
 	}
-	
+
 	public LastFmSignature(String apiKey, String method, String token,
-			String secret,Map<String,String> params) {
-		
-
+			String secret, Map<String, String> params) {
 
 		this.secret = secret;
-		 
-			addParameter("api_key",apiKey);
-			addParameter("method",method);
-			addParameter("token",token);
 
-			for (Map.Entry<String, String> entry : params.entrySet())
-			{
-				addParameter(entry.getKey(),entry.getValue());
-			}
+		addParameter("api_key", apiKey);
+		addParameter("method", method);
+		addParameter("token", token);
 
-			
+		for (Map.Entry<String, String> entry : params.entrySet()) {
+			addParameter(entry.getKey(), entry.getValue());
+		}
 
 	}
-	
-	
 
 	public String toString() {
-		
+
 		String s = "";
-		for (Map.Entry<String,List<String>> entry : sortedMap.entrySet())
-		{
-			for (String value : entry.getValue())
-			{
+		for (Map.Entry<String, List<String>> entry : sortedMap.entrySet()) {
+			for (String value : entry.getValue()) {
 				s = s + entry.getKey() + value;
 			}
 		}

@@ -27,7 +27,6 @@ import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.web.ExtensibleProviderSignInController;
 import org.springframework.social.connect.web.SignInAdapter;
 import org.springframework.social.lastfm.connect.LastFmConnectionFactory;
-import org.springframework.social.lastfm.connect.web.LastFmConnectSupport;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,14 +36,17 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
 /**
-* Spring MVC Controller for handling the LastFm user sign-in flow.  We cannot use the existing ProviderSignInController,
-* as LastFm's Auth scheme is neither OAuth1 or OAuth2.
-* <ul>
-* <li>POST /signin/{providerId} - Initiate user sign-in with {providerId}.</li>
-* <li>GET /signin/{providerId}?oauth_token&oauth_verifier||code - Receive {providerId} authentication callback and establish the connection.</li>
-* </ul>
-* @author Michael Lavelle
-*/
+ * Spring MVC Controller for handling the LastFm user sign-in flow. We cannot
+ * use the existing ProviderSignInController, as LastFm's Auth scheme is neither
+ * OAuth1 or OAuth2.
+ * <ul>
+ * <li>POST /signin/{providerId} - Initiate user sign-in with {providerId}.</li>
+ * <li>GET /signin/{providerId}?oauth_token&oauth_verifier||code - Receive
+ * {providerId} authentication callback and establish the connection.</li>
+ * </ul>
+ * 
+ * @author Michael Lavelle
+ */
 public class LastFmSignInController extends ExtensibleProviderSignInController {
 
 	private final LastFmConnectSupport lastFmWebSupport = new LastFmConnectSupport();
@@ -68,23 +70,28 @@ public class LastFmSignInController extends ExtensibleProviderSignInController {
 				connectionFactory, request);
 		return handleSignIn(connection, request);
 	}
-	
-	
+
 	/**
-	* Configures the base secure URL for the application this controller is being used in e.g. <code>https://myapp.com</code>. Defaults to null.
-	* If specified, will be used to generate OAuth callback URLs.
-	* If not specified, OAuth callback URLs are generated from web request info.
-	* You may wish to set this property if requests into your application flow through a proxy to your application server.
-	* In this case, the request URI may contain a scheme, host, and/or port value that points to an internal server not appropriate for an external callback URL.
-	* If you have this problem, you can set this property to the base external URL for your application and it will be used to construct the callback URL instead.
-	* @param applicationUrl the application URL value
-	*/
+	 * Configures the base secure URL for the application this controller is
+	 * being used in e.g. <code>https://myapp.com</code>. Defaults to null. If
+	 * specified, will be used to generate OAuth callback URLs. If not
+	 * specified, OAuth callback URLs are generated from web request info. You
+	 * may wish to set this property if requests into your application flow
+	 * through a proxy to your application server. In this case, the request URI
+	 * may contain a scheme, host, and/or port value that points to an internal
+	 * server not appropriate for an external callback URL. If you have this
+	 * problem, you can set this property to the base external URL for your
+	 * application and it will be used to construct the callback URL instead.
+	 * 
+	 * @param applicationUrl
+	 *            the application URL value
+	 */
 	public void setApplicationUrl(String applicationUrl) {
-	try {
-		lastFmWebSupport.setApplicationUrl(new URL(applicationUrl));
-	} catch (MalformedURLException e) {
-		throw new RuntimeException(e);
-	}
+		try {
+			lastFmWebSupport.setApplicationUrl(new URL(applicationUrl));
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**

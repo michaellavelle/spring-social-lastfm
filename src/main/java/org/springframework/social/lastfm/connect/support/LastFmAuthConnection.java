@@ -28,29 +28,21 @@ import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionData;
 import org.springframework.social.connect.support.AbstractConnection;
 import org.springframework.social.lastfm.api.LastFm;
+import org.springframework.social.lastfm.auth.LastFmAccessGrant;
 import org.springframework.social.lastfm.auth.LastFmAuthServiceProvider;
 import org.springframework.social.lastfm.connect.LastFmConnectionData;
 import org.springframework.social.oauth2.OAuth2ServiceProvider;
 
 /**
  * An LastFm-Auth-based Connection implementation.
+ * 
  * @author Michael Lavelle
  */
 public class LastFmAuthConnection extends AbstractConnection<LastFm> {
 
 	private final LastFmAuthServiceProvider serviceProvider;
 
-	private String token;
-
-	private String sessionKey;
-
-	public String getToken() {
-		return token;
-	}
-
-	public String getSessionKey() {
-		return sessionKey;
-	}
+	private LastFmAccessGrant lastFmAccessGrant;
 
 	private LastFm api;
 
@@ -78,12 +70,12 @@ public class LastFmAuthConnection extends AbstractConnection<LastFm> {
 	 *            the ApiAdapter for the ServiceProvider
 	 */
 	public LastFmAuthConnection(String providerId, String providerUserId,
-			String token, String sessionKey,
+			LastFmAccessGrant lastFmAccessGrant,
 			LastFmAuthServiceProvider serviceProvider,
 			ApiAdapter<LastFm> apiAdapter) {
 		super(apiAdapter);
 		this.serviceProvider = serviceProvider;
-		initAccessTokens(token, sessionKey);
+		initAccessGrant(lastFmAccessGrant);
 		initApi();
 		initApiProxy();
 		initKey(providerId, providerUserId);
@@ -106,7 +98,7 @@ public class LastFmAuthConnection extends AbstractConnection<LastFm> {
 			ApiAdapter<LastFm> apiAdapter) {
 		super(data, apiAdapter);
 		this.serviceProvider = serviceProvider;
-		initAccessTokens(data.getToken(), data.getSessionKey());
+		initAccessGrant(data.getLastFmAccessGrant());
 		initApi();
 		initApiProxy();
 	}
@@ -135,19 +127,18 @@ public class LastFmAuthConnection extends AbstractConnection<LastFm> {
 		synchronized (getMonitor()) {
 			return new LastFmConnectionData(getKey().getProviderId(), getKey()
 					.getProviderUserId(), getDisplayName(), getProfileUrl(),
-					getImageUrl(), getToken(), getSessionKey());
+					getImageUrl(), lastFmAccessGrant);
 		}
 	}
 
 	// internal helpers
 
-	private void initAccessTokens(String token, String sessionKey) {
-		this.token = token;
-		this.sessionKey = sessionKey;
+	private void initAccessGrant(LastFmAccessGrant lastFmAccessGrant) {
+		this.lastFmAccessGrant = lastFmAccessGrant;
 	}
 
 	private void initApi() {
-		api = serviceProvider.getApi(token, sessionKey);
+		api = serviceProvider.getApi(lastFmAccessGrant);
 	}
 
 	@SuppressWarnings("unchecked")

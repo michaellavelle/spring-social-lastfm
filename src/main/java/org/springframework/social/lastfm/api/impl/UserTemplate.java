@@ -29,6 +29,7 @@ import org.springframework.social.lastfm.api.impl.json.LastFmLovedTracksResponse
 import org.springframework.social.lastfm.api.impl.json.LastFmProfileResponse;
 import org.springframework.social.lastfm.api.impl.json.LastFmRecentTracksResponse;
 import org.springframework.social.lastfm.api.impl.json.LastFmTopTracksResponse;
+import org.springframework.social.lastfm.auth.LastFmAccessGrant;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -37,21 +38,20 @@ import org.springframework.web.client.RestTemplate;
 public class UserTemplate extends AbstractLastFmOperations implements
 		UserOperations {
 
-	
-	
-	
-
-	public UserTemplate(RestTemplate restTemplate, String token,
-			String sessionKey, String apiKey, String secret,
+	public UserTemplate(RestTemplate restTemplate,
+			LastFmAccessGrant lastFmAccessGrant, String apiKey, String secret,
 			boolean isAuthorizedForUser) {
-		super(restTemplate, token, sessionKey, apiKey, secret, isAuthorizedForUser);
+		super(restTemplate, lastFmAccessGrant, apiKey, secret,
+				isAuthorizedForUser);
 	}
 
 	@Override
 	public LastFmProfile getUserProfile() {
-		
+
+		requireAuthorization();
 		LastFmApiMethodParameters methodParameters = new LastFmApiMethodParameters(
-				"user.getInfo", apiKey, token, secret,sessionKey);
+				"user.getInfo", apiKey, lastFmAccessGrant.getToken(), secret,
+				lastFmAccessGrant.getSessionKey());
 
 		return restTemplate.getForObject(buildLastFmApiUrl(methodParameters),
 				LastFmProfileResponse.class).getLastFmProfile();
@@ -60,11 +60,11 @@ public class UserTemplate extends AbstractLastFmOperations implements
 
 	@Override
 	public LastFmProfile getUserProfile(String userName) {
-		Map<String,String> additionalParams = new HashMap<String,String>();
+		Map<String, String> additionalParams = new HashMap<String, String>();
 		additionalParams.put("user", userName);
-		
+
 		LastFmApiMethodParameters methodParameters = new LastFmApiMethodParameters(
-				"user.getInfo", apiKey, token, secret,additionalParams);
+				"user.getInfo", apiKey, null, null, additionalParams);
 
 		return restTemplate.getForObject(buildLastFmApiUrl(methodParameters),
 				LastFmProfileResponse.class).getLastFmProfile();
@@ -73,12 +73,12 @@ public class UserTemplate extends AbstractLastFmOperations implements
 
 	@Override
 	public List<SimpleTrack> getRecentTracks(String userName) {
-		
-		Map<String,String> additionalParams = new HashMap<String,String>();
+
+		Map<String, String> additionalParams = new HashMap<String, String>();
 		additionalParams.put("user", userName);
-		
+
 		LastFmApiMethodParameters methodParameters = new LastFmApiMethodParameters(
-				"user.getrecenttracks", apiKey, token, secret,additionalParams);
+				"user.getrecenttracks", apiKey, null, null, additionalParams);
 
 		return restTemplate
 				.getForObject(buildLastFmApiUrl(methodParameters),
@@ -86,15 +86,15 @@ public class UserTemplate extends AbstractLastFmOperations implements
 				.getTracks();
 
 	}
-	
+
 	@Override
 	public List<Track> getLovedTracks(String userName) {
-		
-		Map<String,String> additionalParams = new HashMap<String,String>();
+
+		Map<String, String> additionalParams = new HashMap<String, String>();
 		additionalParams.put("user", userName);
 
 		LastFmApiMethodParameters methodParameters = new LastFmApiMethodParameters(
-				"user.getlovedtracks", apiKey, token, secret,additionalParams);
+				"user.getlovedtracks", apiKey, null, null, additionalParams);
 
 		return restTemplate
 				.getForObject(buildLastFmApiUrl(methodParameters),
@@ -102,16 +102,15 @@ public class UserTemplate extends AbstractLastFmOperations implements
 				.getTracks();
 
 	}
-	
 
 	@Override
 	public List<Track> getTopTracks(String userName) {
-		
-		Map<String,String> additionalParams = new HashMap<String,String>();
+
+		Map<String, String> additionalParams = new HashMap<String, String>();
 		additionalParams.put("user", userName);
 
 		LastFmApiMethodParameters methodParameters = new LastFmApiMethodParameters(
-				"user.gettoptracks", apiKey, token, secret,additionalParams);
+				"user.gettoptracks", apiKey, null, null, additionalParams);
 
 		return restTemplate
 				.getForObject(buildLastFmApiUrl(methodParameters),
@@ -119,39 +118,39 @@ public class UserTemplate extends AbstractLastFmOperations implements
 				.getTracks();
 
 	}
-	
-
-	
 
 	@Override
-	public void scrobble(TrackDescriptor trackDescriptor,Date timestamp) {
-		Map<String,String> additionalParams = new HashMap<String,String>();
+	public void scrobble(TrackDescriptor trackDescriptor, Date timestamp) {
+		requireAuthorization();
+
+		Map<String, String> additionalParams = new HashMap<String, String>();
 		additionalParams.put("track", trackDescriptor.getName());
-		additionalParams.put("artist",trackDescriptor.getArtistName());
-		Integer timestampInSeconds =  new Integer((int)(timestamp.getTime()/1000));
-		additionalParams.put("timestamp",timestampInSeconds.toString());
+		additionalParams.put("artist", trackDescriptor.getArtistName());
+		Integer timestampInSeconds = new Integer(
+				(int) (timestamp.getTime() / 1000));
+		additionalParams.put("timestamp", timestampInSeconds.toString());
 
 		LastFmApiMethodParameters methodParameters = new LastFmApiMethodParameters(
-				"track.scrobble", apiKey, token, secret,sessionKey,additionalParams);
+				"track.scrobble", apiKey, lastFmAccessGrant.getToken(), secret,
+				lastFmAccessGrant.getSessionKey(), additionalParams);
 
-		restTemplate.postForObject(baseApiUrl,
-				methodParameters,
-				String.class);
+		restTemplate.postForObject(baseApiUrl, methodParameters, String.class);
 	}
 
 	@Override
 	public void updateNowPlaying(TrackDescriptor trackDescriptor) {
-		Map<String,String> additionalParams = new HashMap<String,String>();
-		additionalParams.put("track", trackDescriptor.getName());
-		additionalParams.put("artist",trackDescriptor.getArtistName());
-	
-		LastFmApiMethodParameters methodParameters = new LastFmApiMethodParameters(
-				"track.updateNowPlaying", apiKey, token, secret,sessionKey,additionalParams);
+		requireAuthorization();
 
-		restTemplate.postForObject(baseApiUrl,
-				methodParameters,
-				String.class);
-		
+		Map<String, String> additionalParams = new HashMap<String, String>();
+		additionalParams.put("track", trackDescriptor.getName());
+		additionalParams.put("artist", trackDescriptor.getArtistName());
+
+		LastFmApiMethodParameters methodParameters = new LastFmApiMethodParameters(
+				"track.updateNowPlaying", apiKey, lastFmAccessGrant.getToken(),
+				secret, lastFmAccessGrant.getSessionKey(), additionalParams);
+
+		restTemplate.postForObject(baseApiUrl, methodParameters, String.class);
+
 	}
 
 }

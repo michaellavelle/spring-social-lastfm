@@ -22,14 +22,13 @@ import org.springframework.social.lastfm.api.Image;
 import org.springframework.social.lastfm.api.LastFmProfile;
 import org.springframework.social.lastfm.api.SimpleArtist;
 import org.springframework.social.lastfm.api.SimpleTrack;
-import org.springframework.social.lastfm.api.SimpleTrackDescriptor;
 import org.springframework.social.lastfm.api.Track;
 import org.springframework.social.lastfm.api.TrackSearchResult;
 
 /**
- * Jackson module for setting up mixin annotations on LastFm model types.
- * This enables the use of Jackson annotations without directly annotating the
- * model classes themselves.
+ * Jackson module for setting up mixin annotations on LastFm model types. This
+ * enables the use of Jackson annotations without directly annotating the model
+ * classes themselves.
  * 
  * @author Michael Lavelle
  */
@@ -45,7 +44,8 @@ public class LastFmModule extends SimpleModule {
 				LastFmProfileMixin.class);
 		context.setMixInAnnotations(Track.class, TrackMixin.class);
 		context.setMixInAnnotations(SimpleTrack.class, SimpleTrackMixin.class);
-		context.setMixInAnnotations(TrackSearchResult.class, TrackSearchResultMixin.class);
+		context.setMixInAnnotations(TrackSearchResult.class,
+				TrackSearchResultMixin.class);
 
 		context.setMixInAnnotations(SimpleArtist.class, SimpleArtistMixin.class);
 

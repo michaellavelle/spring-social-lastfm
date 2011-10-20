@@ -17,6 +17,7 @@ package org.springframework.social.lastfm.connect;
 
 import org.springframework.social.lastfm.api.LastFm;
 import org.springframework.social.lastfm.api.impl.LastFmTemplate;
+import org.springframework.social.lastfm.auth.LastFmAccessGrant;
 import org.springframework.social.lastfm.auth.LastFmAuthOperations;
 import org.springframework.social.lastfm.auth.LastFmAuthServiceProvider;
 import org.springframework.social.oauth2.OAuth2ServiceProvider;
@@ -43,8 +44,10 @@ public class LastFmServiceProvider implements LastFmAuthServiceProvider {
 		this.lastFmAuthOperations = lastFmAuthOperations;
 	}
 
-	public LastFmServiceProvider(String clientId, String clientSecret,String userAgent) {
-		lastFmAuthOperations = new LastFmAuthTemplate(clientId, clientSecret,userAgent);
+	public LastFmServiceProvider(String clientId, String clientSecret,
+			String userAgent) {
+		lastFmAuthOperations = new LastFmAuthTemplate(clientId, clientSecret,
+				userAgent);
 		this.clientId = clientId;
 		this.secret = clientSecret;
 		this.userAgent = userAgent;
@@ -56,8 +59,9 @@ public class LastFmServiceProvider implements LastFmAuthServiceProvider {
 		return lastFmAuthOperations;
 	}
 
-	public LastFm getApi(String token, String sessionKey) {
-		return new LastFmTemplate(userAgent,token, sessionKey, clientId, secret);
+	public LastFm getApi(LastFmAccessGrant lastFmAccessGrant) {
+		return new LastFmTemplate(userAgent, lastFmAccessGrant, clientId,
+				secret);
 
 	}
 

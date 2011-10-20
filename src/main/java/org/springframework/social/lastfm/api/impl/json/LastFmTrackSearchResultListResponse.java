@@ -20,7 +20,6 @@ import java.util.List;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.springframework.social.lastfm.api.SimpleTrack;
 import org.springframework.social.lastfm.api.TrackSearchResult;
 
 /**
@@ -32,7 +31,8 @@ public class LastFmTrackSearchResultListResponse {
 	private List<TrackSearchResult> tracks;
 
 	@JsonCreator
-	public LastFmTrackSearchResultListResponse(@JsonProperty("track") List<TrackSearchResult> tracks) {
+	public LastFmTrackSearchResultListResponse(
+			@JsonProperty("track") List<TrackSearchResult> tracks) {
 		this.tracks = tracks;
 	}
 

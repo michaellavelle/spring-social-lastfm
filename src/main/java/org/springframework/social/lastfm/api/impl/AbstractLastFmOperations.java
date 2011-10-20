@@ -18,6 +18,8 @@ package org.springframework.social.lastfm.api.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.social.MissingAuthorizationException;
+import org.springframework.social.lastfm.auth.LastFmAccessGrant;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -30,39 +32,37 @@ public abstract class AbstractLastFmOperations {
 	protected String baseApiUrl = "http://ws.audioscrobbler.com/2.0/";
 
 	protected String apiKey;
-	protected String token;
 	protected String secret;
-	protected String sessionKey;
-	
+	protected LastFmAccessGrant lastFmAccessGrant;
 
-
-	public AbstractLastFmOperations(RestTemplate restTemplate, String token,
-			String sessionKey, String apiKey, String secret,
+	public AbstractLastFmOperations(RestTemplate restTemplate,
+			LastFmAccessGrant lastFmAccessGrant, String apiKey, String secret,
 			boolean isAuthorizedForUser) {
 		this.restTemplate = restTemplate;
 		this.isAuthorizedForUser = isAuthorizedForUser;
 		this.apiKey = apiKey;
-		this.token = token;
 		this.secret = secret;
-		this.sessionKey = sessionKey;
+		this.lastFmAccessGrant = lastFmAccessGrant;
 	}
-	
 
-	
-	protected String buildLastFmApiUrl(LastFmApiMethodParameters methodParameters)
-	{
+	protected void requireAuthorization() {
+		if (!isAuthorizedForUser) {
+			throw new MissingAuthorizationException();
+		}
+	}
+
+	protected String buildLastFmApiUrl(
+			LastFmApiMethodParameters methodParameters) {
 		String delim = "?";
 		String url = baseApiUrl;
-		for (Map.Entry<String, List<String>> entry : methodParameters.entrySet())
-		{
-			for (String value : entry.getValue())
-			{
+		for (Map.Entry<String, List<String>> entry : methodParameters
+				.entrySet()) {
+			for (String value : entry.getValue()) {
 				url = url + delim + entry.getKey() + "=" + value;
 				delim = "&";
 			}
 		}
 		return url;
 	}
-
 
 }

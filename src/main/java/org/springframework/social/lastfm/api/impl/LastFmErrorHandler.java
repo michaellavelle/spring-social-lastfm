@@ -19,9 +19,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.codehaus.jackson.JsonFactory;
@@ -31,7 +29,6 @@ import org.codehaus.jackson.type.TypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.social.InternalServerErrorException;
-import org.springframework.social.InvalidAuthorizationException;
 import org.springframework.social.NotAuthorizedException;
 import org.springframework.social.OperationNotPermittedException;
 import org.springframework.social.ResourceNotFoundException;
@@ -52,8 +49,9 @@ class LastFmErrorHandler extends DefaultResponseErrorHandler {
 		try {
 			super.handleError(response);
 		} catch (Exception e) {
-			if (errorDetails != null) {
-				String m = "";
+			if (errorDetails != null && errorDetails.size() > 0) {
+				String m = errorDetails.get(errorDetails.values().iterator()
+						.next());
 				throw new UncategorizedApiException(m, e);
 			} else {
 				throw new UncategorizedApiException(
@@ -67,9 +65,12 @@ class LastFmErrorHandler extends DefaultResponseErrorHandler {
 
 		String message = errorDetails.values().iterator().next();
 		if (statusCode == HttpStatus.OK) {
-			// TODO I've just put a single error code in here for now - need to 
+			// TODO I've just put a single error code in here for now - need to
 			// complete with other error codes
 			if (errorDetails.containsKey(3)) {
+				throw new ResourceNotFoundException(message);
+			}
+			if (errorDetails.containsKey(6)) {
 				throw new ResourceNotFoundException(message);
 			}
 
@@ -77,6 +78,7 @@ class LastFmErrorHandler extends DefaultResponseErrorHandler {
 			throw new ResourceNotFoundException(message);
 
 		} else if (statusCode == HttpStatus.UNAUTHORIZED) {
+
 			throw new NotAuthorizedException(message);
 		} else if (statusCode == HttpStatus.FORBIDDEN) {
 
@@ -87,8 +89,6 @@ class LastFmErrorHandler extends DefaultResponseErrorHandler {
 			throw new ServerDownException(message);
 		}
 	}
-
-
 
 	@Override
 	public void handleError(ClientHttpResponse response) throws IOException {
@@ -135,8 +135,8 @@ class LastFmErrorHandler extends DefaultResponseErrorHandler {
 							});
 			if (responseMap.containsKey("error")) {
 				Map<Integer, String> errorMap = new HashMap<Integer, String>();
-				errorMap.put(new Integer(responseMap.get("error")), responseMap.get("message"));
-
+				errorMap.put(new Integer(responseMap.get("error")),
+						responseMap.get("message"));
 				return errorMap;
 			} else {
 				return null;

@@ -20,7 +20,7 @@ import java.net.URL;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.social.connect.Connection;
-import org.springframework.social.lastfm.auth.AccessGrant;
+import org.springframework.social.lastfm.auth.LastFmAccessGrant;
 import org.springframework.social.lastfm.auth.LastFmAuthOperations;
 import org.springframework.social.lastfm.auth.LastFmAuthParameters;
 import org.springframework.social.lastfm.connect.LastFmConnectionFactory;
@@ -29,8 +29,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 /**
  * Provides common LastFm connect support and utilities for Java web/servlet
- * environments. Used by
- * {@link LastFmProviderSignInController}.
+ * environments. Used by {@link LastFmProviderSignInController}.
  * 
  * @author Michael Lavelle
  */
@@ -62,8 +61,7 @@ public class LastFmConnectSupport {
 	 * Complete the connection to the OAuth2 provider.
 	 * 
 	 * @param connectionFactory
-	 *            the 
-	 *            LastFmConnectionFactory
+	 *            the LastFmConnectionFactory
 	 * @param request
 	 *            the current web request
 	 * @return a new connection to the service provider
@@ -71,8 +69,8 @@ public class LastFmConnectSupport {
 	public Connection<?> completeConnection(
 			LastFmConnectionFactory connectionFactory, NativeWebRequest request) {
 		String code = request.getParameter("token");
-		AccessGrant accessGrant = connectionFactory.getLastFmAuthOperations()
-				.exchangeForAccess(code, null);
+		LastFmAccessGrant accessGrant = connectionFactory
+				.getLastFmAuthOperations().exchangeForAccess(code, null);
 		return connectionFactory.createConnection(accessGrant);
 	}
 

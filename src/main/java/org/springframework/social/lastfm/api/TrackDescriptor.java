@@ -21,7 +21,9 @@ package org.springframework.social.lastfm.api;
 public interface TrackDescriptor {
 
 	public String getName();
+
 	public String getArtistName();
+
 	public String getMusicBrainsId();
-	
+
 }

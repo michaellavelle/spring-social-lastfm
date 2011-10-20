@@ -22,15 +22,13 @@ public class SimpleArtist implements ArtistDescriptor {
 
 	private String name;
 	private String musicBrainsId;
-	
-	public SimpleArtist(String name,String musicBrainsId)
-	{
+
+	public SimpleArtist(String name, String musicBrainsId) {
 		this.name = name;
 		this.musicBrainsId = musicBrainsId;
 	}
-	
-	public SimpleArtist(String name)
-	{
+
+	public SimpleArtist(String name) {
 		this.name = name;
 	}
 
@@ -41,5 +39,5 @@ public class SimpleArtist implements ArtistDescriptor {
 	public String getMusicBrainsId() {
 		return musicBrainsId;
 	}
-	
+
 }

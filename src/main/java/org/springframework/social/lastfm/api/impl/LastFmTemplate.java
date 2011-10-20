@@ -27,6 +27,7 @@ import org.springframework.social.lastfm.api.TrackOperations;
 import org.springframework.social.lastfm.api.UserOperations;
 import org.springframework.social.lastfm.api.impl.json.LastFmModule;
 import org.springframework.social.lastfm.auth.AbstractLastFmAuthApiBinding;
+import org.springframework.social.lastfm.auth.LastFmAccessGrant;
 import org.springframework.social.support.ClientHttpRequestFactorySelector;
 import org.springframework.web.client.RestTemplate;
 
@@ -49,60 +50,59 @@ public class LastFmTemplate extends AbstractLastFmAuthApiBinding implements
 		return messageConverters;
 	}
 
-	private void initSubApis(String token, String sessionKey, String apiKey,
-			String secret) {
+	private void initSubApis(LastFmAccessGrant lastFmAccessGrant,
+			String apiKey, String secret) {
 
-		userOperations = new UserTemplate(getRestTemplate(), token, sessionKey,
+		userOperations = new UserTemplate(getRestTemplate(), lastFmAccessGrant,
 				apiKey, secret, isAuthorized());
 
-
-		trackOperations = new TrackTemplate(getRestTemplate(), token, sessionKey,
-				apiKey, secret, isAuthorized());
+		trackOperations = new TrackTemplate(getRestTemplate(),
+				lastFmAccessGrant, apiKey, secret, isAuthorized());
 
 	}
 
 	/**
-	 * Create a new instance of LastFmTemplate. This constructor creates a
-	 * new LastFmTemplate able to perform unauthenticated operations against
+	 * Create a new instance of LastFmTemplate. This constructor creates a new
+	 * LastFmTemplate able to perform unauthenticated operations against
 	 * LastFm's API. Some operations do not require LastFmAuth authentication.
 	 * For example, retrieving a specified user's profile or feed does not
-	 * require authentication . A LastFmTemplate created with this
-	 * constructor will support those operations. Those operations requiring
-	 * authentication will throw {@link NotAuthorizedException}.
+	 * require authentication . A LastFmTemplate created with this constructor
+	 * will support those operations. Those operations requiring authentication
+	 * will throw {@link NotAuthorizedException}.
 	 */
-	public LastFmTemplate(String userAgent) {
+	public LastFmTemplate(String userAgent, String apiKey) {
 		super(userAgent);
-		initialize(null, null, null, null);
+		initialize(null, apiKey, null);
 	}
 
 	/**
 	 * Create a new instance of LastFmTemplate. This constructor creates the
-	 * FacebookTemplate using a given access token.
+	 * LastFmTemplate using a given access token.
 	 * 
 	 * @param accessToken
 	 *            An access token given by LastFm after a successful
 	 *            authentication
 	 */
-	public LastFmTemplate(String userAgent,String token, String sessionKey, String apiKey,
-			String secret) {
-		super(userAgent,token, sessionKey);
-		initialize(token, sessionKey, apiKey, secret);
+	public LastFmTemplate(String userAgent,
+			LastFmAccessGrant lastFmAccessGrant, String apiKey, String secret) {
+		super(userAgent, lastFmAccessGrant);
+		initialize(lastFmAccessGrant, apiKey, secret);
 
 	}
 
 	// private helpers
-	private void initialize(String token, String sessionKey, String apiKey,
+	private void initialize(LastFmAccessGrant lastFmAccessGrant, String apiKey,
 			String secret) {
-		registerSoundCloudJsonModule(getRestTemplate());
+		registerLastFmJsonModule(getRestTemplate());
 		getRestTemplate().setErrorHandler(new LastFmErrorHandler());
 		// Wrap the request factory with a BufferingClientHttpRequestFactory so
 		// that the error handler can do repeat reads on the response.getBody()
 		super.setRequestFactory(ClientHttpRequestFactorySelector
 				.bufferRequests(getRestTemplate().getRequestFactory()));
-		initSubApis(token, sessionKey, apiKey, secret);
+		initSubApis(lastFmAccessGrant, apiKey, secret);
 	}
 
-	private void registerSoundCloudJsonModule(RestTemplate restTemplate2) {
+	private void registerLastFmJsonModule(RestTemplate restTemplate2) {
 		objectMapper = new ObjectMapper();
 		objectMapper.registerModule(new LastFmModule());
 		List<HttpMessageConverter<?>> converters = getRestTemplate()

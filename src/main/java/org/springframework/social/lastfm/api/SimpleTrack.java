@@ -21,8 +21,7 @@ package org.springframework.social.lastfm.api;
 public class SimpleTrack extends SimpleTrackDescriptor {
 
 	private String url;
-	
-	
+
 	public String getUrl() {
 		return url;
 	}
@@ -31,23 +30,24 @@ public class SimpleTrack extends SimpleTrackDescriptor {
 		this.url = url;
 	}
 
-	public SimpleTrack(String url, String name,String artistName) {
-		super(artistName,name,null);
+	public SimpleTrack(String url, String name, String artistName) {
+		super(artistName, name, null);
 		this.url = url;
 
 	}
-	
-	
-	public SimpleTrack(String url, String name,String musicBrainsId,String artistName) {
-		super(artistName,name,musicBrainsId);
+
+	public SimpleTrack(String url, String name, String musicBrainsId,
+			String artistName) {
+		super(artistName, name, musicBrainsId);
 		this.url = url;
-		
+
 	}
-	
-	public SimpleTrack(String url, String name,String musicBrainsId,SimpleArtist simpleArtist) {
-		super(simpleArtist,name,musicBrainsId);
+
+	public SimpleTrack(String url, String name, String musicBrainsId,
+			SimpleArtist simpleArtist) {
+		super(simpleArtist, name, musicBrainsId);
 		this.url = url;
-		
+
 	}
 
 }

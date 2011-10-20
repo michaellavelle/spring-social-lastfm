@@ -34,17 +34,16 @@ import org.springframework.social.support.ClientHttpRequestFactorySelector;
 import org.springframework.web.client.RestTemplate;
 
 /**
-* Base class for LastFm-Auth-based provider API bindings.
-* @author Michael Lavelle
-*/
+ * Base class for LastFm-Auth-based provider API bindings.
+ * 
+ * @author Michael Lavelle
+ */
 public abstract class AbstractLastFmAuthApiBinding implements ApiBinding {
 
-	private final String token;
-	private final String sessionKey;
+	private LastFmAccessGrant lastFmAccessGrant;
 	private final String userAgent;
 
 	private final RestTemplate restTemplate;
-
 
 	/**
 	 * Constructs the API template without user authorization. This is useful
@@ -52,17 +51,15 @@ public abstract class AbstractLastFmAuthApiBinding implements ApiBinding {
 	 * authorization.
 	 */
 	protected AbstractLastFmAuthApiBinding(String userAgent) {
-		token = null;
-		sessionKey = null;
 		this.userAgent = userAgent;
+		this.lastFmAccessGrant = null;
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("User-Agent", userAgent);
-		
+
 		restTemplate = new RestTemplateWithHeaders(
-				ClientHttpRequestFactorySelector.getRequestFactory(),headers);
+				ClientHttpRequestFactorySelector.getRequestFactory(), headers);
 		restTemplate.setMessageConverters(getMessageConverters(true));
-		
-		
+
 		configureRestTemplate(restTemplate);
 	}
 
@@ -73,21 +70,18 @@ public abstract class AbstractLastFmAuthApiBinding implements ApiBinding {
 	 * @param accessToken
 	 *            the access token
 	 */
-	protected AbstractLastFmAuthApiBinding(String userAgent,String token, String sessionKey) {
-		this.token = token;
+	protected AbstractLastFmAuthApiBinding(String userAgent,
+			LastFmAccessGrant lastFmAccessGrant) {
+		this.lastFmAccessGrant = lastFmAccessGrant;
 		this.userAgent = userAgent;
-		this.sessionKey = sessionKey;
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("User-Agent", userAgent);
-		
+
 		restTemplate = new RestTemplateWithHeaders(
-				ClientHttpRequestFactorySelector.getRequestFactory(),headers);
+				ClientHttpRequestFactorySelector.getRequestFactory(), headers);
 		restTemplate.setMessageConverters(getMessageConverters(true));
 		configureRestTemplate(restTemplate);
-		
 
-		
-		
 	}
 
 	/**
@@ -107,7 +101,7 @@ public abstract class AbstractLastFmAuthApiBinding implements ApiBinding {
 	// implementing ApiBinding
 
 	public boolean isAuthorized() {
-		return token != null && sessionKey != null;
+		return lastFmAccessGrant != null;
 	}
 
 	// public implementation operations
@@ -158,8 +152,7 @@ public abstract class AbstractLastFmAuthApiBinding implements ApiBinding {
 		List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
 		messageConverters.add(new StringHttpMessageConverter());
 		messageConverters.add(getFormMessageConverter());
-		if (json)
-		{
+		if (json) {
 			messageConverters.add(getJsonMessageConverter());
 		}
 		messageConverters.add(getByteArrayMessageConverter());

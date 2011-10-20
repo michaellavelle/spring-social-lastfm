@@ -46,7 +46,7 @@ public interface LastFmAuthOperations {
 	 *            authorization code for an access grant. Should not be encoded.
 	 * @return the access grant.
 	 */
-	AccessGrant exchangeForAccess(String token,
+	LastFmAccessGrant exchangeForAccess(String token,
 			MultiValueMap<String, String> additionalParameters);
 
 }

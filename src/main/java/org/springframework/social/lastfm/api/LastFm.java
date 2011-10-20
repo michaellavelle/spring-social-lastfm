@@ -26,6 +26,7 @@ import org.springframework.social.lastfm.api.impl.LastFmTemplate;
 public interface LastFm {
 
 	public UserOperations userOperations();
+
 	public TrackOperations trackOperations();
 
 }

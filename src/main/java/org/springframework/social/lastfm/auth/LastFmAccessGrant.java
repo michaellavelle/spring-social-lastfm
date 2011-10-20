@@ -23,13 +23,13 @@ import java.io.Serializable;
  * @author Michael Lavelle
  */
 @SuppressWarnings("serial")
-public class AccessGrant implements Serializable {
+public class LastFmAccessGrant implements Serializable {
 
 	private final String token;
 
 	private final String sessionKey;
 
-	public AccessGrant(String token, String sessionKey) {
+	public LastFmAccessGrant(String token, String sessionKey) {
 		this.token = token;
 		this.sessionKey = sessionKey;
 	}

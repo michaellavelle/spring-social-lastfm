@@ -31,7 +31,8 @@ public class LastFmSimpleTracksResponse {
 	private List<SimpleTrack> tracks;
 
 	@JsonCreator
-	public LastFmSimpleTracksResponse(@JsonProperty("track") List<SimpleTrack> tracks) {
+	public LastFmSimpleTracksResponse(
+			@JsonProperty("track") List<SimpleTrack> tracks) {
 		this.tracks = tracks;
 	}
 

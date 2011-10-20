@@ -21,8 +21,10 @@ import java.util.List;
  * @author Michael Lavelle
  */
 public interface TrackOperations {
-	
+
 	public List<TrackSearchResult> searchByTrackName(String trackName);
-	public List<TrackSearchResult> searchByArtistAndTrackName(String artistName,String trackName);
+
+	public List<TrackSearchResult> searchByArtistAndTrackName(
+			String artistName, String trackName);
 
 }

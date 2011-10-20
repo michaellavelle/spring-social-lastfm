@@ -23,37 +23,31 @@ public class SimpleTrackDescriptor implements TrackDescriptor {
 	private String name;
 	private ArtistDescriptor artistDescriptor;
 	private String musicBrainsId;
-	
 
-	public SimpleTrackDescriptor(String artistName,String name,String musicBrainsId)
-	{
+	public SimpleTrackDescriptor(String artistName, String name,
+			String musicBrainsId) {
 		this.name = name;
 		this.artistDescriptor = new SimpleArtist(artistName);
 		this.musicBrainsId = musicBrainsId;
 	}
-	
-	public SimpleTrackDescriptor(ArtistDescriptor artistDescriptor,String name,String musicBrainsId)
-	{
+
+	public SimpleTrackDescriptor(ArtistDescriptor artistDescriptor,
+			String name, String musicBrainsId) {
 		this.name = name;
 		this.artistDescriptor = artistDescriptor;
 		this.musicBrainsId = musicBrainsId;
 	}
-	
-	
-	
-	
-	public SimpleTrackDescriptor(String artistName,String name)
-	{
+
+	public SimpleTrackDescriptor(String artistName, String name) {
 		this.name = name;
 		this.artistDescriptor = new SimpleArtist(artistName);
 	}
-	
-	public SimpleTrackDescriptor(String musicBrainsId)
-	{
+
+	public SimpleTrackDescriptor(String musicBrainsId) {
 		this.musicBrainsId = musicBrainsId;
 
 	}
-	
+
 	@Override
 	public String getName() {
 		return name;

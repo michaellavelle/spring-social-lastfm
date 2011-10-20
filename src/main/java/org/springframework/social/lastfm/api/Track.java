@@ -57,7 +57,7 @@ public class Track implements TrackDescriptor {
 		this.name = name;
 	}
 
-	public Track(String url, String name,String musicBrainsId,Artist artist) {
+	public Track(String url, String name, String musicBrainsId, Artist artist) {
 		this.url = url;
 		this.name = name;
 		this.musicBrainsId = musicBrainsId;

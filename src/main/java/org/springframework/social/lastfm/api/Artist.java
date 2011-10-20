@@ -32,7 +32,6 @@ public class Artist {
 	private String name;
 	private String musicBrainsId;
 
-
 	public String getUrl() {
 		return url;
 	}
@@ -49,7 +48,7 @@ public class Artist {
 		this.name = name;
 	}
 
-	public Artist(String url, String name,String musicBrainsId) {
+	public Artist(String url, String name, String musicBrainsId) {
 		this.url = url;
 		this.name = name;
 		this.musicBrainsId = musicBrainsId;

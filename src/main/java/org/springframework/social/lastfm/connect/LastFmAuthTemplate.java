@@ -1,18 +1,3 @@
-/*
- * Copyright 2011 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.springframework.social.lastfm.connect;
 
 import java.io.UnsupportedEncodingException;
@@ -30,7 +15,7 @@ import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.social.lastfm.api.impl.LastFmApiMethodParameters;
-import org.springframework.social.lastfm.auth.AccessGrant;
+import org.springframework.social.lastfm.auth.LastFmAccessGrant;
 import org.springframework.social.lastfm.auth.LastFmAuthOperations;
 import org.springframework.social.lastfm.auth.LastFmAuthParameters;
 import org.springframework.social.support.ClientHttpRequestFactorySelector;
@@ -56,17 +41,17 @@ public class LastFmAuthTemplate implements LastFmAuthOperations {
 	private final String authorizeUrl;
 
 	private final RestTemplate restTemplate;
-	
+
 	private final String userAgent;
 
-
-	public LastFmAuthTemplate(String clientId, String clientSecret,String userAgent) {
+	public LastFmAuthTemplate(String clientId, String clientSecret,
+			String userAgent) {
 		this(clientId, clientSecret, "http://www.last.fm/api/auth/",
-				"http://ws.audioscrobbler.com/2.0/",userAgent);
+				"http://ws.audioscrobbler.com/2.0/", userAgent);
 	}
 
 	public LastFmAuthTemplate(String clientId, String clientSecret,
-			String authorizeUrl, String accessTokenUrl,String userAgent) {
+			String authorizeUrl, String accessTokenUrl, String userAgent) {
 		Assert.notNull(clientId, "The clientId property cannot be null");
 		Assert.notNull(clientSecret, "The clientSecret property cannot be null");
 		Assert.notNull(authorizeUrl, "The authorizeUrl property cannot be null");
@@ -99,7 +84,7 @@ public class LastFmAuthTemplate implements LastFmAuthOperations {
 		return buildAuthUrl(authorizeUrl, parameters);
 	}
 
-	public AccessGrant exchangeForAccess(String token,
+	public LastFmAccessGrant exchangeForAccess(String token,
 			MultiValueMap<String, String> additionalParameters) {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
 		params.set("api_key", clientId);
@@ -126,13 +111,13 @@ public class LastFmAuthTemplate implements LastFmAuthOperations {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.add("User-Agent", userAgent);
 		RestTemplate restTemplate = new RestTemplateWithHeaders(
-				ClientHttpRequestFactorySelector.getRequestFactory(),httpHeaders);
+				ClientHttpRequestFactorySelector.getRequestFactory(),
+				httpHeaders);
 		List<HttpMessageConverter<?>> converters = new ArrayList<HttpMessageConverter<?>>(
 				2);
 		converters.add(new FormHttpMessageConverter());
-		if (json)
-		{
-		converters.add(new MappingJacksonHttpMessageConverter());
+		if (json) {
+			converters.add(new MappingJacksonHttpMessageConverter());
 		}
 		restTemplate.setMessageConverters(converters);
 		return restTemplate;
@@ -142,10 +127,10 @@ public class LastFmAuthTemplate implements LastFmAuthOperations {
 	 * Posts the request for an access grant to the provider. The default
 	 * implementation uses RestTemplate to request the access token and expects
 	 * a JSON response to be bound to a Map. The information in the Map will be
-	 * used to create an {@link AccessGrant}. Since the OAuth 2 specification
-	 * indicates that an access token response should be in JSON format, there's
-	 * often no need to override this method. If all you need to do is capture
-	 * provider-specific data in the response, you should override
+	 * used to create an {@link LastFmAccessGrant}. Since the OAuth 2
+	 * specification indicates that an access token response should be in JSON
+	 * format, there's often no need to override this method. If all you need to
+	 * do is capture provider-specific data in the response, you should override
 	 * createAccessGrant() instead. However, in the event of a provider whose
 	 * access token response is non-JSON, you may need to override this method
 	 * to request that the response be bound to something other than a Map. For
@@ -161,21 +146,22 @@ public class LastFmAuthTemplate implements LastFmAuthOperations {
 	 * @return the access grant.
 	 */
 	@SuppressWarnings("unchecked")
-	protected AccessGrant postForAccessGrant(String accessTokenUrl,
+	protected LastFmAccessGrant postForAccessGrant(String accessTokenUrl,
 			MultiValueMap<String, String> parameters) {
 
 		String apiKey = parameters.getFirst("api_key");
 		String token = parameters.getFirst("token");
-		String secret = parameters.getFirst("secret"); 
+		String secret = parameters.getFirst("secret");
 		MultiValueMap<String, String> authParams = new LastFmApiMethodParameters(
-				"auth.getSession", apiKey, token, secret,new HashMap<String,String>());
+				"auth.getSession", apiKey, token, secret,
+				new HashMap<String, String>());
 		return extractAccessGrant(token, restTemplate.postForObject(
 				accessTokenUrl, authParams, Map.class));
 	}
 
 	/**
-	 * Creates an {@link AccessGrant} given the response from the access token
-	 * exchange with the provider. May be overridden to create a custom
+	 * Creates an {@link LastFmAccessGrant} given the response from the access
+	 * token exchange with the provider. May be overridden to create a custom
 	 * AccessGrant that captures provider-specific information from the access
 	 * token response.
 	 * 
@@ -191,11 +177,11 @@ public class LastFmAuthTemplate implements LastFmAuthOperations {
 	 * @param response
 	 *            all parameters from the response received in the access token
 	 *            exchange.
-	 * @return an {@link AccessGrant}
+	 * @return an {@link LastFmAccessGrant}
 	 */
-	protected AccessGrant createAccessGrant(String token, String sessionKey,
-			Map<String, Object> result) {
-		return new AccessGrant(token, sessionKey);
+	protected LastFmAccessGrant createAccessGrant(String token,
+			String sessionKey, Map<String, Object> result) {
+		return new LastFmAccessGrant(token, sessionKey);
 	}
 
 	// testing hooks
@@ -233,8 +219,9 @@ public class LastFmAuthTemplate implements LastFmAuthOperations {
 	}
 
 	@SuppressWarnings("unchecked")
-	private AccessGrant extractAccessGrant(String token,
+	private LastFmAccessGrant extractAccessGrant(String token,
 			Map<String, Object> result) {
+
 		return createAccessGrant(token,
 				(String) ((Map<String, Object>) result.get("session"))
 						.get("key"), result);
