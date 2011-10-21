@@ -9,15 +9,13 @@ Simple scrobbling
 Method signatures are initial at this stage and support basic operations only (not implementing pagination for example) - these will be updated
 in the near future.
 
-Please note that as LastFm's auth scheme is *neither* OAuth1 or OAuth2, this Spring Social module is incompatible with 
-Spring's current ProviderSignInController - instead please use the custom LastFmSignInController or LastFmConnectController provided with 
-this module which adds support for LastFm auth.    
+Please note that as LastFm's auth scheme is *neither* OAuth1 or OAuth2, there are a few constraints concerning the use 
+of this module:
 
-This module has a dependency on SocialSignIn's spring-social-web-non-oauth-extension as a temporary measure until such time
-as Spring's own ProviderSignInController/ConnectController are cabable of supporting non-OAuth providers (ie. can be
-extended for custom auth).  The spring-social-web-non-oauth-extension project is available at
+In order to use Spring-Social's existing ProviderSignInController or ConnectController (which require OAuth2 scheme)
+the LastFmPseudoOAuth2ConnectionFactory (not the standard LastFmConnectionFactory) 
+must be registered with the ConnectionFactoryRegistry *AND* the LastFmPseudoOAuth2Filter must be registered in 
+your filter chain in web.xml.
 
-https://github.com/socialsignin/spring-social-web-non-oauth-extension
-
-Please build the spring-social-web-non-oauth-extension and install into your local repo in order to use spring-social-lastfm,
-until I get the chance to deploy this project into a public mvn repo 
+The LastFmPseudoOAuth2ConnectionFactory conforms the LastFmConnectionFactory to OAuth2 spec, and the LastFmPseudoOAuth2Filter
+modifies the auth-callback from LastFm to that required by ProviderSignInController or ConnectController.
