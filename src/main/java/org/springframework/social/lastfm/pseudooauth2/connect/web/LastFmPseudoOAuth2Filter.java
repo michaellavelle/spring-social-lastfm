@@ -78,7 +78,8 @@ public class LastFmPseudoOAuth2Filter implements Filter {
 	 * @return true if processing a LastFm callback
 	 */
 	private boolean isLastFmCallback(HttpServletRequest request) {
-		return (request.getMethod().toLowerCase().equals("get") && request.getRequestURI().equals(signinCallbackPath) || request.getRequestURI().equals(connectCallbackPath)) 
+		return (request.getMethod().toLowerCase().equals("get") && (
+				request.getRequestURI().equals(signinCallbackPath) || request.getRequestURI().equals(connectCallbackPath))) 
 				&& getToken(request) != null;
 	}
 
