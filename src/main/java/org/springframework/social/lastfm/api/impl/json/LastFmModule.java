@@ -42,6 +42,7 @@ public class LastFmModule extends SimpleModule {
 	public void setupModule(SetupContext context) {
 		context.setMixInAnnotations(LastFmProfile.class,
 				LastFmProfileMixin.class);
+		context.setMixInAnnotations(TrackListContainer.class, TrackMixin.class);
 		context.setMixInAnnotations(Track.class, TrackMixin.class);
 		context.setMixInAnnotations(SimpleTrack.class, SimpleTrackMixin.class);
 		context.setMixInAnnotations(TrackSearchResult.class,

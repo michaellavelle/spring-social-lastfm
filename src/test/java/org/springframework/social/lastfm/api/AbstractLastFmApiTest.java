@@ -25,14 +25,14 @@ import org.springframework.social.lastfm.auth.LastFmAccessGrant;
 import org.springframework.social.test.client.MockRestServiceServer;
 
 public abstract class AbstractLastFmApiTest {
-	protected static final String API_KEY= "someApiKey";
-	protected static final String SECRET= "secret";
+	protected static final String API_KEY = "someApiKey";
+	protected static final String SECRET = "secret";
 
 	protected static final String USER_AGENT = "someUserAgent";
 
-	protected static final LastFmAccessGrant ACCESS_GRANT = new LastFmAccessGrant("someToken","someSessionKey");
-	
-	
+	protected static final LastFmAccessGrant ACCESS_GRANT = new LastFmAccessGrant(
+			"someToken", "someSessionKey");
+
 	protected LastFmTemplate lastFm;
 	protected LastFmTemplate unauthorizedLastFm;
 	protected MockRestServiceServer mockServer;
@@ -42,21 +42,20 @@ public abstract class AbstractLastFmApiTest {
 
 	@Before
 	public void setup() {
-		lastFm = new LastFmTemplate(USER_AGENT,ACCESS_GRANT,API_KEY,SECRET);
-		mockServer = MockRestServiceServer.createServer(lastFm.getRestTemplate());
+		lastFm = new LastFmTemplate(USER_AGENT, ACCESS_GRANT, API_KEY, SECRET);
+		mockServer = MockRestServiceServer.createServer(lastFm
+				.getRestTemplate());
 
 		responseHeaders = new HttpHeaders();
 		responseHeaders.setContentType(MediaType.APPLICATION_JSON);
-		
-		unauthorizedLastFm = new LastFmTemplate(USER_AGENT,API_KEY);
-		mockUnauthorizedServer = MockRestServiceServer.createServer(unauthorizedLastFm.getRestTemplate());
+
+		unauthorizedLastFm = new LastFmTemplate(USER_AGENT, API_KEY);
+		mockUnauthorizedServer = MockRestServiceServer
+				.createServer(unauthorizedLastFm.getRestTemplate());
 	}
 
 	protected Resource jsonResource(String filename) {
 		return new ClassPathResource(filename + ".json", getClass());
 	}
-	
-
-
 
 }

@@ -45,15 +45,14 @@ import javax.servlet.http.HttpServletRequest;
 public class LastFmPseudoOAuth2Filter implements Filter {
 
 	/**
-	 * The default signin callback path - can be overridden via filter config parameter
-	 * "signinCallbackPath"
+	 * The default signin callback path - can be overridden via filter config
+	 * parameter "signinCallbackPath"
 	 */
 	private String signinCallbackPath = "/signin/lastfm";
-	
-	
+
 	/**
-	 * The default connect callback path - can be overridden via filter config parameter
-	 * "connectCallbackPath"
+	 * The default connect callback path - can be overridden via filter config
+	 * parameter "connectCallbackPath"
 	 */
 	private String connectCallbackPath = "/connect/lastfm";
 
@@ -78,8 +77,9 @@ public class LastFmPseudoOAuth2Filter implements Filter {
 	 * @return true if processing a LastFm callback
 	 */
 	private boolean isLastFmCallback(HttpServletRequest request) {
-		return (request.getMethod().toLowerCase().equals("get") && (
-				request.getRequestURI().equals(signinCallbackPath) || request.getRequestURI().equals(connectCallbackPath))) 
+		return (request.getMethod().toLowerCase().equals("get") && (request
+				.getRequestURI().equals(signinCallbackPath) || request
+				.getRequestURI().equals(connectCallbackPath)))
 				&& getToken(request) != null;
 	}
 
@@ -108,12 +108,14 @@ public class LastFmPseudoOAuth2Filter implements Filter {
 	@Override
 	public void init(FilterConfig config) throws ServletException {
 
-		String signinCallbackPath = config.getInitParameter("signinCallbackPath");
+		String signinCallbackPath = config
+				.getInitParameter("signinCallbackPath");
 		if (signinCallbackPath != null) {
 			this.signinCallbackPath = signinCallbackPath;
 		}
-		
-		String connectCallbackPath = config.getInitParameter("connectCallbackPath");
+
+		String connectCallbackPath = config
+				.getInitParameter("connectCallbackPath");
 		if (connectCallbackPath != null) {
 			this.connectCallbackPath = connectCallbackPath;
 		}

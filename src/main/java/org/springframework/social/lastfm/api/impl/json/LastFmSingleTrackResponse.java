@@ -26,14 +26,13 @@ import org.springframework.social.lastfm.api.Track;
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LastFmTracksResponse {
+public class LastFmSingleTrackResponse {
 
 	private List<Track> tracks;
 
 	@JsonCreator
-	public LastFmTracksResponse(
-			@JsonProperty("track") TrackListContainer tracksContainer) {
-		this.tracks = tracksContainer.getTracks();
+	public LastFmSingleTrackResponse(@JsonProperty("track") List<Track> tracks) {
+		this.tracks = tracks;
 	}
 
 	public List<Track> getTracks() {

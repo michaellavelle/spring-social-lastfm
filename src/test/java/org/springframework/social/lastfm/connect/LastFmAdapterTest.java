@@ -15,7 +15,6 @@
  */
 package org.springframework.social.lastfm.connect;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -33,15 +32,24 @@ import org.springframework.social.lastfm.api.UserOperations;
 public class LastFmAdapterTest {
 
 	private LastFmAdapter apiAdapter = new LastFmAdapter();
-	
+
 	@SuppressWarnings("unchecked")
 	private LastFm lastFm = Mockito.mock(LastFm.class);
-	
+
 	@Test
-	public void fetchProfile(){		 
+	public void fetchProfile() {
 		UserOperations userOperations = Mockito.mock(UserOperations.class);
 		Mockito.when(lastFm.userOperations()).thenReturn(userOperations);
-		Mockito.when(userOperations.getUserProfile()).thenReturn(new LastFmProfile("123456789","mattslip", "Matt Slip","http://www.last.fm/user/mattslip",Arrays.asList(new Image("http://userserve-ak.last.fm/serve/64/46182239.jpg","medium"))));
+		Mockito.when(userOperations.getUserProfile())
+				.thenReturn(
+						new LastFmProfile(
+								"123456789",
+								"mattslip",
+								"Matt Slip",
+								"http://www.last.fm/user/mattslip",
+								Arrays.asList(new Image(
+										"http://userserve-ak.last.fm/serve/64/46182239.jpg",
+										"medium"))));
 
 		UserProfile profile = apiAdapter.fetchUserProfile(lastFm);
 		assertEquals("Matt Slip", profile.getName());
@@ -51,18 +59,28 @@ public class LastFmAdapterTest {
 		assertEquals("mattslip", profile.getUsername());
 	}
 
-
 	@Test
-	public void setConnectionValues() {		
+	public void setConnectionValues() {
 		UserOperations userOperations = Mockito.mock(UserOperations.class);
 		Mockito.when(lastFm.userOperations()).thenReturn(userOperations);
-		Mockito.when(userOperations.getUserProfile()).thenReturn(new LastFmProfile("123456789","mattslip", "Matt Slip","http://www.last.fm/user/mattslip",Arrays.asList(new Image("http://userserve-ak.last.fm/serve/64/46182239.jpg","medium"))));
+		Mockito.when(userOperations.getUserProfile())
+				.thenReturn(
+						new LastFmProfile(
+								"123456789",
+								"mattslip",
+								"Matt Slip",
+								"http://www.last.fm/user/mattslip",
+								Arrays.asList(new Image(
+										"http://userserve-ak.last.fm/serve/64/46182239.jpg",
+										"medium"))));
 
 		TestConnectionValues connectionValues = new TestConnectionValues();
 		apiAdapter.setConnectionValues(lastFm, connectionValues);
 		assertEquals("Matt Slip", connectionValues.getDisplayName());
-		assertEquals("http://userserve-ak.last.fm/serve/64/46182239.jpg",connectionValues.getImageUrl());
-		assertEquals("http://www.last.fm/user/mattslip", connectionValues.getProfileUrl());
+		assertEquals("http://userserve-ak.last.fm/serve/64/46182239.jpg",
+				connectionValues.getImageUrl());
+		assertEquals("http://www.last.fm/user/mattslip",
+				connectionValues.getProfileUrl());
 		assertEquals("123456789", connectionValues.getProviderUserId());
 	}
 
@@ -104,6 +122,6 @@ public class LastFmAdapterTest {
 		public void setProviderUserId(String providerUserId) {
 			this.providerUserId = providerUserId;
 		}
-		
+
 	}
 }

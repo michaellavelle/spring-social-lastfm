@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2011 the original author or authors.
  *
@@ -14,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 
 package org.springframework.social.lastfm.api;
 
@@ -35,173 +33,218 @@ import org.springframework.social.NotAuthorizedException;
 import org.springframework.social.ResourceNotFoundException;
 
 public class UserTemplateTest extends AbstractLastFmApiTest {
-	
+
 	protected final static Date someDate = new Date(123456789);
-	
+
 	@Test
 	public void getUserProfile_currentUser() {
-	
-		
-		mockServer.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_sig=8bbd32f49982b528b16cb704b671d242&api_key=someApiKey&sk=someSessionKey&method=user.getInfo&token=someToken"))
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_sig=8bbd32f49982b528b16cb704b671d242&api_key=someApiKey&sk=someSessionKey&method=user.getInfo&token=someToken"))
 				.andExpect(method(GET))
 				.andExpect(header("User-Agent", "someUserAgent"))
-				.andRespond(withResponse(jsonResource("testdata/full-profile"), responseHeaders));
+				.andRespond(
+						withResponse(jsonResource("testdata/full-profile"),
+								responseHeaders));
 
 		LastFmProfile profile = lastFm.userOperations().getUserProfile();
 		assertBasicProfileData(profile);
 	}
-	
+
 	@Test(expected = NotAuthorizedException.class)
 	public void getUserProfile_currentUser_unauthorized() {
 		unauthorizedLastFm.userOperations().getUserProfile();
 	}
-	
-	
-	@Test
-	public void getUserProfile_specificUserByUserId()  {
 
-		mockServer.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getInfo&user=mattslip"))
+	@Test
+	public void getUserProfile_specificUserByUserId() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getInfo&user=mattslip"))
 				.andExpect(method(GET))
 				.andExpect(header("User-Agent", "someUserAgent"))
-				.andRespond(withResponse(jsonResource("testdata/full-profile"), responseHeaders));
+				.andRespond(
+						withResponse(jsonResource("testdata/full-profile"),
+								responseHeaders));
 
-		LastFmProfile profile = lastFm.userOperations().getUserProfile("mattslip");
+		LastFmProfile profile = lastFm.userOperations().getUserProfile(
+				"mattslip");
 		assertBasicProfileData(profile);
 	}
-	
-	
+
 	@Test
-	public void getRecentTracks()  {
-	
-		
-		mockServer.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getrecenttracks&user=mattslip"))
+	public void getRecentTracks() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getrecenttracks&user=mattslip"))
 				.andExpect(method(GET))
 				.andExpect(header("User-Agent", "someUserAgent"))
-				.andRespond(withResponse(jsonResource("testdata/recent-tracks"), responseHeaders));
+				.andRespond(
+						withResponse(jsonResource("testdata/recent-tracks"),
+								responseHeaders));
 
-		List<SimpleTrack> tracks = lastFm.userOperations().getRecentTracks("mattslip");
+		List<SimpleTrack> tracks = lastFm.userOperations().getRecentTracks(
+				"mattslip");
 		assertSimpleTrackData(tracks.get(0));
 	}
-	
+
 	@Test
-	public void getTopTracks()  {
-	
-		
-		mockServer.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.gettoptracks&user=mattslip"))
+	public void getTopTracks() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.gettoptracks&user=mattslip"))
 				.andExpect(method(GET))
 				.andExpect(header("User-Agent", "someUserAgent"))
-				.andRespond(withResponse(jsonResource("testdata/top-tracks"), responseHeaders));
+				.andRespond(
+						withResponse(jsonResource("testdata/top-tracks"),
+								responseHeaders));
 
 		List<Track> tracks = lastFm.userOperations().getTopTracks("mattslip");
 		assertTrackData(tracks.get(0));
-		
+
 	}
-	
+
 	@Test
-	public void getLovedTracks()  {
-	
-		
-		mockServer.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getlovedtracks&user=mattslip"))
+	public void getLovedTracks() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getlovedtracks&user=mattslip"))
 				.andExpect(method(GET))
 				.andExpect(header("User-Agent", "someUserAgent"))
-				.andRespond(withResponse(jsonResource("testdata/loved-tracks"), responseHeaders));
+				.andRespond(
+						withResponse(jsonResource("testdata/loved-tracks"),
+								responseHeaders));
 
 		List<Track> tracks = lastFm.userOperations().getLovedTracks("mattslip");
 		assertTrackData(tracks.get(0));
-		
+
 	}
-	
+
+	/**
+	 * Tests for the case where the loved tracks response contains only a single
+	 * track. In this case the Json format of the response is different to the
+	 * response for multiple tracks
+	 */
 	@Test
-	public void getLovedTracks_withoutAuthorization()  {
-	
-		
-		mockUnauthorizedServer.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getlovedtracks&user=mattslip"))
+	public void getLovedTracksSingleTrackResponse() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getlovedtracks&user=mattslip"))
 				.andExpect(method(GET))
 				.andExpect(header("User-Agent", "someUserAgent"))
-				.andRespond(withResponse(jsonResource("testdata/loved-tracks"), responseHeaders));
+				.andRespond(
+						withResponse(
+								jsonResource("testdata/loved-tracks-single-track-response"),
+								responseHeaders));
 
-		List<Track> tracks = unauthorizedLastFm.userOperations().getLovedTracks("mattslip");
+		List<Track> tracks = lastFm.userOperations().getLovedTracks("mattslip");
 		assertTrackData(tracks.get(0));
-		
+
 	}
-	
-	@Test(expected = ResourceNotFoundException.class)
-	public void getLovedTracks_invalidUser()  {
-	
-		
-		mockServer.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getlovedtracks&user=someOtherUser"))
+
+	@Test
+	public void getLovedTracks_withoutAuthorization() {
+
+		mockUnauthorizedServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getlovedtracks&user=mattslip"))
 				.andExpect(method(GET))
 				.andExpect(header("User-Agent", "someUserAgent"))
-				.andRespond(withResponse(jsonResource("testdata/invalid-user"), responseHeaders));
+				.andRespond(
+						withResponse(jsonResource("testdata/loved-tracks"),
+								responseHeaders));
 
-		List<Track> tracks = lastFm.userOperations().getLovedTracks("someOtherUser");
-		
+		List<Track> tracks = unauthorizedLastFm.userOperations()
+				.getLovedTracks("mattslip");
+		assertTrackData(tracks.get(0));
+
 	}
-	
-	
+
+	@Test(expected = ResourceNotFoundException.class)
+	public void getLovedTracks_invalidUser() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getlovedtracks&user=someOtherUser"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andRespond(
+						withResponse(jsonResource("testdata/invalid-user"),
+								responseHeaders));
+
+		List<Track> tracks = lastFm.userOperations().getLovedTracks(
+				"someOtherUser");
+
+	}
+
 	@Test
-	public void scrobble()  {
-	
-		
-		mockServer.expect(requestTo("http://ws.audioscrobbler.com/2.0/"))
+	public void scrobble() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/"))
 				.andExpect(method(POST))
 				.andExpect(header("User-Agent", "someUserAgent"))
-				.andExpect(body("format=json&api_sig=b4c8c73655abc90599cdfc0ed9c3b3e8&api_key=someApiKey&sk=someSessionKey&method=track.scrobble&token=someToken&timestamp=123456&track=My+track+name&artist=My+artist+name"))
-				.andRespond(withResponse(jsonResource("testdata/recent-tracks"), responseHeaders));
+				.andExpect(
+						body("format=json&api_sig=b4c8c73655abc90599cdfc0ed9c3b3e8&api_key=someApiKey&sk=someSessionKey&method=track.scrobble&token=someToken&timestamp=123456&track=My+track+name&artist=My+artist+name"))
+				.andRespond(
+						withResponse(jsonResource("testdata/recent-tracks"),
+								responseHeaders));
 
-		lastFm.userOperations().scrobble(new SimpleTrackDescriptor("My artist name","My track name"),someDate);
-				
+		lastFm.userOperations().scrobble(
+				new SimpleTrackDescriptor("My artist name", "My track name"),
+				someDate);
+
 	}
-	
+
 	@Test(expected = NotAuthorizedException.class)
-	public void scrobble_unauthorized()  {
-	
-		unauthorizedLastFm.userOperations().scrobble(new SimpleTrackDescriptor("My artist name","My track name"),someDate);
-				
+	public void scrobble_unauthorized() {
+
+		unauthorizedLastFm.userOperations().scrobble(
+				new SimpleTrackDescriptor("My artist name", "My track name"),
+				someDate);
+
 	}
-	
-	
+
 	@Test
-	public void updateNowPlaying()  {
-	
-		
-		mockServer.expect(requestTo("http://ws.audioscrobbler.com/2.0/"))
+	public void updateNowPlaying() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/"))
 				.andExpect(method(POST))
 				.andExpect(header("User-Agent", "someUserAgent"))
-				.andExpect(body("format=json&api_sig=6511f45e73a7fd12edab35d18a6655ce&api_key=someApiKey&sk=someSessionKey&method=track.updateNowPlaying&token=someToken&track=My+track+name&artist=My+artist+name"))
-				.andRespond(withResponse(jsonResource("testdata/recent-tracks"), responseHeaders));
+				.andExpect(
+						body("format=json&api_sig=6511f45e73a7fd12edab35d18a6655ce&api_key=someApiKey&sk=someSessionKey&method=track.updateNowPlaying&token=someToken&track=My+track+name&artist=My+artist+name"))
+				.andRespond(
+						withResponse(jsonResource("testdata/recent-tracks"),
+								responseHeaders));
 
-		lastFm.userOperations().updateNowPlaying(new SimpleTrackDescriptor("My artist name","My track name"));
-				
+		lastFm.userOperations().updateNowPlaying(
+				new SimpleTrackDescriptor("My artist name", "My track name"));
+
 	}
-	
 
 	private void assertBasicProfileData(LastFmProfile profile) {
 		assertEquals("123456789", profile.getId());
 		assertEquals("mattslip", profile.getName());
 		assertEquals("http://www.last.fm/user/mattslip", profile.getUrl());
 	}
-	
+
 	private void assertBasicTrackData(TrackDescriptor trackDescriptor) {
 		assertEquals("Moon Theory", trackDescriptor.getName());
 		assertEquals("Miami Horror", trackDescriptor.getArtistName());
 
 	}
-	
+
 	private void assertSimpleTrackData(SimpleTrack simpleTrack) {
 		assertBasicTrackData(simpleTrack);
-		assertEquals("http://www.last.fm/music/Miami+Horror/_/Moon+Theory", simpleTrack.getUrl());
+		assertEquals("http://www.last.fm/music/Miami+Horror/_/Moon+Theory",
+				simpleTrack.getUrl());
 	}
-	
+
 	private void assertTrackData(Track track) {
 		assertBasicTrackData(track);
-		assertEquals("http://www.last.fm/music/Miami+Horror/_/Moon+Theory", track.getUrl());
-		assertEquals("http://www.last.fm/music/Miami+Horror",track.getArtist().getUrl());
+		assertEquals("http://www.last.fm/music/Miami+Horror/_/Moon+Theory",
+				track.getUrl());
+		assertEquals("http://www.last.fm/music/Miami+Horror", track.getArtist()
+				.getUrl());
 	}
-	
-	
-	
-
-
 
 }
