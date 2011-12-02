@@ -17,6 +17,8 @@
 package org.springframework.social.lastfm.api;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.social.test.client.RequestMatchers.body;
@@ -119,6 +121,40 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		assertTrackData(tracks.get(0));
 
 	}
+	
+	@Test
+	public void getShouts() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getshouts&user=mattslip"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andRespond(
+						withResponse(jsonResource("testdata/shouts"),
+								responseHeaders));
+
+		List<Shout> shouts = lastFm.userOperations().getShouts("mattslip");
+		assertShoutData(shouts.get(2));
+
+
+
+	}
+	
+	@Test
+	public void getShoutsSingleShoutResponse() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getshouts&user=mattslip"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andRespond(
+						withResponse(jsonResource("testdata/single-shout-response"),
+								responseHeaders));
+
+		List<Shout> shouts = lastFm.userOperations().getShouts("mattslip");
+		assertShoutData(shouts.get(0));
+		
+	}
 
 	/**
 	 * Tests for the case where the loved tracks response contains only a single
@@ -170,8 +206,34 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/invalid-user"),
 								responseHeaders));
 
-		List<Track> tracks = lastFm.userOperations().getLovedTracks(
+		lastFm.userOperations().getLovedTracks(
 				"someOtherUser");
+
+	}
+	
+	
+	@Test
+	public void shout() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/"))
+				.andExpect(method(POST))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(
+						body("format=json&api_sig=0086bb835c43ac345624691862cc9fd4&api_key=someApiKey&sk=someSessionKey&method=user.shout&token=someToken&message=someMessage&user=someUserName"))
+				.andRespond(
+						withResponse(jsonResource("testdata/status-ok"),
+								responseHeaders));
+
+		lastFm.userOperations().shout("someUserName", "someMessage");
+
+	}
+	
+
+	@Test(expected = NotAuthorizedException.class)
+	public void shout_unauthorized() {
+
+		unauthorizedLastFm.userOperations().shout("someUserName", "someMessage");
 
 	}
 
@@ -185,7 +247,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 				.andExpect(
 						body("format=json&api_sig=b4c8c73655abc90599cdfc0ed9c3b3e8&api_key=someApiKey&sk=someSessionKey&method=track.scrobble&token=someToken&timestamp=123456&track=My+track+name&artist=My+artist+name"))
 				.andRespond(
-						withResponse(jsonResource("testdata/recent-tracks"),
+						withResponse(jsonResource("testdata/status-ok"),
 								responseHeaders));
 
 		lastFm.userOperations().scrobble(
@@ -245,6 +307,14 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 				track.getUrl());
 		assertEquals("http://www.last.fm/music/Miami+Horror", track.getArtist()
 				.getUrl());
+	}
+	
+	private void assertShoutData(Shout shout) {
+		assertEquals(shout.getAuthor(),"LAST.HQ");
+		assertEquals(shout.getMessage(),"Welcome aboard, mattslip! Happy listening.");
+		assertNotNull(shout.getDate());
+
+		
 	}
 
 }

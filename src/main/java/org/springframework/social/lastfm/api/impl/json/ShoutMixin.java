@@ -13,32 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.social.lastfm.api;
+package org.springframework.social.lastfm.api.impl.json;
 
 import java.util.Date;
-import java.util.List;
+
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.springframework.social.lastfm.api.Artist;
 
 /**
+ * Annotated mixin to add Jackson annotations to Shout.
+ * 
  * @author Michael Lavelle
  */
-public interface UserOperations {
+@JsonIgnoreProperties(ignoreUnknown = true)
+abstract class ShoutMixin {
 
-	public LastFmProfile getUserProfile();
-
-	public LastFmProfile getUserProfile(String userName);
-	
-	public void shout(String userName,String message);
-
-	public List<Track> getLovedTracks(String userName);
-	
-	public List<Shout> getShouts(String userName);
-
-	public List<Track> getTopTracks(String userName);
-
-	public List<SimpleTrack> getRecentTracks(String userName);
-
-	public void scrobble(TrackDescriptor trackDescriptor, Date timestamp);
-
-	public void updateNowPlaying(TrackDescriptor trackDescriptor);
+	@JsonCreator
+	ShoutMixin(@JsonProperty("body") String message,
+			 @JsonProperty("date") Date date,@JsonProperty("author") String author) {
+	}
 
 }

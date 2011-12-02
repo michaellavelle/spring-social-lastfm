@@ -13,32 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.social.lastfm.api;
+package org.springframework.social.lastfm.api.impl.json;
 
-import java.util.Date;
-import java.util.List;
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * @author Michael Lavelle
  */
-public interface UserOperations {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class LastFmShoutsResponse {
 
-	public LastFmProfile getUserProfile();
+	private LastFmShoutListResponse shoutListResponse;
 
-	public LastFmProfile getUserProfile(String userName);
-	
-	public void shout(String userName,String message);
+	@JsonCreator
+	public LastFmShoutsResponse(
+			@JsonProperty("shouts") LastFmShoutListResponse shoutListResponse) {
+		this.shoutListResponse = shoutListResponse;
+	}
 
-	public List<Track> getLovedTracks(String userName);
-	
-	public List<Shout> getShouts(String userName);
-
-	public List<Track> getTopTracks(String userName);
-
-	public List<SimpleTrack> getRecentTracks(String userName);
-
-	public void scrobble(TrackDescriptor trackDescriptor, Date timestamp);
-
-	public void updateNowPlaying(TrackDescriptor trackDescriptor);
-
+	public LastFmShoutListResponse getShoutListResponse() {
+		return shoutListResponse;
+	}
 }

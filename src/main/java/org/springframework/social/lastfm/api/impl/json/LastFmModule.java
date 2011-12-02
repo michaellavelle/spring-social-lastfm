@@ -15,11 +15,16 @@
  */
 package org.springframework.social.lastfm.api.impl.json;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.module.SimpleModule;
 import org.springframework.social.lastfm.api.Artist;
 import org.springframework.social.lastfm.api.Image;
 import org.springframework.social.lastfm.api.LastFmProfile;
+import org.springframework.social.lastfm.api.Shout;
 import org.springframework.social.lastfm.api.SimpleArtist;
 import org.springframework.social.lastfm.api.SimpleTrack;
 import org.springframework.social.lastfm.api.Track;
@@ -37,13 +42,22 @@ public class LastFmModule extends SimpleModule {
 	public LastFmModule() {
 		super("LastFmModule", new Version(1, 0, 0, null));
 	}
+	
+	public DateFormat getDateFormat()
+	{
+		return new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
+	}
 
 	@Override
 	public void setupModule(SetupContext context) {
 		context.setMixInAnnotations(LastFmProfile.class,
 				LastFmProfileMixin.class);
 		context.setMixInAnnotations(TrackListContainer.class, TrackMixin.class);
+		context.setMixInAnnotations(ShoutListContainer.class, ShoutMixin.class);
+
 		context.setMixInAnnotations(Track.class, TrackMixin.class);
+		context.setMixInAnnotations(Shout.class, ShoutMixin.class);
+
 		context.setMixInAnnotations(SimpleTrack.class, SimpleTrackMixin.class);
 		context.setMixInAnnotations(TrackSearchResult.class,
 				TrackSearchResultMixin.class);
@@ -53,6 +67,7 @@ public class LastFmModule extends SimpleModule {
 		context.setMixInAnnotations(Artist.class, ArtistMixin.class);
 
 		context.setMixInAnnotations(Image.class, ImageMixin.class);
-
+	
+	
 	}
 }

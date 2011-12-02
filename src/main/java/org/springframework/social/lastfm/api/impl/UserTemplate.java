@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.social.lastfm.api.LastFmProfile;
+import org.springframework.social.lastfm.api.Shout;
 import org.springframework.social.lastfm.api.SimpleTrack;
 import org.springframework.social.lastfm.api.Track;
 import org.springframework.social.lastfm.api.TrackDescriptor;
@@ -28,6 +29,8 @@ import org.springframework.social.lastfm.api.UserOperations;
 import org.springframework.social.lastfm.api.impl.json.LastFmLovedTracksResponse;
 import org.springframework.social.lastfm.api.impl.json.LastFmProfileResponse;
 import org.springframework.social.lastfm.api.impl.json.LastFmRecentTracksResponse;
+import org.springframework.social.lastfm.api.impl.json.LastFmShoutListResponse;
+import org.springframework.social.lastfm.api.impl.json.LastFmShoutsResponse;
 import org.springframework.social.lastfm.api.impl.json.LastFmTopTracksResponse;
 import org.springframework.social.lastfm.auth.LastFmAccessGrant;
 import org.springframework.web.client.RestTemplate;
@@ -151,6 +154,36 @@ public class UserTemplate extends AbstractLastFmOperations implements
 
 		restTemplate.postForObject(baseApiUrl, methodParameters, String.class);
 
+	}
+
+	@Override
+	public void shout(String userName, String message) {
+		requireAuthorization();
+		
+		Map<String, String> additionalParams = new HashMap<String, String>();
+		additionalParams.put("user", userName);
+		additionalParams.put("message", message);
+		
+		LastFmApiMethodParameters methodParameters = new LastFmApiMethodParameters(
+				"user.shout", apiKey, lastFmAccessGrant.getToken(),
+				secret, lastFmAccessGrant.getSessionKey(), additionalParams);
+
+		restTemplate.postForObject(baseApiUrl, methodParameters, String.class);
+
+
+	}
+
+	@Override
+	public List<Shout> getShouts(String userName) {
+		Map<String, String> additionalParams = new HashMap<String, String>();
+		additionalParams.put("user", userName);
+
+		LastFmApiMethodParameters methodParameters = new LastFmApiMethodParameters(
+				"user.getshouts", apiKey, null, null, additionalParams);
+
+		return restTemplate
+				.getForObject(buildLastFmApiUrl(methodParameters),
+						LastFmShoutsResponse.class).getShoutListResponse().getShouts();
 	}
 
 }

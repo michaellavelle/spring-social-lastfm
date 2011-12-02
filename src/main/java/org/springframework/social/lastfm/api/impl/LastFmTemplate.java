@@ -15,6 +15,7 @@
  */
 package org.springframework.social.lastfm.api.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -104,7 +105,9 @@ public class LastFmTemplate extends AbstractLastFmAuthApiBinding implements
 
 	private void registerLastFmJsonModule(RestTemplate restTemplate2) {
 		objectMapper = new ObjectMapper();
-		objectMapper.registerModule(new LastFmModule());
+		LastFmModule lastFmModule = new LastFmModule();
+		objectMapper.setDateFormat(lastFmModule.getDateFormat());
+		objectMapper.registerModule(lastFmModule);
 		List<HttpMessageConverter<?>> converters = getRestTemplate()
 				.getMessageConverters();
 		for (HttpMessageConverter<?> converter : converters) {
