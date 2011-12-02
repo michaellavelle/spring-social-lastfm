@@ -34,6 +34,9 @@ public interface UserOperations {
 	public List<Shout> getShouts(String userName);
 	
 	public List<LastFmProfile> getFriends(String userName);
+	
+	public List<LastFmProfile> getNeighbours(String userName);
+
 
 
 	public List<Track> getTopTracks(String userName);

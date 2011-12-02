@@ -205,6 +205,22 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 	}
 	
 	@Test
+	public void getNeighbours() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getneighbours&user=mattslip"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andRespond(
+						withResponse(jsonResource("testdata/neighbours"),
+								responseHeaders));
+
+		List<LastFmProfile> neighbours = lastFm.userOperations().getNeighbours("mattslip");
+		assertNotNull(neighbours);
+		assertEquals(50,neighbours.size());
+	}
+	
+	@Test
 	public void getFriendsSingleFriendResponse() {
 
 		mockServer
