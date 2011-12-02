@@ -54,9 +54,11 @@ public class LastFmModule extends SimpleModule {
 				LastFmProfileMixin.class);
 		context.setMixInAnnotations(TrackListContainer.class, TrackMixin.class);
 		context.setMixInAnnotations(ShoutListContainer.class, ShoutMixin.class);
+		context.setMixInAnnotations(UserListContainer.class, LastFmProfileMixin.class);
 
 		context.setMixInAnnotations(Track.class, TrackMixin.class);
 		context.setMixInAnnotations(Shout.class, ShoutMixin.class);
+
 
 		context.setMixInAnnotations(SimpleTrack.class, SimpleTrackMixin.class);
 		context.setMixInAnnotations(TrackSearchResult.class,

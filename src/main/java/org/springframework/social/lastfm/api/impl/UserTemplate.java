@@ -26,6 +26,7 @@ import org.springframework.social.lastfm.api.SimpleTrack;
 import org.springframework.social.lastfm.api.Track;
 import org.springframework.social.lastfm.api.TrackDescriptor;
 import org.springframework.social.lastfm.api.UserOperations;
+import org.springframework.social.lastfm.api.impl.json.LastFmFriendsResponse;
 import org.springframework.social.lastfm.api.impl.json.LastFmLovedTracksResponse;
 import org.springframework.social.lastfm.api.impl.json.LastFmProfileResponse;
 import org.springframework.social.lastfm.api.impl.json.LastFmRecentTracksResponse;
@@ -184,6 +185,19 @@ public class UserTemplate extends AbstractLastFmOperations implements
 		return restTemplate
 				.getForObject(buildLastFmApiUrl(methodParameters),
 						LastFmShoutsResponse.class).getShoutListResponse().getShouts();
+	}
+
+	@Override
+	public List<LastFmProfile> getFriends(String userName) {
+		Map<String, String> additionalParams = new HashMap<String, String>();
+		additionalParams.put("user", userName);
+
+		LastFmApiMethodParameters methodParameters = new LastFmApiMethodParameters(
+				"user.getfriends", apiKey, null, null, additionalParams);
+
+		return restTemplate
+				.getForObject(buildLastFmApiUrl(methodParameters),
+						LastFmFriendsResponse.class).getUserListResponse().getUsers();
 	}
 
 }

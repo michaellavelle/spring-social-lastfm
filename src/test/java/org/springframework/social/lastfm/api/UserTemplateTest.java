@@ -155,6 +155,75 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		assertShoutData(shouts.get(0));
 		
 	}
+	
+	@Test
+	public void getShoutsEmptyShoutsResponse() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getshouts&user=mattslip"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andRespond(
+						withResponse(jsonResource("testdata/empty-shouts-response"),
+								responseHeaders));
+
+		List<Shout> shouts = lastFm.userOperations().getShouts("mattslip");
+		assertNotNull(shouts);
+		assertEquals(shouts.size(),0);
+	}
+	
+	@Test
+	public void getFriendsEmptyFriendsResponse() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getfriends&user=mattslip"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andRespond(
+						withResponse(jsonResource("testdata/empty-friends-response"),
+								responseHeaders));
+
+		List<LastFmProfile> friends = lastFm.userOperations().getFriends("mattslip");
+		assertNotNull(friends);
+		assertEquals(0,friends.size());
+	}
+	
+	@Test
+	public void getFriends() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getfriends&user=mattslip"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andRespond(
+						withResponse(jsonResource("testdata/friends"),
+								responseHeaders));
+
+		List<LastFmProfile> friends = lastFm.userOperations().getFriends("mattslip");
+		assertNotNull(friends);
+		assertEquals(3,friends.size());
+	}
+	
+	@Test
+	public void getFriendsSingleFriendResponse() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getfriends&user=mattslip"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andRespond(
+						withResponse(jsonResource("testdata/single-friend-response"),
+								responseHeaders));
+
+		List<LastFmProfile> friends = lastFm.userOperations().getFriends("mattslip");
+		assertNotNull(friends);
+		assertEquals(1,friends.size());
+		assertEquals("michaellavelle",friends.get(0).getName());
+		assertEquals("Michael Lavelle",friends.get(0).getRealName());
+		assertEquals("http://www.last.fm/user/michaellavelle",friends.get(0).getUrl());
+
+
+	}
 
 	/**
 	 * Tests for the case where the loved tracks response contains only a single

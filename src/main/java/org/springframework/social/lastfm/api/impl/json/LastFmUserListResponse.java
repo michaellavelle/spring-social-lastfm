@@ -21,6 +21,7 @@ import java.util.List;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.social.lastfm.api.LastFmProfile;
 import org.springframework.social.lastfm.api.Shout;
 import org.springframework.social.lastfm.api.SimpleTrack;
 import org.springframework.social.lastfm.api.Track;
@@ -29,24 +30,23 @@ import org.springframework.social.lastfm.api.Track;
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LastFmShoutListResponse {
+public class LastFmUserListResponse {
 
-	private ShoutListContainer shoutListContainer;
+	private UserListContainer userListContainer;
+
+	
+	@JsonProperty("user")
+	public void setUsers(UserListContainer userListContainer) {
+		this.userListContainer = userListContainer;
+	}
 
 	@JsonCreator
-	public LastFmShoutListResponse() {
-		this.shoutListContainer = new ShoutListContainer(new ArrayList<Shout>());
-	}
-	
-
-	@JsonProperty("shout")
-	public void setShoutListContainer(ShoutListContainer shoutListContainer) {
-		this.shoutListContainer = shoutListContainer;
+	public LastFmUserListResponse() {
+		this.userListContainer = new UserListContainer(new ArrayList<LastFmProfile>());
 	}
 
-
-	public List<Shout> getShouts() {
-		return shoutListContainer.getShouts();
+	public List<LastFmProfile> getUsers() {
+		return userListContainer.getUsers();
 	}
 
 
