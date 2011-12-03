@@ -153,7 +153,6 @@ class LastFmErrorHandler extends DefaultResponseErrorHandler {
 		while (reader.ready()) {
 			sb.append(reader.readLine());
 		}
-		System.out.println(sb.toString());
 		return sb.toString();
 	}
 
