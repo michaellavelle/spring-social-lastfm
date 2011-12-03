@@ -13,21 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.social.lastfm.api.impl.json;
+package org.springframework.social.lastfm.api.impl.json.lists;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.springframework.social.lastfm.api.Artist;
-import org.springframework.social.lastfm.api.Image;
-import org.springframework.social.lastfm.api.LastFmProfile;
 import org.springframework.social.lastfm.api.Shout;
-import org.springframework.social.lastfm.api.SimpleTrack;
-import org.springframework.social.lastfm.api.Track;
 
 /**
  * @author Michael Lavelle
@@ -40,23 +33,20 @@ import org.springframework.social.lastfm.api.Track;
  * 
  * @author Michael Lavelle
  */
-public class UserListContainer {
+public class ShoutListContainer extends AbstractLastFmListContainer<Shout> {
 
-	private List<LastFmProfile> users;
 
 	@JsonCreator
-	public UserListContainer(List<LastFmProfile> users) {
-		this.users = users;
+	public ShoutListContainer(List<Shout> shouts) {
+		super(shouts);
 	}
 	
-	public UserListContainer(String id, String name, String realName, String url,
-			List<Image> images) {
-		this.users = Arrays.asList(new LastFmProfile(id,name,realName,url,images));
-		
+	public ShoutListContainer(String message, Date date,String author) {
+		super(new Shout(message,date,author));
 	}
 
-	public List<LastFmProfile> getUsers() {
-		return users;
+	public List<Shout> getShouts() {
+		return elements;
 	}
 
 }

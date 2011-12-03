@@ -20,9 +20,6 @@ import java.util.Date;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonDeserialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.springframework.social.lastfm.api.Artist;
 
 /**
  * Annotated mixin to add Jackson annotations to Shout.

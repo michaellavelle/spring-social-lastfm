@@ -13,48 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.social.lastfm.api.impl.json;
+package org.springframework.social.lastfm.api.impl.json.lists;
 
-import java.util.Arrays;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.springframework.social.lastfm.api.Artist;
 import org.springframework.social.lastfm.api.Shout;
-import org.springframework.social.lastfm.api.SimpleTrack;
-import org.springframework.social.lastfm.api.Track;
 
 /**
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-/**
- * Container for a shout list - allows for automatic JSON binding from *either* a list of Shouts
- * or a Map representation of a single shout, as LastFm responds with different Json structures
- * depending on whether a single shout is returned
- * 
- * @author Michael Lavelle
- */
-public class ShoutListContainer {
+public class LastFmShoutListResponse  {
 
-	private List<Shout> shouts;
+	private ShoutListContainer shoutListContainer;
 
 	@JsonCreator
-	public ShoutListContainer(List<Shout> shouts) {
-		this.shouts = shouts;
+	public LastFmShoutListResponse() {
+		this.shoutListContainer = new ShoutListContainer(new ArrayList<Shout>());
 	}
 	
-	public ShoutListContainer(String message, Date date,String author) {
-		this.shouts = Arrays
-				.asList(new Shout(message,date,author));
+
+	@JsonProperty("shout")
+	public void setShoutListContainer(ShoutListContainer shoutListContainer) {
+		this.shoutListContainer = shoutListContainer;
 	}
 
 
 	public List<Shout> getShouts() {
-		return shouts;
+		return shoutListContainer.getShouts();
 	}
+
 
 }

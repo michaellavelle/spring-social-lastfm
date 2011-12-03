@@ -15,7 +15,6 @@
  */
 package org.springframework.social.lastfm.api.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;

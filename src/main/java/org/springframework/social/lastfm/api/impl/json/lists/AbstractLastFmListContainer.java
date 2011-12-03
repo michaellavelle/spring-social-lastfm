@@ -13,30 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.social.lastfm.api.impl.json;
+package org.springframework.social.lastfm.api.impl.json.lists;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.springframework.social.lastfm.api.Track;
 
 /**
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LastFmSingleTrackResponse {
+/**
+ * Container for a list of LastFm json objects - allows for automatic JSON binding from *either* a list of objects
+ * or a Map representation of a single object, as LastFm responds with different Json structures
+ * depending on whether a single object is returned or a number of objects
+ * 
+ * @author Michael Lavelle
+ */
+public abstract class AbstractLastFmListContainer<T> {
 
-	private List<Track> tracks;
+	protected List<T> elements;
 
 	@JsonCreator
-	public LastFmSingleTrackResponse(@JsonProperty("track") List<Track> tracks) {
-		this.tracks = tracks;
+	public AbstractLastFmListContainer(List<T> elements) {
+		this.elements = elements;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@JsonCreator
+	public AbstractLastFmListContainer(T element) {
+		this.elements = Arrays.asList(element);
 	}
 
-	public List<Track> getTracks() {
-		return tracks;
-	}
 
 }

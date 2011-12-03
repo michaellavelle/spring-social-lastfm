@@ -40,7 +40,7 @@ public class TrackTemplate extends AbstractLastFmOperations implements
 		return restTemplate
 				.getForObject(buildLastFmApiUrl(methodParameters),
 						LastFmTrackSearchResponse.class)
-				.getTrackMatchesResponse().getTracksResponse().getTracks();
+				.getNestedResponse().getTracksResponse().getTracks();
 	}
 
 }

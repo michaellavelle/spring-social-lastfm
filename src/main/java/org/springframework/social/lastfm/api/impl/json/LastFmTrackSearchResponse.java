@@ -23,17 +23,12 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LastFmTrackSearchResponse {
-
-	private LastFmTrackMatchesResponse tracksMatchesResponse;
+public class LastFmTrackSearchResponse extends AbstractLastFmNestedResponse<LastFmTrackMatchesResponse> {
 
 	@JsonCreator
-	public LastFmTrackSearchResponse(
-			@JsonProperty("results") LastFmTrackMatchesResponse tracksMatchesResponse) {
-		this.tracksMatchesResponse = tracksMatchesResponse;
+	public LastFmTrackSearchResponse()
+	{
+		super("results");
 	}
 
-	public LastFmTrackMatchesResponse getTrackMatchesResponse() {
-		return tracksMatchesResponse;
-	}
 }

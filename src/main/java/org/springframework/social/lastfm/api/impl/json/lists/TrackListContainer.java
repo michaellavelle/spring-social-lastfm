@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.social.lastfm.api.impl.json;
+package org.springframework.social.lastfm.api.impl.json.lists;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonCreator;
@@ -31,23 +30,21 @@ import org.springframework.social.lastfm.api.Track;
  * 
  * @author Michael Lavelle
  */
-public class TrackListContainer {
-	private List<Track> tracks;
+public class TrackListContainer extends AbstractLastFmListContainer<Track> {
 
 	public TrackListContainer(String url, String name, String musicBrainsId,
 			Artist artist) {
-		this.tracks = Arrays
-				.asList(new Track(url, name, musicBrainsId, artist));
+		super(new Track(url, name, musicBrainsId, artist));
 	}
 
 	@JsonCreator
 	public TrackListContainer(List<Track> tracks) {
-		this.tracks = tracks;
+		super(tracks);
 
 	}
 
 	public List<Track> getTracks() {
-		return tracks;
+		return elements;
 	}
 
 }

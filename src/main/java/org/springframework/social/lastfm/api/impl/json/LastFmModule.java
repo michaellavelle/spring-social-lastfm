@@ -17,7 +17,6 @@ package org.springframework.social.lastfm.api.impl.json;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.module.SimpleModule;
@@ -29,6 +28,11 @@ import org.springframework.social.lastfm.api.SimpleArtist;
 import org.springframework.social.lastfm.api.SimpleTrack;
 import org.springframework.social.lastfm.api.Track;
 import org.springframework.social.lastfm.api.TrackSearchResult;
+import org.springframework.social.lastfm.api.impl.json.lists.ShoutListContainer;
+import org.springframework.social.lastfm.api.impl.json.lists.SimpleTrackListContainer;
+import org.springframework.social.lastfm.api.impl.json.lists.TrackListContainer;
+import org.springframework.social.lastfm.api.impl.json.lists.TrackSearchResultListContainer;
+import org.springframework.social.lastfm.api.impl.json.lists.UserListContainer;
 
 /**
  * Jackson module for setting up mixin annotations on LastFm model types. This
@@ -55,6 +59,11 @@ public class LastFmModule extends SimpleModule {
 		context.setMixInAnnotations(TrackListContainer.class, TrackMixin.class);
 		context.setMixInAnnotations(ShoutListContainer.class, ShoutMixin.class);
 		context.setMixInAnnotations(UserListContainer.class, LastFmProfileMixin.class);
+		context.setMixInAnnotations(TrackSearchResultListContainer.class, TrackSearchResultMixin.class);
+
+		
+		
+		context.setMixInAnnotations(SimpleTrackListContainer.class, SimpleTrackMixin.class);
 
 		context.setMixInAnnotations(Track.class, TrackMixin.class);
 		context.setMixInAnnotations(Shout.class, ShoutMixin.class);

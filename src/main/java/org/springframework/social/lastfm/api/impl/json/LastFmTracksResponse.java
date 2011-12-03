@@ -21,23 +21,17 @@ import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.social.lastfm.api.Track;
+import org.springframework.social.lastfm.api.impl.json.lists.TrackListContainer;
 
 /**
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LastFmTracksResponse {
-
-	private List<Track> tracks;
+public class LastFmTracksResponse extends AbstractLastFmNestedResponse<TrackListContainer>{
 
 	@JsonCreator
-	public LastFmTracksResponse(
-			@JsonProperty("track") TrackListContainer tracksContainer) {
-		this.tracks = tracksContainer.getTracks();
-	}
-
-	public List<Track> getTracks() {
-		return tracks;
+	public LastFmTracksResponse() {
+		super("track");
 	}
 
 }

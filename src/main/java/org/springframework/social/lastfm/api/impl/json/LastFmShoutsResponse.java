@@ -18,22 +18,18 @@ package org.springframework.social.lastfm.api.impl.json;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.social.lastfm.api.impl.json.lists.LastFmShoutListResponse;
 
 /**
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LastFmShoutsResponse {
+public class LastFmShoutsResponse extends AbstractLastFmNestedResponse<LastFmShoutListResponse> {
 
-	private LastFmShoutListResponse shoutListResponse;
 
 	@JsonCreator
-	public LastFmShoutsResponse(
-			@JsonProperty("shouts") LastFmShoutListResponse shoutListResponse) {
-		this.shoutListResponse = shoutListResponse;
+	public LastFmShoutsResponse() {
+		super("shouts");
 	}
 
-	public LastFmShoutListResponse getShoutListResponse() {
-		return shoutListResponse;
-	}
 }

@@ -15,29 +15,26 @@
  */
 package org.springframework.social.lastfm.api.impl.json;
 
-import java.util.List;
-
-import org.codehaus.jackson.annotate.JsonCreator;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.springframework.social.lastfm.api.TrackSearchResult;
+import java.util.HashMap;
 
 /**
  * @author Michael Lavelle
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class LastFmTrackSearchResultListResponse {
+public abstract class AbstractLastFmNestedResponse<T> extends HashMap<String,T> {
 
-	private List<TrackSearchResult> tracks;
-
-	@JsonCreator
-	public LastFmTrackSearchResultListResponse(
-			@JsonProperty("track") List<TrackSearchResult> tracks) {
-		this.tracks = tracks;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private final String responseKey;
+	
+	public AbstractLastFmNestedResponse(final String responseKey)
+	{
+		this.responseKey = responseKey;
 	}
-
-	public List<TrackSearchResult> getTracks() {
-		return tracks;
+		
+	public T getNestedResponse() {
+		return get(responseKey);
 	}
-
 }

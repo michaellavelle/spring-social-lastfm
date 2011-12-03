@@ -24,19 +24,13 @@ import org.springframework.social.lastfm.api.LastFmProfile;
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LastFmProfileResponse {
+public class LastFmProfileResponse extends AbstractLastFmNestedResponse<LastFmProfile>{
 
-	private LastFmProfile lastFmProfile;
 
 	@JsonCreator
-	public LastFmProfileResponse(
-			@JsonProperty("user") LastFmProfile lastFmProfile) {
-		this.lastFmProfile = lastFmProfile;
-
+	public LastFmProfileResponse() {
+		super("user");
 	}
 
-	public LastFmProfile getLastFmProfile() {
-		return lastFmProfile;
-	}
 
 }

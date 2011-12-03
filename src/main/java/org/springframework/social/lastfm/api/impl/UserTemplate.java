@@ -31,7 +31,6 @@ import org.springframework.social.lastfm.api.impl.json.LastFmLovedTracksResponse
 import org.springframework.social.lastfm.api.impl.json.LastFmNeighboursResponse;
 import org.springframework.social.lastfm.api.impl.json.LastFmProfileResponse;
 import org.springframework.social.lastfm.api.impl.json.LastFmRecentTracksResponse;
-import org.springframework.social.lastfm.api.impl.json.LastFmShoutListResponse;
 import org.springframework.social.lastfm.api.impl.json.LastFmShoutsResponse;
 import org.springframework.social.lastfm.api.impl.json.LastFmTopTracksResponse;
 import org.springframework.social.lastfm.auth.LastFmAccessGrant;
@@ -59,7 +58,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 				lastFmAccessGrant.getSessionKey());
 
 		return restTemplate.getForObject(buildLastFmApiUrl(methodParameters),
-				LastFmProfileResponse.class).getLastFmProfile();
+				LastFmProfileResponse.class).getNestedResponse();
 
 	}
 
@@ -72,7 +71,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 				"user.getInfo", apiKey, null, null, additionalParams);
 
 		return restTemplate.getForObject(buildLastFmApiUrl(methodParameters),
-				LastFmProfileResponse.class).getLastFmProfile();
+				LastFmProfileResponse.class).getNestedResponse();
 
 	}
 
@@ -87,8 +86,8 @@ public class UserTemplate extends AbstractLastFmOperations implements
 
 		return restTemplate
 				.getForObject(buildLastFmApiUrl(methodParameters),
-						LastFmRecentTracksResponse.class).getTracksResponse()
-				.getTracks();
+						LastFmRecentTracksResponse.class).getNestedResponse()
+				.getNestedResponse().getTracks();
 
 	}
 
@@ -103,7 +102,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 
 		return restTemplate
 				.getForObject(buildLastFmApiUrl(methodParameters),
-						LastFmLovedTracksResponse.class).getTracksResponse()
+						LastFmLovedTracksResponse.class).getNestedResponse().getNestedResponse()
 				.getTracks();
 
 	}
@@ -119,8 +118,8 @@ public class UserTemplate extends AbstractLastFmOperations implements
 
 		return restTemplate
 				.getForObject(buildLastFmApiUrl(methodParameters),
-						LastFmTopTracksResponse.class).getTracksResponse()
-				.getTracks();
+						LastFmTopTracksResponse.class).getNestedResponse()
+				.getNestedResponse().getTracks();
 
 	}
 
@@ -185,7 +184,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 
 		return restTemplate
 				.getForObject(buildLastFmApiUrl(methodParameters),
-						LastFmShoutsResponse.class).getShoutListResponse().getShouts();
+						LastFmShoutsResponse.class).getNestedResponse().getShouts();
 	}
 
 	@Override
@@ -198,7 +197,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 
 		return restTemplate
 				.getForObject(buildLastFmApiUrl(methodParameters),
-						LastFmFriendsResponse.class).getUserListResponse().getUsers();
+						LastFmFriendsResponse.class).getNestedResponse().getUsers();
 	}
 
 	@Override
@@ -211,7 +210,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 
 		return restTemplate
 				.getForObject(buildLastFmApiUrl(methodParameters),
-						LastFmNeighboursResponse.class).getUserListResponse().getUsers();
+						LastFmNeighboursResponse.class).getNestedResponse().getUsers();
 	}
 
 }

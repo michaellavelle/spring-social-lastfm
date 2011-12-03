@@ -13,29 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.social.lastfm.api.impl.json;
+package org.springframework.social.lastfm.api.impl.json.lists;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.social.lastfm.api.Image;
 import org.springframework.social.lastfm.api.LastFmProfile;
-import org.springframework.social.lastfm.api.SimpleTrack;
-import org.springframework.social.lastfm.api.impl.json.lists.SimpleTrackListContainer;
 
 /**
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LastFmSimpleTracksResponse extends AbstractLastFmNestedResponse<SimpleTrackListContainer> {
+/**
+ * Container for a list of Last.fm users- allows for automatic JSON binding from *either* a list of objects
+ * or a Map representation of a single user, as LastFm responds with different Json structures
+ * depending on whether a single user is returned or a number of users
+ * 
+ * @author Michael Lavelle
+ */
+public class UserListContainer extends AbstractLastFmListContainer<LastFmProfile> {
+
 
 	@JsonCreator
-	public LastFmSimpleTracksResponse() {
-		super("track");
+	public UserListContainer(List<LastFmProfile> users) {
+		super(users);
+	}
+	
+	public UserListContainer(String id, String name, String realName, String url,
+			List<Image> images) {
+		super(new LastFmProfile(id,name,realName,url,images));
+		
 	}
 
-
+	public List<LastFmProfile> getUsers() {
+		return elements;
+	}
 
 }
