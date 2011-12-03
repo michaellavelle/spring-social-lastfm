@@ -340,6 +340,55 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 				someDate);
 
 	}
+	
+	@Test
+	public void love() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/"))
+				.andExpect(method(POST))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(
+						body("format=json&api_sig=b50a3b8e66b396f78133d34dc887bda3&api_key=someApiKey&sk=someSessionKey&method=track.love&token=someToken&track=My+track+name&artist=My+artist+name"))
+				.andRespond(
+						withResponse(jsonResource("testdata/status-ok"),
+								responseHeaders));
+
+		lastFm.userOperations().love("My artist name", "My track name");
+
+	}
+	
+	@Test(expected = NotAuthorizedException.class)
+	public void love_unauthorized() {
+
+		unauthorizedLastFm.userOperations().love("My artist name", "My track name");
+
+	}
+	
+	@Test(expected = NotAuthorizedException.class)
+	public void unlove_unauthorized() {
+
+		unauthorizedLastFm.userOperations().unlove("My artist name", "My track name");
+
+	}
+	
+	
+	@Test
+	public void unlove() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/"))
+				.andExpect(method(POST))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(
+						body("format=json&api_sig=929dd59b92e361a3e3ffb7b687856a2b&api_key=someApiKey&sk=someSessionKey&method=track.unlove&token=someToken&track=My+track+name&artist=My+artist+name"))
+				.andRespond(
+						withResponse(jsonResource("testdata/status-ok"),
+								responseHeaders));
+
+		lastFm.userOperations().unlove("My artist name", "My track name");
+
+	}
 
 	@Test(expected = NotAuthorizedException.class)
 	public void scrobble_unauthorized() {

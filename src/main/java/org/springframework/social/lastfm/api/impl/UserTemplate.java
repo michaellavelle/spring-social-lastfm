@@ -213,4 +213,38 @@ public class UserTemplate extends AbstractLastFmOperations implements
 						LastFmNeighboursResponse.class).getNestedResponse().getUsers();
 	}
 
+	@Override
+	public void love(String artistName, String trackName) {
+
+		requireAuthorization();
+
+		Map<String, String> additionalParams = new HashMap<String, String>();
+		additionalParams.put("track", trackName);
+		additionalParams.put("artist", artistName);
+	
+		LastFmApiMethodParameters methodParameters = new LastFmApiMethodParameters(
+				"track.love", apiKey, lastFmAccessGrant.getToken(), secret,
+				lastFmAccessGrant.getSessionKey(), additionalParams);
+
+		restTemplate.postForObject(baseApiUrl, methodParameters, String.class);
+		
+	}
+	
+	@Override
+	public void unlove(String artistName, String trackName) {
+
+		requireAuthorization();
+
+		Map<String, String> additionalParams = new HashMap<String, String>();
+		additionalParams.put("track", trackName);
+		additionalParams.put("artist", artistName);
+	
+		LastFmApiMethodParameters methodParameters = new LastFmApiMethodParameters(
+				"track.unlove", apiKey, lastFmAccessGrant.getToken(), secret,
+				lastFmAccessGrant.getSessionKey(), additionalParams);
+
+		restTemplate.postForObject(baseApiUrl, methodParameters, String.class);
+		
+	}
+
 }

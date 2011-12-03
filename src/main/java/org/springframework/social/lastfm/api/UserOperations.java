@@ -44,6 +44,11 @@ public interface UserOperations {
 	public List<SimpleTrack> getRecentTracks(String userName);
 
 	public void scrobble(TrackDescriptor trackDescriptor, Date timestamp);
+	
+	public void love(String artistName,String trackName);
+	public void unlove(String artistName,String trackName);
+
+
 
 	public void updateNowPlaying(TrackDescriptor trackDescriptor);
 
