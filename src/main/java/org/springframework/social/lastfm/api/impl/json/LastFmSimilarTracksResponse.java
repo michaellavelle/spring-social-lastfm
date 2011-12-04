@@ -15,34 +15,20 @@
  */
 package org.springframework.social.lastfm.api.impl.json;
 
-import java.util.List;
-
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.springframework.social.lastfm.api.Track;
-import org.springframework.social.lastfm.api.impl.json.lists.TrackListContainer;
 
 /**
- * Binds to the most common form of a LastFM json representation of a track.  This class
- * extends AbstractLastFmNamedNestedResponse rather than AbstractLastFmNestedResponse
- * as we cannot use a Map to bind to a tracks response as the response contains different
- * json representations for a track and we only wish to bind to one.
- * 
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LastFmTracksResponse extends AbstractLastFmNamedNestedResponse<TrackListContainer>{
+public class LastFmSimilarTracksResponse extends AbstractLastFmNestedResponse<LastFmTracksResponse>{
 
-	@JsonCreator
-	public LastFmTracksResponse() {
-		super();
+	public LastFmSimilarTracksResponse() {
+		super("similartracks");
 	}
 
-	@Override
-	@JsonProperty("track")
-	public void setNamedNestedResponse(TrackListContainer nestedResponse) {
-		super.setNestedResponse(nestedResponse);
-	}
 
+	
 }

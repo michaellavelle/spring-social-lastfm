@@ -13,21 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.social.lastfm.api;
+package org.springframework.social.lastfm.api.impl.json;
 
-import java.util.List;
+import java.util.HashMap;
 
 /**
  * @author Michael Lavelle
  */
-public interface TrackOperations {
+public abstract class AbstractLastFmNamedNestedResponse<T>  {
 
-	public List<TrackSearchResult> searchByTrackName(String trackName);
-
-	public List<TrackSearchResult> searchByArtistAndTrackName(
-			String artistName, String trackName);
 	
-	public List<Track> getSimilarTracks(TrackDescriptor trackDescriptor);
-
-
+	private T nestedResponse;
+	
+	protected void setNestedResponse(T nestedResponse)
+	{
+		this.nestedResponse = nestedResponse;
+	}
+	
+	public abstract void setNamedNestedResponse(T nestedResponse);
+	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	
+	public AbstractLastFmNamedNestedResponse()
+	{
+	}
+		
+	public T getNestedResponse() {
+		return nestedResponse;
+	}
 }

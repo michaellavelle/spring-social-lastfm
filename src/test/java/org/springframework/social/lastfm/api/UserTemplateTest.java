@@ -123,6 +123,23 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 	}
 	
 	@Test
+	public void getSimilarTracks() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=track.similar&track=Music&artist=Madonna"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andRespond(
+						withResponse(jsonResource("testdata/similar-tracks"),
+								responseHeaders));
+
+		List<Track> tracks = lastFm.trackOperations().getSimilarTracks(new SimpleTrackDescriptor("Madonna","Music"));
+		assertEquals("Don't Tell Me",tracks.get(0).getName());
+		assertEquals("Madonna",tracks.get(0).getArtistName());
+
+	}
+	
+	@Test
 	public void getShouts() {
 
 		mockServer
