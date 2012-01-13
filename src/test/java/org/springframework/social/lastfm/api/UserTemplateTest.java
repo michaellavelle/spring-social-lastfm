@@ -279,6 +279,30 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		assertTrackData(tracks.get(0));
 
 	}
+	
+	/**
+	 * Tests for the case where the loved tracks response contains only a single
+	 * track. In this case the Json format of the response is different to the
+	 * response for multiple tracks
+	 */
+	@Test
+	public void getLovedTracksEmptyResponse() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getlovedtracks&user=mattslip"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andRespond(
+						withResponse(
+								jsonResource("testdata/loved-tracks-empty"),
+								responseHeaders));
+
+		List<Track> tracks = lastFm.userOperations().getLovedTracks("mattslip");
+		assertNotNull(tracks);
+		assertEquals(0,tracks.size());
+
+	}
+	
 
 	@Test
 	public void getLovedTracks_withoutAuthorization() {
