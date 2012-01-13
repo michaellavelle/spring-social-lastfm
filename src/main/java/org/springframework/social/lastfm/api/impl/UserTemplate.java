@@ -102,8 +102,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 
 		return restTemplate
 				.getForObject(buildLastFmApiUrl(methodParameters),
-						LastFmLovedTracksResponse.class).getNestedResponse().getNestedResponse()
-				.getTracks();
+						LastFmLovedTracksResponse.class).getNestedResponse().getTracks();
 
 	}
 
