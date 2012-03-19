@@ -1,19 +1,23 @@
-{"recenttracks":
-	{"track":[
-	{"artist":{"#text":"Miami Horror","mbid":""},
-	"name":"Moon Theory","streamable":"1","mbid":"",
-	"album":{"#text":"Illumination","mbid":""},
+{"toptracks":
+	{"track":
+	{"name":"Moon Theory",
+	"duration":"263",
+	"playcount":"5",
+	"mbid":"",
 	"url":"http:\/\/www.last.fm\/music\/Miami+Horror\/_\/Moon+Theory",
+	"streamable":{"#text":"1","fulltrack":"0"},
+	"artist":{"name":"Miami Horror","mbid":"","url":"http:\/\/www.last.fm\/music\/Miami+Horror"},
 	"image":[
 	{"#text":"http:\/\/userserve-ak.last.fm\/serve\/34s\/50187501.png","size":"small"},
 	{"#text":"http:\/\/userserve-ak.last.fm\/serve\/64s\/50187501.png","size":"medium"},
 	{"#text":"http:\/\/userserve-ak.last.fm\/serve\/126\/50187501.png","size":"large"},
 	{"#text":"http:\/\/userserve-ak.last.fm\/serve\/300x300\/50187501.png","size":"extralarge"}
 	],
-	"date":{"#text":"16 Oct 2011, 18:59","uts":"1318791568"}}
-	],
+	"@attr":{"rank":"3"}}
+	
+	,
 	"@attr":{"user":"mattslip","page":"1","perPage":"50","totalPages":"1","total":"1"}
 	
-	}
+	} 
 }
 

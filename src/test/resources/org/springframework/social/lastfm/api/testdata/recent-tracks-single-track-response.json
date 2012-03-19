@@ -1,5 +1,5 @@
 {"recenttracks":
-	{"track":[
+	{"track":
 	{"artist":{"#text":"Miami Horror","mbid":""},
 	"name":"Moon Theory","streamable":"1","mbid":"",
 	"album":{"#text":"Illumination","mbid":""},
@@ -11,7 +11,7 @@
 	{"#text":"http:\/\/userserve-ak.last.fm\/serve\/300x300\/50187501.png","size":"extralarge"}
 	],
 	"date":{"#text":"16 Oct 2011, 18:59","uts":"1318791568"}}
-	],
+	,
 	"@attr":{"user":"mattslip","page":"1","perPage":"50","totalPages":"1","total":"1"}
 	
 	}

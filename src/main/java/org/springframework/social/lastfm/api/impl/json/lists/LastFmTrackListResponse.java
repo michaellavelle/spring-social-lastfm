@@ -21,14 +21,13 @@ import java.util.List;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.springframework.social.lastfm.api.Shout;
 import org.springframework.social.lastfm.api.Track;
 
 /**
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LastFmTrackListResponse  {
+public class LastFmTrackListResponse  extends PageInfoContainer {
 
 	private TrackListContainer trackListContainer;
 
@@ -37,12 +36,12 @@ public class LastFmTrackListResponse  {
 		this.trackListContainer = new TrackListContainer(new ArrayList<Track>());
 	}
 	
+	
 
 	@JsonProperty("track")
 	public void setTrackListContainer(TrackListContainer trackListContainer) {
 		this.trackListContainer = trackListContainer;
 	}
-
 
 	public List<Track> getTracks() {
 		return trackListContainer.getTracks();

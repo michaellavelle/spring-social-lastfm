@@ -27,7 +27,7 @@ import org.springframework.social.lastfm.api.LastFmProfile;
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LastFmUserListResponse {
+public class LastFmUserListResponse extends PageInfoContainer {
 
 	private UserListContainer userListContainer;
 

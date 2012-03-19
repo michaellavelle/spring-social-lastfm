@@ -73,6 +73,15 @@ class LastFmErrorHandler extends DefaultResponseErrorHandler {
 			if (errorDetails.containsKey(6)) {
 				throw new ResourceNotFoundException(message);
 			}
+			if (errorDetails.containsKey(10)) {
+				throw new NotAuthorizedException(message);
+			}
+			if (errorDetails.containsKey(8)) {
+				throw new ResourceNotFoundException(message);
+			}
+			if (errorDetails.containsKey(13)) {
+				throw new NotAuthorizedException(message);
+			}
 
 		} else if (statusCode == HttpStatus.BAD_REQUEST) {
 			throw new ResourceNotFoundException(message);

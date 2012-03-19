@@ -18,6 +18,9 @@ package org.springframework.social.lastfm.api;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 /**
  * @author Michael Lavelle
  */
@@ -29,26 +32,35 @@ public interface UserOperations {
 	
 	public void shout(String userName,String message);
 
-	public List<Track> getLovedTracks(String userName);
+	public Page<Track> getLovedTracks(String userName,Pageable pageable);
 	
-	public List<Shout> getShouts(String userName);
+	public Page<Track> getLovedTracks(String userName);
+
+	public Page<Shout> getShouts(String userName);
 	
-	public List<LastFmProfile> getFriends(String userName);
+	public Page<Shout> getShouts(String userName,Pageable pageable);
+	
+	public Page<LastFmProfile> getFriends(String userName);
+	
+	public Page<LastFmProfile> getFriends(String userName,Pageable pageable);
 	
 	public List<LastFmProfile> getNeighbours(String userName);
+	
+	public List<LastFmProfile> getNeighbours(String userName,int limit);
 
+	public Page<Track> getTopTracks(String userName);
+	
+	public Page<Track> getTopTracks(String userName,Pageable pageable);
 
-
-	public List<Track> getTopTracks(String userName);
-
-	public List<SimpleTrack> getRecentTracks(String userName);
+	public Page<SimpleTrack> getRecentTracks(String userName);
+	
+	public Page<SimpleTrack> getRecentTracks(String userName,Pageable pageable);
 
 	public void scrobble(TrackDescriptor trackDescriptor, Date timestamp);
 	
 	public void love(String artistName,String trackName);
+	
 	public void unlove(String artistName,String trackName);
-
-
 
 	public void updateNowPlaying(TrackDescriptor trackDescriptor);
 

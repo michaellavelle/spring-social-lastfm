@@ -19,6 +19,7 @@ import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.social.lastfm.api.impl.json.lists.LastFmTrackSearchResultListResponse;
+import org.springframework.social.lastfm.api.impl.json.lists.PageInfo;
 
 /**
  * @author Michael Lavelle
@@ -28,11 +29,50 @@ public class LastFmTrackMatchesResponse {
 
 	private LastFmTrackSearchResultListResponse tracksResponse;
 
+	private long totalResults;
+	private int itemsPerPage;
+	private long startIndex;
+	
+	
+	
+	
+	public PageInfo getPageInfo() {
+		PageInfo pageInfo = new PageInfo();
+		pageInfo.setPerPage(itemsPerPage);
+		pageInfo.setTotal(totalResults);
+		pageInfo.setTotalPages(((int)((totalResults - 1)/itemsPerPage)) + 1);
+		pageInfo.setPage(((int)(startIndex/itemsPerPage)) + 1);
+
+		return pageInfo;
+	}
+	
+	@JsonProperty("opensearch:itemsPerPage")
+	public void setPerPage( int itemsPerPage)
+	{
+		this.itemsPerPage = itemsPerPage;
+	}
+	
+	@JsonProperty("opensearch:totalResults")
+	public void setTotalResults(long totalResults)
+	{
+		this.totalResults = totalResults;
+	}
+	
+	@JsonProperty("opensearch:startIndex")
+	public void setStartIndex(long startIndex)
+	{
+		this.startIndex = startIndex;
+	}
+	
+	
+
 	@JsonCreator
 	public LastFmTrackMatchesResponse(
 			@JsonProperty("trackmatches") LastFmTrackSearchResultListResponse tracksResponse) {
 		this.tracksResponse = tracksResponse;
 	}
+	
+	
 
 	public LastFmTrackSearchResultListResponse getTracksResponse() {
 		return tracksResponse;

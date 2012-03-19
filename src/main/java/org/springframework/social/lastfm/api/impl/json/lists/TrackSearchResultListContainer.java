@@ -19,8 +19,6 @@ import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.springframework.social.lastfm.api.Image;
-import org.springframework.social.lastfm.api.LastFmProfile;
 import org.springframework.social.lastfm.api.TrackSearchResult;
 
 /**
@@ -41,6 +39,7 @@ public class TrackSearchResultListContainer extends AbstractLastFmListContainer<
 	public TrackSearchResultListContainer(List<TrackSearchResult> trackSearchResults) {
 		super(trackSearchResults);
 	}
+	
 	
 	public TrackSearchResultListContainer(String name, String artistName, String url) {
 		super(new TrackSearchResult(name,artistName,url));

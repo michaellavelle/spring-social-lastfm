@@ -21,14 +21,13 @@ import java.util.List;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.springframework.social.lastfm.api.LastFmProfile;
 import org.springframework.social.lastfm.api.TrackSearchResult;
 
 /**
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LastFmTrackSearchResultListResponse {
+public class LastFmTrackSearchResultListResponse  {
 
 	private TrackSearchResultListContainer trackSearchResultListContainer;
 
@@ -39,6 +38,11 @@ public class LastFmTrackSearchResultListResponse {
 
 	@JsonCreator
 	public LastFmTrackSearchResultListResponse() {
+		this.trackSearchResultListContainer = new TrackSearchResultListContainer(new ArrayList<TrackSearchResult>());
+	}
+	
+	@JsonCreator
+	public LastFmTrackSearchResultListResponse(String s) {
 		this.trackSearchResultListContainer = new TrackSearchResultListContainer(new ArrayList<TrackSearchResult>());
 	}
 

@@ -13,36 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.social.lastfm.api.impl.json;
+package org.springframework.social.lastfm.api.impl.json.lists;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.springframework.social.lastfm.api.Track;
-import org.springframework.social.lastfm.api.impl.json.lists.TrackListContainer;
+import org.springframework.social.lastfm.api.SimpleTrack;
 
 /**
- * Binds to the most common form of a LastFM json representation of a track.  This class
- * extends AbstractLastFmNamedNestedResponse rather than AbstractLastFmNestedResponse
- * as we cannot use a Map to bind to a tracks response as the response contains different
- * json representations for a track and we only wish to bind to one.
- * 
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LastFmTracksResponse extends AbstractLastFmNamedNestedResponse<TrackListContainer>{
+public class LastFmSimpleTrackListResponse extends PageInfoContainer {
+
+	private SimpleTrackListContainer simpleTrackListContainer;
 
 	@JsonCreator
-	public LastFmTracksResponse() {
-		super();
+	public LastFmSimpleTrackListResponse() {
+		this.simpleTrackListContainer = new SimpleTrackListContainer(new ArrayList<SimpleTrack>());
+	}
+	
+
+	@JsonProperty("track")
+	public void setSimpleTrackListContainer(SimpleTrackListContainer simpleTrackListContainer) {
+		this.simpleTrackListContainer = simpleTrackListContainer;
 	}
 
-	@Override
-	@JsonProperty("track")
-	public void setNamedNestedResponse(TrackListContainer nestedResponse) {
-		super.setNestedResponse(nestedResponse);
+
+	public List<SimpleTrack> getTracks() {
+		return simpleTrackListContainer.getTracks();
 	}
+
 
 }

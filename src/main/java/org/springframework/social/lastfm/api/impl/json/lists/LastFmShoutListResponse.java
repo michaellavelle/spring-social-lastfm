@@ -27,7 +27,7 @@ import org.springframework.social.lastfm.api.Shout;
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LastFmShoutListResponse  {
+public class LastFmShoutListResponse extends PageInfoContainer {
 
 	private ShoutListContainer shoutListContainer;
 

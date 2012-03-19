@@ -18,6 +18,7 @@ package org.springframework.social.lastfm.api.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.social.MissingAuthorizationException;
 import org.springframework.social.lastfm.auth.LastFmAccessGrant;
 import org.springframework.web.client.RestTemplate;
@@ -51,6 +52,17 @@ public abstract class AbstractLastFmOperations {
 		}
 	}
 
+	protected void setPageableParamsIfSpecified(Map<String,String> params,Pageable pageable)
+	{
+		if (pageable != null)
+		{
+			params.put("page",new Integer(pageable.getPageNumber()).toString());
+			params.put("limit", new Integer(pageable.getPageSize()).toString());
+		}
+	}
+	
+	
+	
 	protected String buildLastFmApiUrl(
 			LastFmApiMethodParameters methodParameters) {
 		String delim = "?";

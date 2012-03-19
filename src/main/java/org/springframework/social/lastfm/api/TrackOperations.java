@@ -15,19 +15,27 @@
  */
 package org.springframework.social.lastfm.api;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author Michael Lavelle
  */
 public interface TrackOperations {
 
-	public List<TrackSearchResult> searchByTrackName(String trackName);
-
-	public List<TrackSearchResult> searchByArtistAndTrackName(
+	public Page<TrackSearchResult> searchByTrackName(String trackName);
+	
+	public Page<TrackSearchResult> searchByTrackName(String trackName,Pageable pageable);
+	
+	public Page<TrackSearchResult> searchByArtistAndTrackName(
 			String artistName, String trackName);
 	
-	public List<Track> getSimilarTracks(TrackDescriptor trackDescriptor);
+	public Page<TrackSearchResult> searchByArtistAndTrackName(
+			String artistName, String trackName,Pageable pageable);
+	
+	public Page<Track> getSimilarTracks(TrackDescriptor trackDescriptor);
+	
+	public Page<Track> getSimilarTracks(TrackDescriptor trackDescriptor,int limit);
 
 
 }

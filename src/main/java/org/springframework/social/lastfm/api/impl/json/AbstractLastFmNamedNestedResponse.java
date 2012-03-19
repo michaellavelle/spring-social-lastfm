@@ -15,7 +15,6 @@
  */
 package org.springframework.social.lastfm.api.impl.json;
 
-import java.util.HashMap;
 
 /**
  * @author Michael Lavelle

@@ -86,9 +86,48 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 								responseHeaders));
 
 		List<SimpleTrack> tracks = lastFm.userOperations().getRecentTracks(
-				"mattslip");
+				"mattslip").getContent();
 		assertSimpleTrackData(tracks.get(0));
 	}
+	
+	@Test
+	public void getRecentTracksSingleTrackResponse() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getrecenttracks&user=mattslip"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andRespond(
+						withResponse(jsonResource("testdata/recent-tracks-single-track-response"),
+								responseHeaders));
+
+		List<SimpleTrack> tracks = lastFm.userOperations().getRecentTracks("mattslip").getContent();
+		assertSimpleTrackData(tracks.get(0));
+	}
+	
+	/**
+	 * Tests for the case where the top tracks response contains no 
+	 * tracks. In this case the Json format of the response is different to the
+	 * response for multiple tracks
+	 */
+	@Test
+	public void getRecentTracksEmptyResponse() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getrecenttracks&user=mattslip"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andRespond(
+						withResponse(
+								jsonResource("testdata/recent-tracks-empty"),
+								responseHeaders));
+
+		List<SimpleTrack> tracks = lastFm.userOperations().getRecentTracks("mattslip").getContent();
+		assertNotNull(tracks);
+		assertEquals(0,tracks.size());
+
+	}
+
 
 	@Test
 	public void getTopTracks() {
@@ -101,10 +140,51 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/top-tracks"),
 								responseHeaders));
 
-		List<Track> tracks = lastFm.userOperations().getTopTracks("mattslip");
+		List<Track> tracks = lastFm.userOperations().getTopTracks("mattslip").getContent();
 		assertTrackData(tracks.get(0));
+	}
+	
+	
+	@Test
+	public void getTopTracksSingleTrackResponse() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.gettoptracks&user=mattslip"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andRespond(
+						withResponse(jsonResource("testdata/top-tracks-single-track-response"),
+								responseHeaders));
+
+		List<Track> tracks = lastFm.userOperations().getTopTracks("mattslip").getContent();
+		assertTrackData(tracks.get(0));
+	}
+	
+	/**
+	 * Tests for the case where the top tracks response contains no 
+	 * tracks. In this case the Json format of the response is different to the
+	 * response for multiple tracks
+	 */
+	@Test
+	public void getTopTracksEmptyResponse() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.gettoptracks&user=mattslip"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andRespond(
+						withResponse(
+								jsonResource("testdata/top-tracks-empty"),
+								responseHeaders));
+
+		List<Track> tracks = lastFm.userOperations().getTopTracks("mattslip").getContent();
+		assertNotNull(tracks);
+		assertEquals(0,tracks.size());
 
 	}
+
+
+
 
 	@Test
 	public void getLovedTracks() {
@@ -117,7 +197,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/loved-tracks"),
 								responseHeaders));
 
-		List<Track> tracks = lastFm.userOperations().getLovedTracks("mattslip");
+		List<Track> tracks = lastFm.userOperations().getLovedTracks("mattslip").getContent();
 		assertTrackData(tracks.get(0));
 
 	}
@@ -133,7 +213,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/similar-tracks"),
 								responseHeaders));
 
-		List<Track> tracks = lastFm.trackOperations().getSimilarTracks(new SimpleTrackDescriptor("Madonna","Music"));
+		List<Track> tracks = lastFm.trackOperations().getSimilarTracks(new SimpleTrackDescriptor("Madonna","Music")).getContent();
 		assertEquals("Don't Tell Me",tracks.get(0).getName());
 		assertEquals("Madonna",tracks.get(0).getArtistName());
 
@@ -150,7 +230,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/shouts"),
 								responseHeaders));
 
-		List<Shout> shouts = lastFm.userOperations().getShouts("mattslip");
+		List<Shout> shouts = lastFm.userOperations().getShouts("mattslip").getContent();
 		assertShoutData(shouts.get(2));
 
 
@@ -168,7 +248,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/single-shout-response"),
 								responseHeaders));
 
-		List<Shout> shouts = lastFm.userOperations().getShouts("mattslip");
+		List<Shout> shouts = lastFm.userOperations().getShouts("mattslip").getContent();
 		assertShoutData(shouts.get(0));
 		
 	}
@@ -184,7 +264,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/empty-shouts-response"),
 								responseHeaders));
 
-		List<Shout> shouts = lastFm.userOperations().getShouts("mattslip");
+		List<Shout> shouts = lastFm.userOperations().getShouts("mattslip").getContent();
 		assertNotNull(shouts);
 		assertEquals(shouts.size(),0);
 	}
@@ -200,7 +280,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/empty-friends-response"),
 								responseHeaders));
 
-		List<LastFmProfile> friends = lastFm.userOperations().getFriends("mattslip");
+		List<LastFmProfile> friends = lastFm.userOperations().getFriends("mattslip").getContent();
 		assertNotNull(friends);
 		assertEquals(0,friends.size());
 	}
@@ -216,7 +296,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/friends"),
 								responseHeaders));
 
-		List<LastFmProfile> friends = lastFm.userOperations().getFriends("mattslip");
+		List<LastFmProfile> friends = lastFm.userOperations().getFriends("mattslip").getContent();
 		assertNotNull(friends);
 		assertEquals(3,friends.size());
 	}
@@ -248,7 +328,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/single-friend-response"),
 								responseHeaders));
 
-		List<LastFmProfile> friends = lastFm.userOperations().getFriends("mattslip");
+		List<LastFmProfile> friends = lastFm.userOperations().getFriends("mattslip").getContent();
 		assertNotNull(friends);
 		assertEquals(1,friends.size());
 		assertEquals("michaellavelle",friends.get(0).getName());
@@ -275,7 +355,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 								jsonResource("testdata/loved-tracks-single-track-response"),
 								responseHeaders));
 
-		List<Track> tracks = lastFm.userOperations().getLovedTracks("mattslip");
+		List<Track> tracks = lastFm.userOperations().getLovedTracks("mattslip").getContent();
 		assertTrackData(tracks.get(0));
 
 	}
@@ -297,7 +377,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 								jsonResource("testdata/loved-tracks-empty"),
 								responseHeaders));
 
-		List<Track> tracks = lastFm.userOperations().getLovedTracks("mattslip");
+		List<Track> tracks = lastFm.userOperations().getLovedTracks("mattslip").getContent();
 		assertNotNull(tracks);
 		assertEquals(0,tracks.size());
 
@@ -316,7 +396,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 								responseHeaders));
 
 		List<Track> tracks = unauthorizedLastFm.userOperations()
-				.getLovedTracks("mattslip");
+				.getLovedTracks("mattslip").getContent();
 		assertTrackData(tracks.get(0));
 
 	}
