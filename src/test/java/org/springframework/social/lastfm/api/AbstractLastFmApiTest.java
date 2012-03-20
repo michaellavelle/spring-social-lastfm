@@ -28,8 +28,6 @@ public abstract class AbstractLastFmApiTest {
 	protected static final String API_KEY = "someApiKey";
 	protected static final String SECRET = "secret";
 
-	protected static final String USER_AGENT = "someUserAgent";
-
 	protected static final LastFmAccessGrant ACCESS_GRANT = new LastFmAccessGrant(
 			"someToken", "someSessionKey");
 
@@ -42,14 +40,14 @@ public abstract class AbstractLastFmApiTest {
 
 	@Before
 	public void setup() {
-		lastFm = new LastFmTemplate(USER_AGENT, ACCESS_GRANT, API_KEY, SECRET);
+		lastFm = new LastFmTemplate(ACCESS_GRANT, API_KEY, SECRET);
 		mockServer = MockRestServiceServer.createServer(lastFm
 				.getRestTemplate());
 
 		responseHeaders = new HttpHeaders();
 		responseHeaders.setContentType(MediaType.APPLICATION_JSON);
 
-		unauthorizedLastFm = new LastFmTemplate(USER_AGENT, API_KEY);
+		unauthorizedLastFm = new LastFmTemplate(API_KEY);
 		mockUnauthorizedServer = MockRestServiceServer
 				.createServer(unauthorizedLastFm.getRestTemplate());
 	}

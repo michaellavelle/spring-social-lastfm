@@ -1,5 +1,6 @@
 package org.springframework.social.lastfm.connect;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -7,8 +8,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Map.Entry;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.converter.FormHttpMessageConverter;
@@ -42,20 +45,17 @@ public class LastFmAuthTemplate implements LastFmAuthOperations {
 
 	private final RestTemplate restTemplate;
 
-	private final String userAgent;
 
-	public LastFmAuthTemplate(String clientId, String clientSecret,
-			String userAgent) {
+	public LastFmAuthTemplate(String clientId, String clientSecret) {
 		this(clientId, clientSecret, "http://www.last.fm/api/auth/",
-				"http://ws.audioscrobbler.com/2.0/", userAgent);
+				"http://ws.audioscrobbler.com/2.0/");
 	}
 
 	public LastFmAuthTemplate(String clientId, String clientSecret,
-			String authorizeUrl, String accessTokenUrl, String userAgent) {
+			String authorizeUrl, String accessTokenUrl) {
 		Assert.notNull(clientId, "The clientId property cannot be null");
 		Assert.notNull(clientSecret, "The clientSecret property cannot be null");
 		Assert.notNull(authorizeUrl, "The authorizeUrl property cannot be null");
-		Assert.notNull(userAgent, "The userAgent property cannot be null");
 
 		Assert.notNull(accessTokenUrl,
 				"The accessTokenUrl property cannot be null");
@@ -64,7 +64,6 @@ public class LastFmAuthTemplate implements LastFmAuthOperations {
 		String clientInfo = "?api_key=" + formEncode(clientId);
 		this.authorizeUrl = authorizeUrl + clientInfo;
 		this.accessTokenUrl = accessTokenUrl;
-		this.userAgent = userAgent;
 		this.restTemplate = createRestTemplate(true);
 
 	}
@@ -98,6 +97,24 @@ public class LastFmAuthTemplate implements LastFmAuthOperations {
 
 	// subclassing hooks
 
+	private String getUserAgent()
+	{
+		String pomVersion = getPomVersion();
+		return "spring-social-lastfm" + (pomVersion == null ? "" : "/" + pomVersion);
+	}
+	
+	private String getPomVersion() {
+		Properties properties = new Properties();
+		try {
+			properties.load(new ClassPathResource("project.properties").getInputStream());
+			return properties.getProperty("pom.version");
+
+		} catch (IOException e) {
+			return null;
+		}
+	}
+	
+	
 	/**
 	 * Creates the {@link RestTemplate} used to communicate with the provider's
 	 * OAuth 2 API. This implementation creates a RestTemplate with a minimal
@@ -109,7 +126,7 @@ public class LastFmAuthTemplate implements LastFmAuthOperations {
 	 */
 	protected RestTemplate createRestTemplate(boolean json) {
 		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add("User-Agent", userAgent);
+		httpHeaders.add("User-Agent", getUserAgent());
 		RestTemplate restTemplate = new RestTemplateWithHeaders(
 				ClientHttpRequestFactorySelector.getRequestFactory(),
 				httpHeaders);

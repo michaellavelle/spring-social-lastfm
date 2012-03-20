@@ -29,7 +29,6 @@ public class LastFmServiceProvider implements LastFmAuthServiceProvider {
 
 	private String clientId;
 	private String secret;
-	private String userAgent;
 
 	private final LastFmAuthOperations lastFmAuthOperations;
 
@@ -44,13 +43,10 @@ public class LastFmServiceProvider implements LastFmAuthServiceProvider {
 		this.lastFmAuthOperations = lastFmAuthOperations;
 	}
 
-	public LastFmServiceProvider(String clientId, String clientSecret,
-			String userAgent) {
-		lastFmAuthOperations = new LastFmAuthTemplate(clientId, clientSecret,
-				userAgent);
+	public LastFmServiceProvider(String clientId, String clientSecret) {
+		lastFmAuthOperations = new LastFmAuthTemplate(clientId, clientSecret);
 		this.clientId = clientId;
 		this.secret = clientSecret;
-		this.userAgent = userAgent;
 	}
 
 	// implementing OAuth2ServiceProvider
@@ -60,7 +56,7 @@ public class LastFmServiceProvider implements LastFmAuthServiceProvider {
 	}
 
 	public LastFm getApi(LastFmAccessGrant lastFmAccessGrant) {
-		return new LastFmTemplate(userAgent, lastFmAccessGrant, clientId,
+		return new LastFmTemplate(lastFmAccessGrant, clientId,
 				secret);
 
 	}

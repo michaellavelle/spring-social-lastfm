@@ -33,6 +33,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.social.NotAuthorizedException;
 import org.springframework.social.ResourceNotFoundException;
+import org.springframework.social.lastfm.api.impl.UserAgentHelper;
 
 public class UserTemplateTest extends AbstractLastFmApiTest {
 
@@ -44,7 +45,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_sig=8bbd32f49982b528b16cb704b671d242&api_key=someApiKey&sk=someSessionKey&method=user.getInfo&token=someToken"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/full-profile"),
 								responseHeaders));
@@ -64,7 +65,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getInfo&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/full-profile"),
 								responseHeaders));
@@ -80,7 +81,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getrecenttracks&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/recent-tracks"),
 								responseHeaders));
@@ -96,7 +97,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getrecenttracks&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/recent-tracks-single-track-response"),
 								responseHeaders));
@@ -116,7 +117,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getrecenttracks&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(
 								jsonResource("testdata/recent-tracks-empty"),
@@ -135,7 +136,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.gettoptracks&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/top-tracks"),
 								responseHeaders));
@@ -150,7 +151,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.gettopartists&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/top-artists"),
 								responseHeaders));
@@ -165,7 +166,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.gettopartists&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/top-artists-empty"),
 								responseHeaders));
@@ -181,7 +182,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_sig=616df1497ae31b96429906947d82bad2&api_key=someApiKey&sk=someSessionKey&method=user.getrecommendedartists&token=someToken"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/recommended-artists"),
 								responseHeaders));
@@ -199,7 +200,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.gettoptracks&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/top-tracks-single-track-response"),
 								responseHeaders));
@@ -219,7 +220,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.gettoptracks&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(
 								jsonResource("testdata/top-tracks-empty"),
@@ -240,7 +241,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getlovedtracks&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/loved-tracks"),
 								responseHeaders));
@@ -256,7 +257,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=track.similar&track=Music&artist=Madonna"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/similar-tracks"),
 								responseHeaders));
@@ -273,7 +274,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getshouts&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/shouts"),
 								responseHeaders));
@@ -291,7 +292,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getshouts&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/single-shout-response"),
 								responseHeaders));
@@ -307,7 +308,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getshouts&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/empty-shouts-response"),
 								responseHeaders));
@@ -323,7 +324,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getfriends&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/empty-friends-response"),
 								responseHeaders));
@@ -339,7 +340,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getfriends&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/friends"),
 								responseHeaders));
@@ -355,7 +356,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getneighbours&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/neighbours"),
 								responseHeaders));
@@ -371,7 +372,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getfriends&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/single-friend-response"),
 								responseHeaders));
@@ -397,7 +398,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getlovedtracks&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(
 								jsonResource("testdata/loved-tracks-single-track-response"),
@@ -419,7 +420,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getlovedtracks&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(
 								jsonResource("testdata/loved-tracks-empty"),
@@ -438,7 +439,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockUnauthorizedServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getlovedtracks&user=mattslip"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/loved-tracks"),
 								responseHeaders));
@@ -455,7 +456,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.getlovedtracks&user=someOtherUser"))
 				.andExpect(method(GET))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andRespond(
 						withResponse(jsonResource("testdata/invalid-user"),
 								responseHeaders));
@@ -472,7 +473,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/"))
 				.andExpect(method(POST))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andExpect(
 						body("format=json&api_sig=0086bb835c43ac345624691862cc9fd4&api_key=someApiKey&sk=someSessionKey&method=user.shout&token=someToken&message=someMessage&user=someUserName"))
 				.andRespond(
@@ -497,7 +498,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/"))
 				.andExpect(method(POST))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andExpect(
 						body("format=json&api_sig=b4c8c73655abc90599cdfc0ed9c3b3e8&api_key=someApiKey&sk=someSessionKey&method=track.scrobble&token=someToken&timestamp=123456&track=My+track+name&artist=My+artist+name"))
 				.andRespond(
@@ -516,7 +517,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/"))
 				.andExpect(method(POST))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andExpect(
 						body("format=json&api_sig=b50a3b8e66b396f78133d34dc887bda3&api_key=someApiKey&sk=someSessionKey&method=track.love&token=someToken&track=My+track+name&artist=My+artist+name"))
 				.andRespond(
@@ -551,7 +552,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/"))
 				.andExpect(method(POST))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andExpect(
 						body("format=json&api_sig=929dd59b92e361a3e3ffb7b687856a2b&api_key=someApiKey&sk=someSessionKey&method=track.unlove&token=someToken&track=My+track+name&artist=My+artist+name"))
 				.andRespond(
@@ -577,7 +578,7 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		mockServer
 				.expect(requestTo("http://ws.audioscrobbler.com/2.0/"))
 				.andExpect(method(POST))
-				.andExpect(header("User-Agent", "someUserAgent"))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
 				.andExpect(
 						body("format=json&api_sig=6511f45e73a7fd12edab35d18a6655ce&api_key=someApiKey&sk=someSessionKey&method=track.updateNowPlaying&token=someToken&track=My+track+name&artist=My+artist+name"))
 				.andRespond(

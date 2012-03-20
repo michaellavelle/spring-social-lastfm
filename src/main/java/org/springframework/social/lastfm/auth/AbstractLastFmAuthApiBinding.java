@@ -15,11 +15,15 @@
  */
 package org.springframework.social.lastfm.auth;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -29,6 +33,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.social.ApiBinding;
+import org.springframework.social.lastfm.api.impl.UserAgentHelper;
 import org.springframework.social.lastfm.connect.RestTemplateWithHeaders;
 import org.springframework.social.support.ClientHttpRequestFactorySelector;
 import org.springframework.web.client.RestTemplate;
@@ -41,21 +46,21 @@ import org.springframework.web.client.RestTemplate;
 public abstract class AbstractLastFmAuthApiBinding implements ApiBinding {
 
 	private LastFmAccessGrant lastFmAccessGrant;
-	private final String userAgent;
 
 	private final RestTemplate restTemplate;
 
+	
+	
 	/**
 	 * Constructs the API template without user authorization. This is useful
 	 * for accessing operations on a provider's API that do not require user
 	 * authorization.
 	 */
-	protected AbstractLastFmAuthApiBinding(String userAgent) {
-		this.userAgent = userAgent;
+	protected AbstractLastFmAuthApiBinding() {
+		
 		this.lastFmAccessGrant = null;
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("User-Agent", userAgent);
-
+		headers.add("User-Agent", UserAgentHelper.getUserAgent());
 		restTemplate = new RestTemplateWithHeaders(
 				ClientHttpRequestFactorySelector.getRequestFactory(), headers);
 		restTemplate.setMessageConverters(getMessageConverters(true));
@@ -70,12 +75,11 @@ public abstract class AbstractLastFmAuthApiBinding implements ApiBinding {
 	 * @param accessToken
 	 *            the access token
 	 */
-	protected AbstractLastFmAuthApiBinding(String userAgent,
+	protected AbstractLastFmAuthApiBinding(
 			LastFmAccessGrant lastFmAccessGrant) {
 		this.lastFmAccessGrant = lastFmAccessGrant;
-		this.userAgent = userAgent;
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("User-Agent", userAgent);
+		headers.add("User-Agent", UserAgentHelper.getUserAgent());
 
 		restTemplate = new RestTemplateWithHeaders(
 				ClientHttpRequestFactorySelector.getRequestFactory(), headers);

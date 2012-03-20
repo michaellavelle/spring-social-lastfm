@@ -41,8 +41,7 @@ public class LastFmConnectionFactory extends ConnectionFactory<LastFm> {
 	 *            the LastFm Api clientSecret
 	 */
 	public LastFmConnectionFactory(String clientId, String clientSecret) {
-		super("lastfm", new LastFmServiceProvider(clientId, clientSecret,
-				"spring-social-lastfm/1.0.0-SNAPSHOT"), new LastFmAdapter());
+		super("lastfm", new LastFmServiceProvider(clientId, clientSecret), new LastFmAdapter());
 	}
 
 	/**

@@ -38,7 +38,7 @@ public class LastFmPseudoOAuth2ConnectionFactory extends
 	public LastFmPseudoOAuth2ConnectionFactory(String clientId,
 			String clientSecret) {
 		super("lastfm", new LastFmPseudoOAuth2ServiceProvider(clientId,
-				clientSecret, "spring-social-lastfm/1.0.0-SNAPSHOT"),
+				clientSecret),
 				new LastFmAdapter());
 		this.lastFmConnectionFactory = new LastFmConnectionFactory(clientId,
 				clientSecret);

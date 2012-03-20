@@ -31,19 +31,18 @@ public class LastFmPseudoOAuth2ServiceProvider extends
 	private String userAgent;
 
 	public LastFmPseudoOAuth2ServiceProvider(String clientId,
-			String clientSecret, String userAgent) {
+			String clientSecret) {
 		super(new LastFmPseudoOAuth2Template(clientId, new LastFmAuthTemplate(
-				clientId, clientSecret, userAgent)));
+				clientId, clientSecret)));
 		this.clientId = clientId;
 		this.secret = clientSecret;
-		this.userAgent = userAgent;
 	}
 
 	@Override
 	public LastFm getApi(String accessToken) {
 		LastFmPseudoOAuth2AccessGrant lastFmAccessGrant = LastFmPseudoOAuth2AccessGrant
 				.fromAccessToken(accessToken);
-		return new LastFmTemplate(userAgent, lastFmAccessGrant, clientId,
+		return new LastFmTemplate(lastFmAccessGrant, clientId,
 				secret);
 	}
 

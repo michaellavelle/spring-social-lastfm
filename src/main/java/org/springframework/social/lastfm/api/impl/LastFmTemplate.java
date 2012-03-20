@@ -18,6 +18,8 @@ package org.springframework.social.lastfm.api.impl;
 import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
@@ -70,8 +72,8 @@ public class LastFmTemplate extends AbstractLastFmAuthApiBinding implements
 	 * will support those operations. Those operations requiring authentication
 	 * will throw {@link NotAuthorizedException}.
 	 */
-	public LastFmTemplate(String userAgent, String apiKey) {
-		super(userAgent);
+	public LastFmTemplate(String apiKey) {
+		super();
 		initialize(null, apiKey, null);
 	}
 
@@ -83,9 +85,9 @@ public class LastFmTemplate extends AbstractLastFmAuthApiBinding implements
 	 *            An access token given by LastFm after a successful
 	 *            authentication
 	 */
-	public LastFmTemplate(String userAgent,
+	public LastFmTemplate(
 			LastFmAccessGrant lastFmAccessGrant, String apiKey, String secret) {
-		super(userAgent, lastFmAccessGrant);
+		super(lastFmAccessGrant);
 		initialize(lastFmAccessGrant, apiKey, secret);
 
 	}
