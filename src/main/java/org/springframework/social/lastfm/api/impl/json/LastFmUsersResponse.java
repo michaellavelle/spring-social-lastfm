@@ -16,18 +16,16 @@
 package org.springframework.social.lastfm.api.impl.json;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.springframework.social.lastfm.api.impl.json.lists.LastFmTrackListResponse;
+import org.springframework.social.lastfm.api.impl.json.lists.LastFmUserListResponse;
 
 /**
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LastFmSimilarTracksResponse extends AbstractLastFmNestedResponse<LastFmTrackListResponse>{
+public class LastFmUsersResponse extends AbstractLastFmNestedResponse<LastFmUserListResponse>{
 
-	public LastFmSimilarTracksResponse() {
-		super("similartracks");
+	public LastFmUsersResponse() {
+		super();
 	}
-
-
 	
 }

@@ -27,7 +27,7 @@ public class LastFmSimpleTrackDescriptorsResponse extends AbstractLastFmNestedRe
 
 	@JsonCreator
 	public LastFmSimpleTrackDescriptorsResponse() {
-		super("track");
+		super();
 	}
 
 }

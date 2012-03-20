@@ -13,21 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.social.lastfm.api.impl.json;
+package org.springframework.social.lastfm.api.impl.json.lists;
+
+import java.util.Date;
+import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.springframework.social.lastfm.api.impl.json.lists.LastFmTrackListResponse;
+import org.springframework.social.lastfm.api.Artist;
+import org.springframework.social.lastfm.api.Shout;
 
 /**
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LastFmTopTracksResponse extends AbstractLastFmNestedResponse<LastFmTrackListResponse> {
+/**
+ * Container for a shout list - allows for automatic JSON binding from *either* a list of Artists
+ * or a Map representation of a single artist, as LastFm responds with different Json structures
+ * depending on whether a single artist is returned
+ * 
+ * @author Michael Lavelle
+ */
+public class ArtistListContainer extends AbstractLastFmListContainer<Artist> {
+
 
 	@JsonCreator
-	public LastFmTopTracksResponse() {
-		super("toptracks");
+	public ArtistListContainer(List<Artist> artists) {
+		super(artists);
+	}
+	
+	public ArtistListContainer(String url, String name,String mbid) {
+		super(new Artist(url,name,mbid));
+	}
+
+	public List<Artist> getArtists() {
+		return elements;
 	}
 
 }

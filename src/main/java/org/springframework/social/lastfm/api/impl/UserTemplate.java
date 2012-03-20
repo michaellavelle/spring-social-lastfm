@@ -25,19 +25,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.social.lastfm.api.Artist;
 import org.springframework.social.lastfm.api.LastFmProfile;
 import org.springframework.social.lastfm.api.Shout;
 import org.springframework.social.lastfm.api.SimpleTrack;
 import org.springframework.social.lastfm.api.Track;
 import org.springframework.social.lastfm.api.TrackDescriptor;
 import org.springframework.social.lastfm.api.UserOperations;
-import org.springframework.social.lastfm.api.impl.json.LastFmFriendsResponse;
-import org.springframework.social.lastfm.api.impl.json.LastFmLovedTracksResponse;
-import org.springframework.social.lastfm.api.impl.json.LastFmNeighboursResponse;
+import org.springframework.social.lastfm.api.impl.json.LastFmArtistsResponse;
+import org.springframework.social.lastfm.api.impl.json.LastFmUsersResponse;
 import org.springframework.social.lastfm.api.impl.json.LastFmProfileResponse;
-import org.springframework.social.lastfm.api.impl.json.LastFmRecentTracksResponse;
+import org.springframework.social.lastfm.api.impl.json.LastFmSimpleTracksResponse;
 import org.springframework.social.lastfm.api.impl.json.LastFmShoutsResponse;
-import org.springframework.social.lastfm.api.impl.json.LastFmTopTracksResponse;
+import org.springframework.social.lastfm.api.impl.json.LastFmTracksResponse;
+import org.springframework.social.lastfm.api.impl.json.lists.LastFmArtistListResponse;
 import org.springframework.social.lastfm.api.impl.json.lists.LastFmShoutListResponse;
 import org.springframework.social.lastfm.api.impl.json.lists.LastFmSimpleTrackListResponse;
 import org.springframework.social.lastfm.api.impl.json.lists.LastFmTrackListResponse;
@@ -104,7 +105,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 		
 		LastFmSimpleTrackListResponse simpleTrackListResponse = restTemplate
 		.getForObject(buildLastFmApiUrl(methodParameters),
-				LastFmRecentTracksResponse.class).getNestedResponse();
+				LastFmSimpleTracksResponse.class).getNestedResponse();
 		
 		PageInfo pageInfo = simpleTrackListResponse.getPageInfo();
 		
@@ -140,7 +141,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 
 		LastFmTrackListResponse trackListResponse = restTemplate
 				.getForObject(buildLastFmApiUrl(methodParameters),
-						LastFmLovedTracksResponse.class).getNestedResponse();
+						LastFmTracksResponse.class).getNestedResponse();
 		
 		PageInfo pageInfo = trackListResponse.getPageInfo();
 		
@@ -173,7 +174,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 
 		LastFmTrackListResponse trackListResponse = restTemplate
 		.getForObject(buildLastFmApiUrl(methodParameters),
-				LastFmTopTracksResponse.class).getNestedResponse();
+				LastFmTracksResponse.class).getNestedResponse();
 		
 		PageInfo pageInfo = trackListResponse.getPageInfo();
 
@@ -187,6 +188,41 @@ public class UserTemplate extends AbstractLastFmOperations implements
 		}
 		
 		return new PageImpl<Track>(trackListResponse.getTracks(),new PageRequest(pageInfo.getPage(),pageInfo.getPerPage()),trackListResponse.getPageInfo().getTotal());
+
+	}
+	
+	@Override
+	public Page<Artist> getTopArtists(String userName) {
+		return getTopArtists(userName,null);
+	}
+	
+	@Override
+	public Page<Artist> getTopArtists(String userName,Pageable pageable) {
+
+		Map<String, String> additionalParams = new HashMap<String, String>();
+		additionalParams.put("user", userName);
+		setPageableParamsIfSpecified(additionalParams,pageable);
+
+
+		LastFmApiMethodParameters methodParameters = new LastFmApiMethodParameters(
+				"user.gettopartists", apiKey, null, null, additionalParams);
+
+		LastFmArtistListResponse artistListResponse = restTemplate
+		.getForObject(buildLastFmApiUrl(methodParameters),
+				LastFmArtistsResponse.class).getNestedResponse();
+		
+		PageInfo pageInfo = artistListResponse.getPageInfo();
+
+		
+		
+		// Last.Fm will return the last page available if a page number is requested greater than the total pages
+		// Ensure that we override this behaviour and return an empty page for this case
+		if (pageable != null && pageable.getPageNumber() > pageInfo.getTotalPages())
+		{
+				return new PageImpl<Artist>(new ArrayList<Artist>(),pageable,pageInfo.getTotal());
+		}
+		
+		return new PageImpl<Artist>(artistListResponse.getArtists(),new PageRequest(pageInfo.getPage(),pageInfo.getPerPage()),pageInfo.getTotal());
 
 	}
 
@@ -275,6 +311,38 @@ public class UserTemplate extends AbstractLastFmOperations implements
 		return new PageImpl<Shout>(shoutListResponse.getShouts(),new PageRequest(pageInfo.getPage(),pageInfo.getPerPage()),pageInfo.getTotal());
 	}
 
+	@Override
+	public Page<Artist> getRecommendedArtists() {
+		return getRecommendedArtists(null);
+	}
+	
+	@Override
+	public Page<Artist> getRecommendedArtists(Pageable pageable) {
+		Map<String, String> additionalParams = new HashMap<String, String>();
+		setPageableParamsIfSpecified(additionalParams,pageable);
+		LastFmApiMethodParameters methodParameters = new LastFmApiMethodParameters(
+				"user.getrecommendedartists", apiKey,  lastFmAccessGrant.getToken(), secret, lastFmAccessGrant.getSessionKey(),additionalParams);
+
+		
+		LastFmArtistListResponse artistListResponse = restTemplate
+				.getForObject(buildLastFmApiUrl(methodParameters),
+						LastFmArtistsResponse.class).getNestedResponse();
+		
+
+		PageInfo pageInfo = artistListResponse.getPageInfo();
+
+		
+		
+		// Last.Fm will return the last page available if a page number is requested greater than the total pages
+		// Ensure that we override this behaviour and return an empty page for this case
+		if (pageable != null && pageable.getPageNumber() > pageInfo.getTotalPages())
+		{
+				return new PageImpl<Artist>(new ArrayList<Artist>(),pageable,pageInfo.getTotal());
+		}
+		
+		return new PageImpl<Artist>(artistListResponse.getArtists(),new PageRequest(pageInfo.getPage(),pageInfo.getPerPage()),pageInfo.getTotal());
+	}
+	
 
 	@Override
 	public Page<LastFmProfile> getFriends(String userName) {
@@ -294,7 +362,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 
 		LastFmUserListResponse userListResponse = restTemplate
 		.getForObject(buildLastFmApiUrl(methodParameters),
-				LastFmFriendsResponse.class).getNestedResponse();
+				LastFmUsersResponse.class).getNestedResponse();
 		
 		
 		PageInfo pageInfo = userListResponse.getPageInfo();
@@ -336,7 +404,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 
 		return restTemplate
 				.getForObject(buildLastFmApiUrl(methodParameters),
-						LastFmNeighboursResponse.class).getNestedResponse().getUsers();
+						LastFmUsersResponse.class).getNestedResponse().getUsers();
 	}
 
 	@Override

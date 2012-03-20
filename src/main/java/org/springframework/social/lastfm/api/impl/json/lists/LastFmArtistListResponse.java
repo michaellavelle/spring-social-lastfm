@@ -13,21 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.social.lastfm.api.impl.json;
+package org.springframework.social.lastfm.api.impl.json.lists;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.springframework.social.lastfm.api.impl.json.lists.LastFmUserListResponse;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.social.lastfm.api.Artist;
+import org.springframework.social.lastfm.api.Shout;
 
 /**
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LastFmNeighboursResponse extends AbstractLastFmNestedResponse<LastFmUserListResponse>{
+public class LastFmArtistListResponse extends PageInfoContainer {
+
+	private ArtistListContainer artistListContainer;
 
 	@JsonCreator
-	public LastFmNeighboursResponse() {
-		super("neighbours");
+	public LastFmArtistListResponse() {
+		this.artistListContainer = new ArtistListContainer(new ArrayList<Artist>());
+	}
+	
+
+	@JsonProperty("artist")
+	public void setArtistListContainer(ArtistListContainer artistListContainer) {
+		this.artistListContainer = artistListContainer;
+	}
+
+
+	public List<Artist> getArtists() {
+		return artistListContainer.getArtists();
 	}
 
 

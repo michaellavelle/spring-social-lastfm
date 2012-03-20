@@ -144,6 +144,54 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 		assertTrackData(tracks.get(0));
 	}
 	
+	@Test
+	public void getTopArtists() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.gettopartists&user=mattslip"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andRespond(
+						withResponse(jsonResource("testdata/top-artists"),
+								responseHeaders));
+
+		List<Artist> artists = lastFm.userOperations().getTopArtists("mattslip").getContent();
+		assertArtistData(artists.get(0));
+	}
+	
+	@Test
+	public void getTopArtistsEmptyResponse() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=user.gettopartists&user=mattslip"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andRespond(
+						withResponse(jsonResource("testdata/top-artists-empty"),
+								responseHeaders));
+
+		List<Artist> artists = lastFm.userOperations().getTopArtists("mattslip").getContent();
+		assertNotNull(artists);
+		assertEquals(0,artists.size());
+	}
+	
+	@Test
+	public void getRecommendedArtists() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_sig=616df1497ae31b96429906947d82bad2&api_key=someApiKey&sk=someSessionKey&method=user.getrecommendedartists&token=someToken"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", "someUserAgent"))
+				.andRespond(
+						withResponse(jsonResource("testdata/recommended-artists"),
+								responseHeaders));
+
+		List<Artist> artists = lastFm.userOperations().getRecommendedArtists().getContent();
+		assertArtistData(artists.get(0));
+
+
+	}
+	
 	
 	@Test
 	public void getTopTracksSingleTrackResponse() {
@@ -479,6 +527,9 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 
 	}
 	
+	
+	
+	
 	@Test(expected = NotAuthorizedException.class)
 	public void love_unauthorized() {
 
@@ -562,6 +613,14 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 				track.getUrl());
 		assertEquals("http://www.last.fm/music/Miami+Horror", track.getArtist()
 				.getUrl());
+	}
+	
+	
+	private void assertArtistData(Artist artist) {
+		
+		assertEquals("http://www.last.fm/music/Jessica+6",artist.getUrl());
+		assertEquals("Jessica 6",artist.getName());
+
 	}
 	
 	private void assertShoutData(Shout shout) {

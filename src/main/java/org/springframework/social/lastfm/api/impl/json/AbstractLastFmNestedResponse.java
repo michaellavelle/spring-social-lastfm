@@ -26,15 +26,8 @@ public abstract class AbstractLastFmNestedResponse<T> extends HashMap<String,T> 
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	private final String responseKey;
-	
-	public AbstractLastFmNestedResponse(final String responseKey)
-	{
-		this.responseKey = responseKey;
-	}
 		
 	public T getNestedResponse() {
-		return get(responseKey);
+		return this.values().iterator().next();
 	}
 }

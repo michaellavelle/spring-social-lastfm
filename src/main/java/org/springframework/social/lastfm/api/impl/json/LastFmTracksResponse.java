@@ -15,20 +15,19 @@
  */
 package org.springframework.social.lastfm.api.impl.json;
 
-import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.springframework.social.lastfm.api.impl.json.lists.LastFmSimpleTrackListResponse;
+import org.springframework.social.lastfm.api.impl.json.lists.LastFmTrackListResponse;
 
 /**
  * @author Michael Lavelle
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LastFmRecentTracksResponse extends AbstractLastFmNestedResponse<LastFmSimpleTrackListResponse> {
+public class LastFmTracksResponse extends AbstractLastFmNestedResponse<LastFmTrackListResponse>{
 
-	@JsonCreator
-	public LastFmRecentTracksResponse()
-	{
-		super("recenttracks");
+	public LastFmTracksResponse() {
+		super();
 	}
+
+
 	
 }

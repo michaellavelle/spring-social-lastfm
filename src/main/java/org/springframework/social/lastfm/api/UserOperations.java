@@ -51,6 +51,10 @@ public interface UserOperations {
 	public Page<Track> getTopTracks(String userName);
 	
 	public Page<Track> getTopTracks(String userName,Pageable pageable);
+	
+	public Page<Artist> getTopArtists(String userName);
+	
+	public Page<Artist> getTopArtists(String userName,Pageable pageable);
 
 	public Page<SimpleTrack> getRecentTracks(String userName);
 	
@@ -64,4 +68,8 @@ public interface UserOperations {
 
 	public void updateNowPlaying(TrackDescriptor trackDescriptor);
 
+	public Page<Artist> getRecommendedArtists();
+	public Page<Artist> getRecommendedArtists(Pageable pageable);
+
+	
 }

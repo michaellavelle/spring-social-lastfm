@@ -12,9 +12,9 @@ import org.springframework.social.lastfm.api.Track;
 import org.springframework.social.lastfm.api.TrackDescriptor;
 import org.springframework.social.lastfm.api.TrackOperations;
 import org.springframework.social.lastfm.api.TrackSearchResult;
-import org.springframework.social.lastfm.api.impl.json.LastFmSimilarTracksResponse;
 import org.springframework.social.lastfm.api.impl.json.LastFmTrackMatchesResponse;
 import org.springframework.social.lastfm.api.impl.json.LastFmTrackSearchResponse;
+import org.springframework.social.lastfm.api.impl.json.LastFmTracksResponse;
 import org.springframework.social.lastfm.api.impl.json.lists.LastFmTrackListResponse;
 import org.springframework.social.lastfm.api.impl.json.lists.LastFmTrackSearchResultListResponse;
 import org.springframework.social.lastfm.api.impl.json.lists.PageInfo;
@@ -114,7 +114,7 @@ public class TrackTemplate extends AbstractLastFmOperations implements
 
 		LastFmTrackListResponse trackListResponse = restTemplate
 		.getForObject(buildLastFmApiUrl(methodParameters),
-				LastFmSimilarTracksResponse.class)
+				LastFmTracksResponse.class)
 		.getNestedResponse();
 		
 		PageInfo pageInfo = trackListResponse.getPageInfo();

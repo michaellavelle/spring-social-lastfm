@@ -28,7 +28,7 @@ public class LastFmProfileResponse extends AbstractLastFmNestedResponse<LastFmPr
 
 	@JsonCreator
 	public LastFmProfileResponse() {
-		super("user");
+		super();
 	}
 
 

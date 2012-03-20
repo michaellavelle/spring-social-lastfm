@@ -27,7 +27,7 @@ public class LastFmTrackSearchResponse extends AbstractLastFmNestedResponse<Last
 	@JsonCreator
 	public LastFmTrackSearchResponse()
 	{
-		super("results");
+		super();
 	}
 
 }
