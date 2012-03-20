@@ -14,9 +14,6 @@ Currently trialing this implementation on CloudPlaylists.com along with spring-s
 CloudPLaylists users to search for their LastFm loved,recent or top tracks on SoundCloud, and to scrobble tracks with
 an identifiable track name and artist name to LastFm.
 
-Method signatures are initial at this stage and support basic operations only (not implementing pagination for example) - these will be updated
-in the near future.
-
 Please note that as LastFm's auth scheme is *neither* OAuth1 or OAuth2, there are a few constraints concerning the use 
 of this module:
 
