@@ -21,6 +21,11 @@ public class PageInfo {
 		this.totalPages = totalPages;
 	}
 	
+	public int getZeroIndexedPage()
+	{
+		return page == 0 ? 0 : page - 1;
+	}
+	
 	public PageInfo()
 	{
 		

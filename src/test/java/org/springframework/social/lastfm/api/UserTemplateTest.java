@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
+import org.springframework.data.domain.Page;
 import org.springframework.social.NotAuthorizedException;
 import org.springframework.social.ResourceNotFoundException;
 import org.springframework.social.lastfm.api.impl.UserAgentHelper;
@@ -86,8 +87,11 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/recent-tracks"),
 								responseHeaders));
 
-		List<SimpleTrack> tracks = lastFm.userOperations().getRecentTracks(
-				"mattslip").getContent();
+		Page<SimpleTrack> simpleTracks = lastFm.userOperations().getRecentTracks(
+		"mattslip");
+		assertEquals(0,simpleTracks.getNumber());
+		assertEquals(1,simpleTracks.getTotalElements());
+		List<SimpleTrack> tracks = simpleTracks.getContent();
 		assertSimpleTrackData(tracks.get(0));
 	}
 	
@@ -102,7 +106,10 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/recent-tracks-single-track-response"),
 								responseHeaders));
 
-		List<SimpleTrack> tracks = lastFm.userOperations().getRecentTracks("mattslip").getContent();
+		Page<SimpleTrack> simpleTracks = lastFm.userOperations().getRecentTracks("mattslip");
+		assertEquals(0,simpleTracks.getNumber());
+		assertEquals(1,simpleTracks.getTotalElements());
+		List<SimpleTrack> tracks = simpleTracks.getContent();
 		assertSimpleTrackData(tracks.get(0));
 	}
 	
@@ -123,7 +130,10 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 								jsonResource("testdata/recent-tracks-empty"),
 								responseHeaders));
 
-		List<SimpleTrack> tracks = lastFm.userOperations().getRecentTracks("mattslip").getContent();
+		Page<SimpleTrack> simpleTracks = lastFm.userOperations().getRecentTracks("mattslip");
+		List<SimpleTrack> tracks = simpleTracks.getContent();
+		assertEquals(0,simpleTracks.getNumber());
+		assertEquals(0,simpleTracks.getTotalElements());
 		assertNotNull(tracks);
 		assertEquals(0,tracks.size());
 
@@ -141,7 +151,10 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/top-tracks"),
 								responseHeaders));
 
-		List<Track> tracks = lastFm.userOperations().getTopTracks("mattslip").getContent();
+		Page<Track> tracksPage = lastFm.userOperations().getTopTracks("mattslip");
+		assertEquals(0,tracksPage.getNumber());
+		assertEquals(1,tracksPage.getTotalElements());
+		List<Track> tracks = tracksPage.getContent();
 		assertTrackData(tracks.get(0));
 	}
 	
@@ -156,7 +169,10 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/top-artists"),
 								responseHeaders));
 
-		List<Artist> artists = lastFm.userOperations().getTopArtists("mattslip").getContent();
+		Page<Artist> artistsPage = lastFm.userOperations().getTopArtists("mattslip");
+		assertEquals(0,artistsPage.getNumber());
+		assertEquals(133,artistsPage.getTotalElements());
+		List<Artist> artists = artistsPage.getContent();
 		assertArtistData(artists.get(0));
 	}
 	
@@ -171,7 +187,10 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/top-artists-empty"),
 								responseHeaders));
 
-		List<Artist> artists = lastFm.userOperations().getTopArtists("mattslip").getContent();
+		Page<Artist> artistsPage = lastFm.userOperations().getTopArtists("mattslip");
+		assertEquals(0,artistsPage.getNumber());
+		assertEquals(0,artistsPage.getTotalElements());
+		List<Artist> artists = artistsPage.getContent();
 		assertNotNull(artists);
 		assertEquals(0,artists.size());
 	}
@@ -187,7 +206,10 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/recommended-artists"),
 								responseHeaders));
 
-		List<Artist> artists = lastFm.userOperations().getRecommendedArtists().getContent();
+		Page<Artist> artistsPage = lastFm.userOperations().getRecommendedArtists();
+		List<Artist> artists = artistsPage.getContent();
+		assertEquals(0,artistsPage.getNumber());
+		assertEquals(250,artistsPage.getTotalElements());
 		assertArtistData(artists.get(0));
 
 
@@ -205,7 +227,11 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/top-tracks-single-track-response"),
 								responseHeaders));
 
-		List<Track> tracks = lastFm.userOperations().getTopTracks("mattslip").getContent();
+		Page<Track> tracksPage = lastFm.userOperations().getTopTracks("mattslip");
+		assertEquals(0,tracksPage.getNumber());
+		assertEquals(1,tracksPage.getTotalElements());
+		List<Track> tracks = tracksPage.getContent();
+		
 		assertTrackData(tracks.get(0));
 	}
 	
@@ -226,7 +252,10 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 								jsonResource("testdata/top-tracks-empty"),
 								responseHeaders));
 
-		List<Track> tracks = lastFm.userOperations().getTopTracks("mattslip").getContent();
+		Page<Track> tracksPage = lastFm.userOperations().getTopTracks("mattslip");
+		assertEquals(0,tracksPage.getNumber());
+		assertEquals(0,tracksPage.getTotalElements());
+		List<Track> tracks = tracksPage.getContent();
 		assertNotNull(tracks);
 		assertEquals(0,tracks.size());
 
@@ -246,7 +275,10 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/loved-tracks"),
 								responseHeaders));
 
-		List<Track> tracks = lastFm.userOperations().getLovedTracks("mattslip").getContent();
+		Page<Track> tracksPage = lastFm.userOperations().getLovedTracks("mattslip");
+		assertEquals(0,tracksPage.getNumber());
+		assertEquals(1,tracksPage.getTotalElements());
+		List<Track> tracks = tracksPage.getContent();
 		assertTrackData(tracks.get(0));
 
 	}
@@ -262,7 +294,10 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/similar-tracks"),
 								responseHeaders));
 
-		List<Track> tracks = lastFm.trackOperations().getSimilarTracks(new SimpleTrackDescriptor("Madonna","Music")).getContent();
+		Page<Track> tracksPage = lastFm.trackOperations().getSimilarTracks(new SimpleTrackDescriptor("Madonna","Music"));
+		List<Track> tracks = tracksPage.getContent();
+		assertEquals(0,tracksPage.getNumber());
+		assertEquals(250,tracksPage.getTotalElements());
 		assertEquals("Don't Tell Me",tracks.get(0).getName());
 		assertEquals("Madonna",tracks.get(0).getArtistName());
 
@@ -279,7 +314,10 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/shouts"),
 								responseHeaders));
 
-		List<Shout> shouts = lastFm.userOperations().getShouts("mattslip").getContent();
+		Page<Shout> shoutsPage = lastFm.userOperations().getShouts("mattslip");
+		assertEquals(0,shoutsPage.getNumber());
+		assertEquals(3,shoutsPage.getTotalElements());
+		List<Shout> shouts = shoutsPage.getContent();
 		assertShoutData(shouts.get(2));
 
 
@@ -297,7 +335,10 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/single-shout-response"),
 								responseHeaders));
 
-		List<Shout> shouts = lastFm.userOperations().getShouts("mattslip").getContent();
+		Page<Shout> shoutsPage = lastFm.userOperations().getShouts("mattslip");
+		assertEquals(0,shoutsPage.getNumber());
+		assertEquals(1,shoutsPage.getTotalElements());
+		List<Shout> shouts = shoutsPage.getContent();
 		assertShoutData(shouts.get(0));
 		
 	}
@@ -313,7 +354,10 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/empty-shouts-response"),
 								responseHeaders));
 
-		List<Shout> shouts = lastFm.userOperations().getShouts("mattslip").getContent();
+		Page<Shout> shoutsPage = lastFm.userOperations().getShouts("mattslip");
+		List<Shout> shouts = shoutsPage.getContent();
+		assertEquals(0,shoutsPage.getNumber());
+		assertEquals(0,shoutsPage.getTotalElements());
 		assertNotNull(shouts);
 		assertEquals(shouts.size(),0);
 	}
@@ -329,7 +373,10 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/empty-friends-response"),
 								responseHeaders));
 
-		List<LastFmProfile> friends = lastFm.userOperations().getFriends("mattslip").getContent();
+		Page<LastFmProfile> friendsPage = lastFm.userOperations().getFriends("mattslip");
+		List<LastFmProfile> friends = friendsPage.getContent();
+		assertEquals(0,friendsPage.getNumber());
+		assertEquals(0,friendsPage.getTotalElements());
 		assertNotNull(friends);
 		assertEquals(0,friends.size());
 	}
@@ -345,7 +392,10 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/friends"),
 								responseHeaders));
 
-		List<LastFmProfile> friends = lastFm.userOperations().getFriends("mattslip").getContent();
+		Page<LastFmProfile> friendsPage = lastFm.userOperations().getFriends("mattslip");
+		List<LastFmProfile> friends = friendsPage.getContent();
+		assertEquals(0,friendsPage.getNumber());
+		assertEquals(3,friendsPage.getTotalElements());
 		assertNotNull(friends);
 		assertEquals(3,friends.size());
 	}
@@ -377,9 +427,12 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 						withResponse(jsonResource("testdata/single-friend-response"),
 								responseHeaders));
 
-		List<LastFmProfile> friends = lastFm.userOperations().getFriends("mattslip").getContent();
+		Page<LastFmProfile> friendsPage = lastFm.userOperations().getFriends("mattslip");
+		List<LastFmProfile> friends = friendsPage.getContent();
 		assertNotNull(friends);
 		assertEquals(1,friends.size());
+		assertEquals(0,friendsPage.getNumber());
+		assertEquals(1,friendsPage.getTotalElements());
 		assertEquals("michaellavelle",friends.get(0).getName());
 		assertEquals("Michael Lavelle",friends.get(0).getRealName());
 		assertEquals("http://www.last.fm/user/michaellavelle",friends.get(0).getUrl());
@@ -404,7 +457,10 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 								jsonResource("testdata/loved-tracks-single-track-response"),
 								responseHeaders));
 
-		List<Track> tracks = lastFm.userOperations().getLovedTracks("mattslip").getContent();
+		Page<Track> tracksPage = lastFm.userOperations().getLovedTracks("mattslip");
+		assertEquals(0,tracksPage.getNumber());
+		assertEquals(1,tracksPage.getTotalElements());
+		List<Track> tracks = tracksPage.getContent();
 		assertTrackData(tracks.get(0));
 
 	}
@@ -426,7 +482,10 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 								jsonResource("testdata/loved-tracks-empty"),
 								responseHeaders));
 
-		List<Track> tracks = lastFm.userOperations().getLovedTracks("mattslip").getContent();
+		Page<Track> tracksPage = lastFm.userOperations().getLovedTracks("mattslip");
+		List<Track> tracks = tracksPage.getContent();
+		assertEquals(0,tracksPage.getNumber());
+		assertEquals(0,tracksPage.getTotalElements());
 		assertNotNull(tracks);
 		assertEquals(0,tracks.size());
 

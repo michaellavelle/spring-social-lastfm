@@ -116,7 +116,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 				return new PageImpl<SimpleTrack>(new ArrayList<SimpleTrack>(),pageable,pageInfo.getTotal());
 		}
 
-		return new PageImpl<SimpleTrack>(simpleTrackListResponse.getTracks(),new PageRequest(pageInfo.getPage(),pageInfo.getPerPage()),simpleTrackListResponse.getPageInfo().getTotal());
+		return new PageImpl<SimpleTrack>(simpleTrackListResponse.getTracks(),new PageRequest(pageInfo.getZeroIndexedPage(),pageInfo.getPerPage()),simpleTrackListResponse.getPageInfo().getTotal());
 
 
 	}
@@ -152,7 +152,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 				return new PageImpl<Track>(new ArrayList<Track>(),pageable,pageInfo.getTotal());
 		}
 
-		return new PageImpl<Track>(trackListResponse.getTracks(),new PageRequest(pageInfo.getPage(),pageInfo.getPerPage()),trackListResponse.getPageInfo().getTotal());
+		return new PageImpl<Track>(trackListResponse.getTracks(),new PageRequest(pageInfo.getZeroIndexedPage(),pageInfo.getPerPage()),trackListResponse.getPageInfo().getTotal());
 		
 	}
 	
@@ -187,7 +187,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 				return new PageImpl<Track>(new ArrayList<Track>(),pageable,pageInfo.getTotal());
 		}
 		
-		return new PageImpl<Track>(trackListResponse.getTracks(),new PageRequest(pageInfo.getPage(),pageInfo.getPerPage()),trackListResponse.getPageInfo().getTotal());
+		return new PageImpl<Track>(trackListResponse.getTracks(),new PageRequest(pageInfo.getZeroIndexedPage(),pageInfo.getPerPage()),trackListResponse.getPageInfo().getTotal());
 
 	}
 	
@@ -222,7 +222,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 				return new PageImpl<Artist>(new ArrayList<Artist>(),pageable,pageInfo.getTotal());
 		}
 		
-		return new PageImpl<Artist>(artistListResponse.getArtists(),new PageRequest(pageInfo.getPage(),pageInfo.getPerPage()),pageInfo.getTotal());
+		return new PageImpl<Artist>(artistListResponse.getArtists(),new PageRequest(pageInfo.getZeroIndexedPage(),pageInfo.getPerPage()),pageInfo.getTotal());
 
 	}
 
@@ -308,7 +308,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 				return new PageImpl<Shout>(new ArrayList<Shout>(),pageable,pageInfo.getTotal());
 		}
 		
-		return new PageImpl<Shout>(shoutListResponse.getShouts(),new PageRequest(pageInfo.getPage(),pageInfo.getPerPage()),pageInfo.getTotal());
+		return new PageImpl<Shout>(shoutListResponse.getShouts(),new PageRequest(pageInfo.getZeroIndexedPage(),pageInfo.getPerPage()),pageInfo.getTotal());
 	}
 
 	@Override
@@ -340,7 +340,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 				return new PageImpl<Artist>(new ArrayList<Artist>(),pageable,pageInfo.getTotal());
 		}
 		
-		return new PageImpl<Artist>(artistListResponse.getArtists(),new PageRequest(pageInfo.getPage(),pageInfo.getPerPage()),pageInfo.getTotal());
+		return new PageImpl<Artist>(artistListResponse.getArtists(),new PageRequest(pageInfo.getZeroIndexedPage(),pageInfo.getPerPage()),pageInfo.getTotal());
 	}
 	
 
@@ -376,7 +376,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 				return new PageImpl<LastFmProfile>(new ArrayList<LastFmProfile>(),pageable,pageInfo.getTotal());
 		}
 		
-		return new PageImpl<LastFmProfile>(userListResponse.getUsers(),new PageRequest(pageInfo.getPage(),pageInfo.getPerPage()),pageInfo.getTotal());
+		return new PageImpl<LastFmProfile>(userListResponse.getUsers(),new PageRequest(pageInfo.getZeroIndexedPage(),pageInfo.getPerPage()),pageInfo.getTotal());
 
 	}
 

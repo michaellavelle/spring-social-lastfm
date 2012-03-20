@@ -78,7 +78,7 @@ public class TrackTemplate extends AbstractLastFmOperations implements
 				return new PageImpl<TrackSearchResult>(new ArrayList<TrackSearchResult>(),pageable,pageInfo.getTotal());
 		}
 
-		return new PageImpl<TrackSearchResult>(trackSearchListResponse.getTracks(),new PageRequest(pageInfo.getPage(),pageInfo.getPerPage()),pageInfo.getTotal());
+		return new PageImpl<TrackSearchResult>(trackSearchListResponse.getTracks(),new PageRequest(pageInfo.getZeroIndexedPage(),pageInfo.getPerPage()),pageInfo.getTotal());
 
 		
 		
@@ -116,11 +116,9 @@ public class TrackTemplate extends AbstractLastFmOperations implements
 		.getForObject(buildLastFmApiUrl(methodParameters),
 				LastFmTracksResponse.class)
 		.getNestedResponse();
-		
-		PageInfo pageInfo = trackListResponse.getPageInfo();
-		
+				
 
-		return new PageImpl<Track>(trackListResponse.getTracks(),new PageRequest(1,limit == null ? trackListResponse.getTracks().size() : limit),trackListResponse.getTracks().size());
+		return new PageImpl<Track>(trackListResponse.getTracks(),new PageRequest(0,limit == null ? trackListResponse.getTracks().size() : limit),trackListResponse.getTracks().size());
 	}
 
 }

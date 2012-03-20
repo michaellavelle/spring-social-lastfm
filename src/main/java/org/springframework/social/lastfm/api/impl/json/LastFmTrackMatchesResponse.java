@@ -41,7 +41,7 @@ public class LastFmTrackMatchesResponse {
 		pageInfo.setPerPage(itemsPerPage);
 		pageInfo.setTotal(totalResults);
 		pageInfo.setTotalPages(((int)((totalResults - 1)/itemsPerPage)) + 1);
-		pageInfo.setPage(((int)(startIndex/itemsPerPage)) + 1);
+		pageInfo.setPage(((int)(startIndex/itemsPerPage)));
 
 		return pageInfo;
 	}
