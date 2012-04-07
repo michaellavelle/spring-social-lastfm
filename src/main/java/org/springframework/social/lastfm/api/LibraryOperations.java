@@ -15,20 +15,25 @@
  */
 package org.springframework.social.lastfm.api;
 
-import org.springframework.social.lastfm.api.impl.LastFmTemplate;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
- * Interface specifying a basic set of operations for interacting with LastFm.
- * Implemented by {@link LastFmTemplate}.
- * 
  * @author Michael Lavelle
  */
-public interface LastFm {
+public interface LibraryOperations {
 
-	public UserOperations userOperations();
+	public void addTrack(String artistName, String trackName);
+	
+	public void removeTrack(String artistName, String trackName);
 
-	public TrackOperations trackOperations();
+	
+	public Page<AlbumTrack> getTracks(String userName);
+	
+	public Page<AlbumTrack> getTracks(String userName,Pageable pageable);
 
-	public LibraryOperations libraryOperations();
 
 }

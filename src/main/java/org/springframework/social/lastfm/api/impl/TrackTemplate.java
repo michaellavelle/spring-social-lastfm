@@ -71,9 +71,9 @@ public class TrackTemplate extends AbstractLastFmOperations implements
 		
 		PageInfo pageInfo = trackMatchesResponse.getPageInfo();
 		
-		// Last.Fm will return the last page available if a page number is requested greater than the total pages
+		// Last.Fm will return the last page available if a page number is requested greater than or equal to the total pages
 		// Ensure that we override this behaviour and return an empty page for this case
-		if (pageable != null && pageable.getPageNumber() > pageInfo.getTotalPages())
+		if (pageable != null && pageable.getPageNumber() >= pageInfo.getTotalPages())
 		{
 				return new PageImpl<TrackSearchResult>(new ArrayList<TrackSearchResult>(),pageable,pageInfo.getTotal());
 		}

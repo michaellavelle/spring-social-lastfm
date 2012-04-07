@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.social.lastfm.api;
+package org.springframework.social.lastfm.api.impl.json;
 
-import org.springframework.social.lastfm.api.impl.LastFmTemplate;
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
- * Interface specifying a basic set of operations for interacting with LastFm.
- * Implemented by {@link LastFmTemplate}.
+ * Annotated mixin to add Jackson annotations to Track.
  * 
  * @author Michael Lavelle
  */
-public interface LastFm {
+@JsonIgnoreProperties(ignoreUnknown = true)
+abstract class AlbumMixin {
 
-	public UserOperations userOperations();
-
-	public TrackOperations trackOperations();
-
-	public LibraryOperations libraryOperations();
+	@JsonCreator
+	AlbumMixin(@JsonProperty("name") String name) {
+	}
 
 }

@@ -109,9 +109,9 @@ public class UserTemplate extends AbstractLastFmOperations implements
 		
 		PageInfo pageInfo = simpleTrackListResponse.getPageInfo();
 		
-		// Last.Fm will return the last page available if a page number is requested greater than the total pages
+		// Last.Fm will return the last page available if a page number is requested greater than or equal to the total pages
 		// Ensure that we override this behaviour and return an empty page for this case
-		if (pageable != null && pageable.getPageNumber() > pageInfo.getTotalPages())
+		if (pageable != null && pageable.getPageNumber() >= pageInfo.getTotalPages())
 		{
 				return new PageImpl<SimpleTrack>(new ArrayList<SimpleTrack>(),pageable,pageInfo.getTotal());
 		}
@@ -145,9 +145,9 @@ public class UserTemplate extends AbstractLastFmOperations implements
 		
 		PageInfo pageInfo = trackListResponse.getPageInfo();
 		
-		// Last.Fm will return the last page available if a page number is requested greater than the total pages
+		// Last.Fm will return the last page available if a page number is requested greater than or equal to the total pages
 		// Ensure that we override this behaviour and return an empty page for this case
-		if (pageable != null && pageable.getPageNumber() > pageInfo.getTotalPages())
+		if (pageable != null && pageable.getPageNumber() >= pageInfo.getTotalPages())
 		{
 				return new PageImpl<Track>(new ArrayList<Track>(),pageable,pageInfo.getTotal());
 		}
@@ -177,12 +177,10 @@ public class UserTemplate extends AbstractLastFmOperations implements
 				LastFmTracksResponse.class).getNestedResponse();
 		
 		PageInfo pageInfo = trackListResponse.getPageInfo();
-
 		
-		
-		// Last.Fm will return the last page available if a page number is requested greater than the total pages
+		// Last.Fm will return the last page available if a page number is requested greater than or equal to the total pages
 		// Ensure that we override this behaviour and return an empty page for this case
-		if (pageable != null && pageable.getPageNumber() > pageInfo.getTotalPages())
+		if (pageable != null && pageable.getPageNumber() >= pageInfo.getTotalPages())
 		{
 				return new PageImpl<Track>(new ArrayList<Track>(),pageable,pageInfo.getTotal());
 		}
@@ -215,9 +213,9 @@ public class UserTemplate extends AbstractLastFmOperations implements
 
 		
 		
-		// Last.Fm will return the last page available if a page number is requested greater than the total pages
+		// Last.Fm will return the last page available if a page number is requested greater than or equal to the total pages
 		// Ensure that we override this behaviour and return an empty page for this case
-		if (pageable != null && pageable.getPageNumber() > pageInfo.getTotalPages())
+		if (pageable != null && pageable.getPageNumber() >= pageInfo.getTotalPages())
 		{
 				return new PageImpl<Artist>(new ArrayList<Artist>(),pageable,pageInfo.getTotal());
 		}
@@ -301,9 +299,9 @@ public class UserTemplate extends AbstractLastFmOperations implements
 
 		
 		
-		// Last.Fm will return the last page available if a page number is requested greater than the total pages
+		// Last.Fm will return the last page available if a page number is requested greater than or equal to the total pages
 		// Ensure that we override this behaviour and return an empty page for this case
-		if (pageable != null && pageable.getPageNumber() > pageInfo.getTotalPages())
+		if (pageable != null && pageable.getPageNumber() >= pageInfo.getTotalPages())
 		{
 				return new PageImpl<Shout>(new ArrayList<Shout>(),pageable,pageInfo.getTotal());
 		}
@@ -333,9 +331,9 @@ public class UserTemplate extends AbstractLastFmOperations implements
 
 		
 		
-		// Last.Fm will return the last page available if a page number is requested greater than the total pages
+		// Last.Fm will return the last page available if a page number is requested greater than or equal to the total pages
 		// Ensure that we override this behaviour and return an empty page for this case
-		if (pageable != null && pageable.getPageNumber() > pageInfo.getTotalPages())
+		if (pageable != null && pageable.getPageNumber() >= pageInfo.getTotalPages())
 		{
 				return new PageImpl<Artist>(new ArrayList<Artist>(),pageable,pageInfo.getTotal());
 		}
@@ -369,9 +367,9 @@ public class UserTemplate extends AbstractLastFmOperations implements
 
 		
 		
-		// Last.Fm will return the last page available if a page number is requested greater than the total pages
+		// Last.Fm will return the last page available if a page number is requested greater than or equal to the total pages
 		// Ensure that we override this behaviour and return an empty page for this case
-		if (pageable != null && pageable.getPageNumber() > pageInfo.getTotalPages())
+		if (pageable != null && pageable.getPageNumber() >= pageInfo.getTotalPages())
 		{
 				return new PageImpl<LastFmProfile>(new ArrayList<LastFmProfile>(),pageable,pageInfo.getTotal());
 		}
@@ -423,6 +421,7 @@ public class UserTemplate extends AbstractLastFmOperations implements
 		restTemplate.postForObject(baseApiUrl, methodParameters, String.class);
 		
 	}
+	
 	
 	@Override
 	public void unlove(String artistName, String trackName) {

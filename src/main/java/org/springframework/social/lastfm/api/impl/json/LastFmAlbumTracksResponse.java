@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.social.lastfm.api;
+package org.springframework.social.lastfm.api.impl.json;
 
-import org.springframework.social.lastfm.api.impl.LastFmTemplate;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.springframework.social.lastfm.api.impl.json.lists.LastFmAlbumTrackListResponse;
+import org.springframework.social.lastfm.api.impl.json.lists.LastFmTrackListResponse;
 
 /**
- * Interface specifying a basic set of operations for interacting with LastFm.
- * Implemented by {@link LastFmTemplate}.
- * 
  * @author Michael Lavelle
  */
-public interface LastFm {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class LastFmAlbumTracksResponse extends AbstractLastFmNestedResponse<LastFmAlbumTrackListResponse>{
 
-	public UserOperations userOperations();
+	public LastFmAlbumTracksResponse() {
+		super();
+	}
 
-	public TrackOperations trackOperations();
 
-	public LibraryOperations libraryOperations();
-
+	
 }

@@ -284,6 +284,44 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 	}
 	
 	@Test
+	public void getLibraryTracks() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=library.gettracks&user=mattslip"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
+				.andRespond(
+						withResponse(jsonResource("testdata/library-tracks"),
+								responseHeaders));
+
+		Page<AlbumTrack> tracksPage = lastFm.libraryOperations().getTracks("mattslip");
+		assertEquals(0,tracksPage.getNumber());
+		assertEquals(325,tracksPage.getTotalElements());
+		List<AlbumTrack> tracks = tracksPage.getContent();
+		assertAlbumTrackData(tracks.get(0));
+
+	}
+	
+	@Test
+	public void getLibraryTracks_SingleTrackResponse() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=library.gettracks&user=mattslip"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
+				.andRespond(
+						withResponse(jsonResource("testdata/library-single-track-response"),
+								responseHeaders));
+
+		Page<AlbumTrack> tracksPage = lastFm.libraryOperations().getTracks("mattslip");
+		assertEquals(0,tracksPage.getNumber());
+		assertEquals(1,tracksPage.getTotalElements());
+		List<AlbumTrack> tracks = tracksPage.getContent();
+		assertAlbumTrackData(tracks.get(0));
+
+	}
+	
+	@Test
 	public void getSimilarTracks() {
 
 		mockServer
@@ -466,9 +504,8 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 	}
 	
 	/**
-	 * Tests for the case where the loved tracks response contains only a single
-	 * track. In this case the Json format of the response is different to the
-	 * response for multiple tracks
+	 * Tests for the case where the loved tracks response contains no
+	 * tracks. 
 	 */
 	@Test
 	public void getLovedTracksEmptyResponse() {
@@ -484,6 +521,31 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 
 		Page<Track> tracksPage = lastFm.userOperations().getLovedTracks("mattslip");
 		List<Track> tracks = tracksPage.getContent();
+		assertEquals(0,tracksPage.getNumber());
+		assertEquals(0,tracksPage.getTotalElements());
+		assertNotNull(tracks);
+		assertEquals(0,tracks.size());
+
+	}
+	
+	/**
+	 * Tests for the case where the library tracks response contains no
+	 * tracks. 
+	 */
+	@Test
+	public void getLibraryTracksEmptyResponse() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/?format=json&api_key=someApiKey&method=library.gettracks&user=mattslip"))
+				.andExpect(method(GET))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
+				.andRespond(
+						withResponse(
+								jsonResource("testdata/empty-library-response"),
+								responseHeaders));
+
+		Page<AlbumTrack> tracksPage = lastFm.libraryOperations().getTracks("mattslip");
+		List<AlbumTrack> tracks = tracksPage.getContent();
 		assertEquals(0,tracksPage.getNumber());
 		assertEquals(0,tracksPage.getTotalElements());
 		assertNotNull(tracks);
@@ -587,7 +649,47 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 
 	}
 	
+	@Test
+	public void addTrackToLibrary() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/"))
+				.andExpect(method(POST))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
+				.andExpect(
+						body("format=json&api_sig=9d70a80fc0ffaea3a74d33a793d0bf91&api_key=someApiKey&sk=someSessionKey&method=library.addtrack&token=someToken&track=My+track+name&artist=My+artist+name"))
+				.andRespond(
+						withResponse(jsonResource("testdata/status-ok"),
+								responseHeaders));
+
+		lastFm.libraryOperations().addTrack("My artist name", "My track name");
+
+	}
 	
+	@Test
+	public void removeTrackFromLibrary() {
+
+		mockServer
+				.expect(requestTo("http://ws.audioscrobbler.com/2.0/"))
+				.andExpect(method(POST))
+				.andExpect(header("User-Agent", UserAgentHelper.getUserAgent()))
+				.andExpect(
+						body("format=json&api_sig=3d2860a9ba668aa4344bf3ddb34fffb4&api_key=someApiKey&sk=someSessionKey&method=library.removetrack&token=someToken&track=My+track+name&artist=My+artist+name"))
+				.andRespond(
+						withResponse(jsonResource("testdata/status-ok"),
+								responseHeaders));
+
+		lastFm.libraryOperations().removeTrack("My artist name", "My track name");
+
+	}
+	
+	@Test(expected = NotAuthorizedException.class)
+	public void addTrackToLibrary_unauthorized() {
+
+
+		unauthorizedLastFm.libraryOperations().addTrack("My artist name", "My track name");
+
+	}
 	
 	
 	@Test(expected = NotAuthorizedException.class)
@@ -673,6 +775,13 @@ public class UserTemplateTest extends AbstractLastFmApiTest {
 				track.getUrl());
 		assertEquals("http://www.last.fm/music/Miami+Horror", track.getArtist()
 				.getUrl());
+	}
+	
+	private void assertAlbumTrackData(AlbumTrack track)
+	{
+		assertTrackData(track);
+		assertNotNull(track.getAlbum());
+		assertEquals("Moon Theory",track.getAlbum().getName());
 	}
 	
 	

@@ -71,5 +71,5 @@ public interface UserOperations {
 	public Page<Artist> getRecommendedArtists();
 	public Page<Artist> getRecommendedArtists(Pageable pageable);
 
-	
+
 }

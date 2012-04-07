@@ -20,6 +20,8 @@ import java.text.SimpleDateFormat;
 
 import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.module.SimpleModule;
+import org.springframework.social.lastfm.api.Album;
+import org.springframework.social.lastfm.api.AlbumTrack;
 import org.springframework.social.lastfm.api.Artist;
 import org.springframework.social.lastfm.api.Image;
 import org.springframework.social.lastfm.api.LastFmProfile;
@@ -28,6 +30,7 @@ import org.springframework.social.lastfm.api.SimpleArtist;
 import org.springframework.social.lastfm.api.SimpleTrack;
 import org.springframework.social.lastfm.api.Track;
 import org.springframework.social.lastfm.api.TrackSearchResult;
+import org.springframework.social.lastfm.api.impl.json.lists.AlbumTrackListContainer;
 import org.springframework.social.lastfm.api.impl.json.lists.ShoutListContainer;
 import org.springframework.social.lastfm.api.impl.json.lists.SimpleTrackListContainer;
 import org.springframework.social.lastfm.api.impl.json.lists.TrackListContainer;
@@ -56,6 +59,7 @@ public class LastFmModule extends SimpleModule {
 	public void setupModule(SetupContext context) {
 		context.setMixInAnnotations(LastFmProfile.class,
 				LastFmProfileMixin.class);
+		context.setMixInAnnotations(AlbumTrackListContainer.class, AlbumTrackMixin.class);
 		context.setMixInAnnotations(TrackListContainer.class, TrackMixin.class);
 		context.setMixInAnnotations(ShoutListContainer.class, ShoutMixin.class);
 		context.setMixInAnnotations(UserListContainer.class, LastFmProfileMixin.class);
@@ -66,6 +70,8 @@ public class LastFmModule extends SimpleModule {
 		context.setMixInAnnotations(SimpleTrackListContainer.class, SimpleTrackMixin.class);
 
 		context.setMixInAnnotations(Track.class, TrackMixin.class);
+		context.setMixInAnnotations(AlbumTrack.class, AlbumTrackMixin.class);
+
 		context.setMixInAnnotations(Shout.class, ShoutMixin.class);
 
 
@@ -76,6 +82,8 @@ public class LastFmModule extends SimpleModule {
 		context.setMixInAnnotations(SimpleArtist.class, SimpleArtistMixin.class);
 
 		context.setMixInAnnotations(Artist.class, ArtistMixin.class);
+		context.setMixInAnnotations(Album.class, AlbumMixin.class);
+
 
 		context.setMixInAnnotations(Image.class, ImageMixin.class);
 	

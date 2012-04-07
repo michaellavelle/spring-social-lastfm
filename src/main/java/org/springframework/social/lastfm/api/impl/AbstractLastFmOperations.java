@@ -56,7 +56,7 @@ public abstract class AbstractLastFmOperations {
 	{
 		if (pageable != null)
 		{
-			params.put("page",new Integer(pageable.getPageNumber()).toString());
+			params.put("page",new Integer(pageable.getPageNumber() + 1).toString());
 			params.put("limit", new Integer(pageable.getPageSize()).toString());
 		}
 	}
