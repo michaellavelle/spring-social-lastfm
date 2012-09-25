@@ -1,14 +1,14 @@
 This project is a work in progress with a few methods of the LastFm Api implemented so far. These include:
 
-Retrieving a LastFm user's basic profile info
-Retrieving a LastFm user's Loved, Recent, or Top Tracks
-Retrieving a LastFm user's friends and neighbours lists 
-Retrieving a LastFm user's shouts
-Performing a shout
-Loving and unloving a track
-Performing a basic track search
-Updating a LastFm users' now listening status
-Simple scrobbling
+* Retrieving a LastFm user's basic profile info
+* Retrieving a LastFm user's Loved, Recent, or Top Tracks
+* Retrieving a LastFm user's friends and neighbours lists 
+* Retrieving a LastFm user's shouts
+* Performing a shout
+* Loving and unloving a track
+* Performing a basic track search
+* Updating a LastFm users' now listening status
+* Simple scrobbling
 
 Please note that as LastFm's auth scheme is *neither* OAuth1 or OAuth2, there are a few constraints concerning the use 
 of this module:
