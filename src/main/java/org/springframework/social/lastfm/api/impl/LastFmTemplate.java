@@ -26,6 +26,7 @@ import org.springframework.http.converter.json.MappingJacksonHttpMessageConverte
 import org.springframework.social.NotAuthorizedException;
 import org.springframework.social.lastfm.api.LastFm;
 import org.springframework.social.lastfm.api.LibraryOperations;
+import org.springframework.social.lastfm.api.PlaylistOperations;
 import org.springframework.social.lastfm.api.TrackOperations;
 import org.springframework.social.lastfm.api.UserOperations;
 import org.springframework.social.lastfm.api.impl.json.LastFmModule;
@@ -43,6 +44,7 @@ public class LastFmTemplate extends AbstractLastFmAuthApiBinding implements
 	private UserOperations userOperations;
 	private TrackOperations trackOperations;
 	private LibraryOperations libraryOperations;
+	private PlaylistOperations playlistOperations;
 
 	private ObjectMapper objectMapper;
 
@@ -65,6 +67,11 @@ public class LastFmTemplate extends AbstractLastFmAuthApiBinding implements
 		
 		libraryOperations = new LibraryTemplate(getRestTemplate(),
 				lastFmAccessGrant, apiKey, secret, isAuthorized());
+		
+
+		playlistOperations = new PlaylistTemplate(getRestTemplate(),
+				lastFmAccessGrant, apiKey, secret, isAuthorized());
+
 
 
 	}
@@ -138,6 +145,12 @@ public class LastFmTemplate extends AbstractLastFmAuthApiBinding implements
 	@Override
 	public LibraryOperations libraryOperations() {
 		return libraryOperations;
+	}
+	
+
+	@Override
+	public PlaylistOperations playlistOperations() {
+		return playlistOperations;
 	}
 
 }

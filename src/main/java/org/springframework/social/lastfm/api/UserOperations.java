@@ -46,6 +46,8 @@ public interface UserOperations {
 	
 	public List<LastFmProfile> getNeighbours(String userName);
 	
+	public List<Playlist> getPlaylists(String userName);
+
 	public List<LastFmProfile> getNeighbours(String userName,int limit);
 
 	public Page<Track> getTopTracks(String userName);

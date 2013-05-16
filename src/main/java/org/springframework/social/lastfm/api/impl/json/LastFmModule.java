@@ -25,12 +25,14 @@ import org.springframework.social.lastfm.api.AlbumTrack;
 import org.springframework.social.lastfm.api.Artist;
 import org.springframework.social.lastfm.api.Image;
 import org.springframework.social.lastfm.api.LastFmProfile;
+import org.springframework.social.lastfm.api.Playlist;
 import org.springframework.social.lastfm.api.Shout;
 import org.springframework.social.lastfm.api.SimpleArtist;
 import org.springframework.social.lastfm.api.SimpleTrack;
 import org.springframework.social.lastfm.api.Track;
 import org.springframework.social.lastfm.api.TrackSearchResult;
 import org.springframework.social.lastfm.api.impl.json.lists.AlbumTrackListContainer;
+import org.springframework.social.lastfm.api.impl.json.lists.PlaylistListContainer;
 import org.springframework.social.lastfm.api.impl.json.lists.ShoutListContainer;
 import org.springframework.social.lastfm.api.impl.json.lists.SimpleTrackListContainer;
 import org.springframework.social.lastfm.api.impl.json.lists.TrackListContainer;
@@ -63,6 +65,8 @@ public class LastFmModule extends SimpleModule {
 		context.setMixInAnnotations(TrackListContainer.class, TrackMixin.class);
 		context.setMixInAnnotations(ShoutListContainer.class, ShoutMixin.class);
 		context.setMixInAnnotations(UserListContainer.class, LastFmProfileMixin.class);
+		context.setMixInAnnotations(PlaylistListContainer.class, PlaylistMixin.class);
+
 		context.setMixInAnnotations(TrackSearchResultListContainer.class, TrackSearchResultMixin.class);
 
 		
@@ -73,6 +77,7 @@ public class LastFmModule extends SimpleModule {
 		context.setMixInAnnotations(AlbumTrack.class, AlbumTrackMixin.class);
 
 		context.setMixInAnnotations(Shout.class, ShoutMixin.class);
+		context.setMixInAnnotations(Playlist.class, PlaylistMixin.class);
 
 
 		context.setMixInAnnotations(SimpleTrack.class, SimpleTrackMixin.class);
