@@ -15,6 +15,9 @@
  */
 package org.springframework.social.lastfm.api;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Before;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -55,5 +58,28 @@ public abstract class AbstractLastFmApiTest {
 	protected Resource jsonResource(String filename) {
 		return new ClassPathResource(filename + ".json", getClass());
 	}
+	
+	protected void assertBasicTrackData(TrackDescriptor trackDescriptor) {
+		assertEquals("Moon Theory", trackDescriptor.getName());
+		assertEquals("Miami Horror", trackDescriptor.getArtistName());
+
+	}
+	
+	protected void assertTrackData(Track track) {
+		assertBasicTrackData(track);
+		assertEquals("http://www.last.fm/music/Miami+Horror/_/Moon+Theory",
+				track.getUrl());
+		assertEquals("http://www.last.fm/music/Miami+Horror", track.getArtist()
+				.getUrl());
+	}
+	
+	
+	protected void assertAlbumTrackData(AlbumTrack track)
+	{
+		assertTrackData(track);
+		assertNotNull(track.getAlbum());
+		assertEquals("Moon Theory",track.getAlbum().getName());
+	}
+	
 
 }
