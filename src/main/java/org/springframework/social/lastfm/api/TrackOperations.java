@@ -25,6 +25,10 @@ public interface TrackOperations {
 
 	public Page<TrackSearchResult> searchByTrackName(String trackName);
 	
+
+	public Page<TrackSearchResult> searchByArtist(
+			String artistName,Pageable pageable);
+	
 	public Page<TrackSearchResult> searchByTrackName(String trackName,Pageable pageable);
 	
 	public Page<TrackSearchResult> searchByArtistAndTrackName(

@@ -83,6 +83,42 @@ public class TrackTemplate extends AbstractLastFmOperations implements
 		
 		
 	}
+	
+	
+	@Override
+	public Page<TrackSearchResult> searchByArtist(
+			String artistName,Pageable pageable) {
+		Map<String, String> additionalParams = new HashMap<String, String>();
+		additionalParams.put("artist", artistName);
+		
+		setPageableParamsIfSpecified(additionalParams,pageable);
+
+		LastFmApiMethodParameters methodParameters = new LastFmApiMethodParameters(
+				"artist.info", apiKey, secret, additionalParams);
+
+		LastFmTrackMatchesResponse trackMatchesResponse = restTemplate
+		.getForObject(buildLastFmApiUrl(methodParameters),
+				LastFmTrackSearchResponse.class)
+		.getNestedResponse();
+		
+		LastFmTrackSearchResultListResponse trackSearchListResponse = trackMatchesResponse.getTracksResponse();
+		
+		PageInfo pageInfo = trackMatchesResponse.getPageInfo();
+		
+		// Last.Fm will return the last page available if a page number is requested greater than or equal to the total pages
+		// Ensure that we override this behaviour and return an empty page for this case
+		if (pageable != null && pageable.getPageNumber() >= pageInfo.getTotalPages())
+		{
+				return new PageImpl<TrackSearchResult>(new ArrayList<TrackSearchResult>(),pageable,pageInfo.getTotal());
+		}
+
+		return new PageImpl<TrackSearchResult>(trackSearchListResponse.getTracks(),new PageRequest(pageInfo.getZeroIndexedPage(),pageInfo.getPerPage()),pageInfo.getTotal());
+
+		
+		
+	}
+	
+	
 
 	@Override
 	public Page<Track> getSimilarTracks(TrackDescriptor trackDescriptor) {
