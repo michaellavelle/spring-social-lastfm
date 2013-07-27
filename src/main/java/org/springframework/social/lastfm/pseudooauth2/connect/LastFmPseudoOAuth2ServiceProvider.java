@@ -28,7 +28,6 @@ public class LastFmPseudoOAuth2ServiceProvider extends
 
 	private String clientId;
 	private String secret;
-	private String userAgent;
 
 	public LastFmPseudoOAuth2ServiceProvider(String clientId,
 			String clientSecret) {

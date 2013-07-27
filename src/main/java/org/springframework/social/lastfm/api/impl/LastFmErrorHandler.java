@@ -52,9 +52,9 @@ class LastFmErrorHandler extends DefaultResponseErrorHandler {
 			if (errorDetails != null && errorDetails.size() > 0) {
 				String m = errorDetails.get(errorDetails.values().iterator()
 						.next());
-				throw new UncategorizedApiException(m, e);
+				throw new UncategorizedApiException("lastfm",m, e);
 			} else {
-				throw new UncategorizedApiException(
+				throw new UncategorizedApiException("lastfm",
 						"No error details from LastFm", e);
 			}
 		}
@@ -68,34 +68,34 @@ class LastFmErrorHandler extends DefaultResponseErrorHandler {
 			// TODO I've just put a single error code in here for now - need to
 			// complete with other error codes
 			if (errorDetails.containsKey(3)) {
-				throw new ResourceNotFoundException(message);
+				throw new ResourceNotFoundException("lastfm",message);
 			}
 			if (errorDetails.containsKey(6)) {
-				throw new ResourceNotFoundException(message);
+				throw new ResourceNotFoundException("lastfm",message);
 			}
 			if (errorDetails.containsKey(10)) {
-				throw new NotAuthorizedException(message);
+				throw new NotAuthorizedException("lastfm",message);
 			}
 			if (errorDetails.containsKey(8)) {
-				throw new ResourceNotFoundException(message);
+				throw new ResourceNotFoundException("lastfm",message);
 			}
 			if (errorDetails.containsKey(13)) {
-				throw new NotAuthorizedException(message);
+				throw new NotAuthorizedException("lastfm",message);
 			}
 
 		} else if (statusCode == HttpStatus.BAD_REQUEST) {
-			throw new ResourceNotFoundException(message);
+			throw new ResourceNotFoundException("lastfm",message);
 
 		} else if (statusCode == HttpStatus.UNAUTHORIZED) {
 
-			throw new NotAuthorizedException(message);
+			throw new NotAuthorizedException("lastfm",message);
 		} else if (statusCode == HttpStatus.FORBIDDEN) {
 
-			throw new OperationNotPermittedException(message);
+			throw new OperationNotPermittedException("lastfm",message);
 		} else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR) {
-			throw new InternalServerErrorException(message);
+			throw new InternalServerErrorException("lastfm",message);
 		} else if (statusCode == HttpStatus.SERVICE_UNAVAILABLE) {
-			throw new ServerDownException(message);
+			throw new ServerDownException("lastfm",message);
 		}
 	}
 

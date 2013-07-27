@@ -158,7 +158,7 @@ public class LastFmAuthConnection extends AbstractConnection<LastFm> {
 				throws Throwable {
 			synchronized (getMonitor()) {
 				if (hasExpired()) {
-					throw new ExpiredAuthorizationException();
+					throw new ExpiredAuthorizationException("lastfm");
 				}
 				try {
 					return method.invoke(LastFmAuthConnection.this.api, args);

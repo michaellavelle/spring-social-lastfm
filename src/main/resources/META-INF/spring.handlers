@@ -1,0 +1,1 @@
+http\://www.springframework.org/schema/social/lastfm=org.springframework.social.lastfm.config.xml.LastFmNamespaceHandler

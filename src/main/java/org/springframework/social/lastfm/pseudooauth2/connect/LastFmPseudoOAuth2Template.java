@@ -81,6 +81,34 @@ public class LastFmPseudoOAuth2Template implements OAuth2Operations {
 	@Override
 	public AccessGrant refreshAccess(String refreshToken, String scope,
 			MultiValueMap<String, String> parameters) {
+		// No-op Last.Fm doesn't support refreshing access
+		return null;
+	}
+
+	@Override
+	public AccessGrant exchangeCredentialsForAccess(String username,
+			String password, MultiValueMap<String, String> additionalParameters) {
+		// TODO
+		return null;
+	}
+
+	@Override
+	public AccessGrant refreshAccess(String refreshToken,
+			MultiValueMap<String, String> additionalParameters) {
+		// No-op Last.Fm doesn't support refreshing access
+		return null;
+	}
+
+	@Override
+	public AccessGrant authenticateClient() {
+		// TODO
+		return null;
+
+	}
+
+	@Override
+	public AccessGrant authenticateClient(String scope) {
+		// TODO
 		return null;
 	}
 
