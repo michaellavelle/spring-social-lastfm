@@ -17,11 +17,11 @@ package org.springframework.social.lastfm.api.impl;
 
 import java.util.List;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.social.NotAuthorizedException;
 import org.springframework.social.lastfm.api.LastFm;
@@ -34,6 +34,9 @@ import org.springframework.social.lastfm.auth.AbstractLastFmAuthApiBinding;
 import org.springframework.social.lastfm.auth.LastFmAccessGrant;
 import org.springframework.social.support.ClientHttpRequestFactorySelector;
 import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Michael Lavelle
@@ -119,14 +122,15 @@ public class LastFmTemplate extends AbstractLastFmAuthApiBinding implements
 
 	private void registerLastFmJsonModule(RestTemplate restTemplate2) {
 		objectMapper = new ObjectMapper();
+		objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 		LastFmModule lastFmModule = new LastFmModule();
 		objectMapper.setDateFormat(lastFmModule.getDateFormat());
 		objectMapper.registerModule(lastFmModule);
 		List<HttpMessageConverter<?>> converters = getRestTemplate()
 				.getMessageConverters();
 		for (HttpMessageConverter<?> converter : converters) {
-			if (converter instanceof MappingJacksonHttpMessageConverter) {
-				MappingJacksonHttpMessageConverter jsonConverter = (MappingJacksonHttpMessageConverter) converter;
+			if (converter instanceof MappingJackson2HttpMessageConverter) {
+				MappingJackson2HttpMessageConverter jsonConverter = (MappingJackson2HttpMessageConverter) converter;
 				jsonConverter.setObjectMapper(objectMapper);
 			}
 		}

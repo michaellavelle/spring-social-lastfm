@@ -15,9 +15,9 @@
  */
 package org.springframework.social.lastfm.api.impl.json;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.springframework.social.lastfm.api.impl.json.lists.LastFmAlbumTrackListResponse;
-import org.springframework.social.lastfm.api.impl.json.lists.LastFmTrackListResponse;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * @author Michael Lavelle

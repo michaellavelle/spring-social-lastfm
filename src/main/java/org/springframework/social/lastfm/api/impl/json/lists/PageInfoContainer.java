@@ -1,6 +1,6 @@
 package org.springframework.social.lastfm.api.impl.json.lists;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PageInfoContainer {
 

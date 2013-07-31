@@ -17,11 +17,10 @@ package org.springframework.social.lastfm.api.impl.json.lists;
 
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonCreator;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.springframework.social.lastfm.api.Image;
-import org.springframework.social.lastfm.api.LastFmProfile;
 import org.springframework.social.lastfm.api.Playlist;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * @author Michael Lavelle

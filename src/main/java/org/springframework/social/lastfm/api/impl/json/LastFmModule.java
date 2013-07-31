@@ -18,8 +18,6 @@ package org.springframework.social.lastfm.api.impl.json;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import org.codehaus.jackson.Version;
-import org.codehaus.jackson.map.module.SimpleModule;
 import org.springframework.social.lastfm.api.Album;
 import org.springframework.social.lastfm.api.AlbumTrack;
 import org.springframework.social.lastfm.api.Artist;
@@ -39,6 +37,9 @@ import org.springframework.social.lastfm.api.impl.json.lists.TrackListContainer;
 import org.springframework.social.lastfm.api.impl.json.lists.TrackSearchResultListContainer;
 import org.springframework.social.lastfm.api.impl.json.lists.UserListContainer;
 
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+
 /**
  * Jackson module for setting up mixin annotations on LastFm model types. This
  * enables the use of Jackson annotations without directly annotating the model
@@ -49,7 +50,7 @@ import org.springframework.social.lastfm.api.impl.json.lists.UserListContainer;
 public class LastFmModule extends SimpleModule {
 
 	public LastFmModule() {
-		super("LastFmModule", new Version(1, 0, 0, null));
+		super("LastFmModule", new Version(1, 0, 0, null,null,null));
 	}
 	
 	public DateFormat getDateFormat()
