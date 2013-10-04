@@ -16,7 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.social.lastfm.api.impl.LastFmApiMethodParameters;
 import org.springframework.social.lastfm.auth.LastFmAccessGrant;
 import org.springframework.social.lastfm.auth.LastFmAuthOperations;
@@ -134,7 +134,7 @@ public class LastFmAuthTemplate implements LastFmAuthOperations {
 				2);
 		converters.add(new FormHttpMessageConverter());
 		if (json) {
-			converters.add(new MappingJacksonHttpMessageConverter());
+			converters.add(new MappingJackson2HttpMessageConverter());
 		}
 		restTemplate.setMessageConverters(converters);
 		return restTemplate;
