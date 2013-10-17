@@ -10,6 +10,9 @@ This project is a work in progress with a few methods of the LastFm Api implemen
 * Updating a LastFm users' now listening status
 * Simple scrobbling
 
+[![endorse](https://api.coderwall.com/michaellavelle/endorsecount.png)](https://coderwall.com/michaellavelle)
+
+
 Please note that as LastFm's auth scheme is *neither* OAuth1 or OAuth2, there are a few constraints concerning the use 
 of this module:
 
