@@ -17,12 +17,9 @@ package org.springframework.social.lastfm.api.impl;
 
 import java.util.List;
 
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.social.NotAuthorizedException;
 import org.springframework.social.lastfm.api.LastFm;
 import org.springframework.social.lastfm.api.LibraryOperations;

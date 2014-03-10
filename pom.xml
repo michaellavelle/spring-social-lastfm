@@ -7,8 +7,8 @@
 	<version>1.1.0-SNAPSHOT</version>
 	<name>Spring Social LastFm</name>
 	<properties>
-			<org.springframework.social.version>1.1.0.M3</org.springframework.social.version>
-			<org.springframework.version>3.2.3.RELEASE</org.springframework.version>
+			<org.springframework.social.version>1.1.0.RC1</org.springframework.social.version>
+			<org.springframework.version>4.0.2.RELEASE</org.springframework.version>
 			<org.springframework.social-test.version>1.0.3.RELEASE</org.springframework.social-test.version>
 	    	<jackson2.version>2.2.2</jackson2.version>
 	</properties>
@@ -28,6 +28,14 @@
             <name>Spring Maven Milestone Repository</name>
             <url>http://maven.springframework.org/milestone</url>
         </repository>
+         <repository>
+        <id>spring-snapshots</id>
+        <name>Spring Snapshots</name>
+        <url>http://repo.spring.io/snapshot</url>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+    </repository>
 	</repositories>
 	<dependencies>
 	  <dependency>

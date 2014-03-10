@@ -18,7 +18,6 @@ package org.springframework.social.lastfm.api;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.social.test.client.RequestMatchers.body;

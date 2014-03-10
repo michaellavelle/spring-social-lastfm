@@ -18,7 +18,6 @@ package org.springframework.social.lastfm.config.xml;
 
 
 import org.springframework.social.config.xml.AbstractProviderConfigBeanDefinitionParser;
-
 import org.springframework.social.lastfm.config.support.LastFmApiHelper;
 import org.springframework.social.lastfm.pseudooauth2.connect.LastFmPseudoOAuth2ConnectionFactory;
 import org.springframework.social.lastfm.security.LastFmAuthenticationService;

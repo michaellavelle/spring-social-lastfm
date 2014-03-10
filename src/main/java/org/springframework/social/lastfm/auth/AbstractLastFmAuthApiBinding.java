@@ -15,15 +15,11 @@
  */
 package org.springframework.social.lastfm.auth;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -47,7 +43,7 @@ import org.springframework.web.client.RestTemplate;
 public abstract class AbstractLastFmAuthApiBinding implements ApiBinding {
 
 	private LastFmAccessGrant lastFmAccessGrant;
-
+ 
 	private final RestTemplate restTemplate;
 
 	

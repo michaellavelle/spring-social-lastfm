@@ -18,7 +18,6 @@ package org.springframework.social.lastfm.api;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.social.test.client.RequestMatchers.body;
@@ -27,13 +26,11 @@ import static org.springframework.social.test.client.RequestMatchers.method;
 import static org.springframework.social.test.client.RequestMatchers.requestTo;
 import static org.springframework.social.test.client.ResponseCreators.withResponse;
 
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.social.NotAuthorizedException;
-import org.springframework.social.ResourceNotFoundException;
 import org.springframework.social.lastfm.api.impl.UserAgentHelper;
 
 public class LibraryTemplateTest extends AbstractLastFmApiTest {

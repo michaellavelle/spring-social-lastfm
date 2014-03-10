@@ -108,4 +108,16 @@ public class LastFmPseudoOAuth2Template implements OAuth2Operations {
 		throw new UnsupportedOperationException("Last.Fm's client authentication is unavailable globally but is per method");
 	}
 
+	@Override
+	public String buildAuthorizeUrl(OAuth2Parameters parameters) {
+		return lastFmAuthTemplate
+				.buildAuthorizeUrl(createLastFmAuthParameters(parameters));
+	}
+
+	@Override
+	public String buildAuthenticateUrl(OAuth2Parameters parameters) {
+		return lastFmAuthTemplate
+				.buildAuthorizeUrl(createLastFmAuthParameters(parameters));
+	}
+
 }

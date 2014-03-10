@@ -15,42 +15,12 @@
  */
 package org.springframework.social.lastfm.api.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.social.lastfm.api.AlbumTrack;
-import org.springframework.social.lastfm.api.Artist;
-import org.springframework.social.lastfm.api.LastFmProfile;
-import org.springframework.social.lastfm.api.LibraryOperations;
 import org.springframework.social.lastfm.api.Playlist;
 import org.springframework.social.lastfm.api.PlaylistOperations;
-import org.springframework.social.lastfm.api.Shout;
-import org.springframework.social.lastfm.api.SimpleTrack;
-import org.springframework.social.lastfm.api.Track;
-import org.springframework.social.lastfm.api.TrackDescriptor;
-import org.springframework.social.lastfm.api.UserOperations;
-import org.springframework.social.lastfm.api.impl.json.LastFmAlbumTracksResponse;
-import org.springframework.social.lastfm.api.impl.json.LastFmArtistsResponse;
 import org.springframework.social.lastfm.api.impl.json.LastFmPlaylistsResponse;
-import org.springframework.social.lastfm.api.impl.json.LastFmUsersResponse;
-import org.springframework.social.lastfm.api.impl.json.LastFmProfileResponse;
-import org.springframework.social.lastfm.api.impl.json.LastFmSimpleTracksResponse;
-import org.springframework.social.lastfm.api.impl.json.LastFmShoutsResponse;
-import org.springframework.social.lastfm.api.impl.json.LastFmTracksResponse;
-import org.springframework.social.lastfm.api.impl.json.lists.LastFmAlbumTrackListResponse;
-import org.springframework.social.lastfm.api.impl.json.lists.LastFmArtistListResponse;
-import org.springframework.social.lastfm.api.impl.json.lists.LastFmShoutListResponse;
-import org.springframework.social.lastfm.api.impl.json.lists.LastFmSimpleTrackListResponse;
-import org.springframework.social.lastfm.api.impl.json.lists.LastFmTrackListResponse;
-import org.springframework.social.lastfm.api.impl.json.lists.LastFmUserListResponse;
-import org.springframework.social.lastfm.api.impl.json.lists.PageInfo;
 import org.springframework.social.lastfm.auth.LastFmAccessGrant;
 import org.springframework.web.client.RestTemplate;
 
