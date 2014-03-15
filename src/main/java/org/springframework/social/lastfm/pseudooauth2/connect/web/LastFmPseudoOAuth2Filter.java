@@ -120,5 +120,13 @@ public class LastFmPseudoOAuth2Filter implements Filter {
 			this.connectCallbackPath = connectCallbackPath;
 		}
 	}
+	
+	public void setSigninCallbackPath(String signinCallbackPath) {
+		this.signinCallbackPath = signinCallbackPath;
+	}
+
+	public void setConnectCallbackPath(String connectCallbackPath) {
+		this.connectCallbackPath = connectCallbackPath;
+	}
 
 }
